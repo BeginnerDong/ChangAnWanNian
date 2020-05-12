@@ -1,0 +1,35 @@
+
+/* 开始答题 */
+.Dossier{width: 614rpx;height: 338rpx;}
+.Dossier .infor{position: relative;z-index: 2;}
+.Dossier .photo{width: 140rpx;height: 140rpx;border-radius: 50%;background-color: #eee;}
+.Dossier .rr{max-width: 220rpx;}
+.lableIcon{width: 38rpx;height: 32rpx;}
+
+/* 答题问题 */
+.answerTime{width: 500rpx;height: 220rpx;}
+.answerTime .infor{position: relative;z-index: 2;}
+.answerTit{line-height: 52rpx;padding-top: 30rpx;padding-bottom: 30rpx;}
+
+.submitbtn .btn{width: 84%;margin-bottom: 30rpx;}
+.zanBtn{width: 40rpx;height:40rpx;}
+
+.seltIconL{position: absolute;top: 50%;transform: translateY(-50%);left: 104rpx; z-index: 2;}
+.seltIconR{position: absolute;top: 50%;transform: translateY(-50%);right: 104rpx; z-index: 2;}
+
+/* 错误图标 */
+.errorIcon{width: 38rpx;height: 38rpx;}
+
+/* 正确 */
+.rightIcon{width: 54rpx;height: 39rpx;}
+
+/* 填空题 */
+.fillInBox{width: 633rpx;height: 352rpx;padding: 48rpx 80rpx;}
+.fillInBox .infor{position: relative;z-index: 2;width: 100%;height: 100%;}
+.fillInBox .infor textarea{width: 100%;height: 100%;display: block;font-size: 26rpx;}
+
+/* 单选图 */
+.seltImgBox .item{width: 50%;height: 320rpx;}
+.seltImgBox .item .img{width: 248rpx;height: 248rpx;}
+.seltIcon{width: 40rpx;height: 40rpx;}
+
