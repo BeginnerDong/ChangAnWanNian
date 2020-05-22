@@ -3,49 +3,41 @@
 		<pageBj></pageBj>
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">积分商城</view>
 			</view>
 			
 			<view class="integral mx-3">
-				<view class="item rounded10 overflow-h position-relative mb-3 px-3 py-4" v-for="(item,index) in integralData" :key="index">
+				<view class="item rounded10 overflow-h position-relative mb-3 px-3 py-4" v-for="(item,index) in mainData" :key="index">
 					<view class="position-absoluteXY"><image src="../../static/images/integral-malli-img.png" mode=""></image></view>
 					<view class="infor d-flex a-center j-sb main-text-color">
 						<view class="ll">
-							<view class="font-40 font-weight">抵扣券10元</view>
-							<view class="font-30 mt-4">积分：500可兑换</view>
+							<view class="font-40 font-weight">抵扣券{{item.value}}元</view>
+							<view class="font-30 mt-4">积分：{{item.price}}可兑换</view>
 						</view>
-						<view class="rr font-30 text-center color2 font-weight" @click="exchangeShow">点击兑换</view>
+						<view class="rr font-30 text-center color2 font-weight" @click="exchangeShow(index)">点击兑换</view>
 					</view>
 				</view>
-				
 			</view>
 			
 			<!-- 兑换弹框 -->
 			<view class="black-bj" v-show="is_show"></view>
 			<view class="exchangeShow rounded20 bg-white" v-show="is_exchangeShow">
-				<view class="closebtn" @click="exchangeShow">×</view>
+				<view class="closebtn" @click="exchangeShow(-1)">×</view>
 				<view class="d-flex a-center j-center">
 					<view style="width:70rpx;height: 70rpx;"><image src="../../static/images/about-img2.png" mode=""></image></view>
 				</view>
 				<view class="d-flex j-center mt-5 border-bottom pb-4">
-					<view class="munber font-34">500积分</view>
+					<view class="munber font-34">{{mainData[chooseIndex]?mainData[chooseIndex].price:''}}积分</view>
 				</view>
 				
 				
 				<view class="submitbtn pdtb15"  style="margin-top:80rpx;">
-					<button class="btn" style="width: 100%;" type="button" @click="exchangeOk">
+					<button class="btn" style="width: 100%;" type="button" @click="couponAdd()">
 						<view class="btnBj"><image src="../../static/images/buttonl-icon.png" mode=""></image></view>
 						<view class="btnTit">兑换</view>
 					</button>
-				</view>
-				
-				
-				<view class="alertBox font-26 text-white p-3 rounded20 text-center d-flex flex-column a-center j-center" v-show="is_exchangeOk">
-					<view class="closebtn text-white"  @click="exchangeOk">×</view>
-					<view class="py-2">您的积分不够兑换该商品！</view>
-					<view class="">兑换成功！</view>
 				</view>
 			</view>
 			
@@ -60,33 +52,100 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{},
 				is_show:false,
 				integralData:3,
 				is_exchangeShow:false,
-				is_exchangeOk:false
+				mainData:[],
+				chooseIndex:-1
 			}
 		},
+		
 		onLoad() {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData'], self);
 		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
-			navigateBack(){
-				uni.navigateBack({
-				});
-			},
-			exchangeShow(){
+			
+			couponAdd() {
 				const self = this;
-				self.is_show = !self.is_show;
-				self.is_exchangeShow = !self.is_exchangeShow
+				
+				self.orderList = [
+					{coupon_id:self.mainData[self.chooseIndex].id,count:1,type:self.mainData[self.chooseIndex].type}
+				];
+				const postData = {
+					tokenFuncName: 'getProjectToken',
+				};
+				postData.couponList = self.$Utils.cloneForm(self.orderList);
+				postData.pay = {
+					score:{
+						price:parseFloat(self.mainData[self.chooseIndex].price)
+					}
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					self.exchangeShow(-1);
+					if (res && res.solely_code == 100000) {
+						self.$Utils.showToast('领取成功', 'none');
+						
+					} else {
+						self.$Utils.showToast(res.msg, 'none')
+					}
+				};
+				self.$apis.couponBuy(postData, callback);
 			},
-			exchangeOk(){
+			
+			getMainData(isNew) {
 				const self = this;
-				self.is_exchangeOk = !self.is_exchangeOk
-			}
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						is_page: true,
+						pagesize: 10
+					}
+				};
+				const postData = {};
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = {
+					thirdapp_id:2,
+				}
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData,res.info.data)
+					};
+					self.$Utils.finishFunc('getMainData');	
+				};
+				self.$apis.couponGet(postData, callback);
+			},
+			
+			
+			exchangeShow(index){
+				const self = this;
+				if(index>-1||index==0){
+					self.is_show = true;
+					self.is_exchangeShow = true
+					
+				}else if(index==-1){
+					self.is_show = false;
+					self.is_exchangeShow = false
+				}
+				self.chooseIndex = index;
+			},
+			
+			
+			
 		}
 	};
 </script>

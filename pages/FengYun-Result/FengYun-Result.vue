@@ -3,7 +3,7 @@
 		<pageBj></pageBj>
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">结果</view>
 			</view>
@@ -13,21 +13,21 @@
 				<view class="Dossier position-relative d-flex j-center a-center">
 					<view class="position-absoluteXY"><image src="../../static/images/the-results-ofl-icon6.png" mode=""></image></view>
 					<view class="infor d-flex a-center">
-						<view class="photo"><image src="../../static/images/racel-img1.png" mode=""></image></view>
+						<view class="photo" style="overflow: hidden;"><open-data type="userAvatarUrl"></open-data></view>
 						<view class="rr ml-2">
-							<view class="font-40 font-weight">汉塞时间</view>
+							<view class="font-40 font-weight"><open-data type="userNickName"></open-data></view>
 							<view class="d-flex a-center mt-3 font-26">
-								<view class="lableIcon mr-1"><image src="../../static/images/the-results-icon7.png" mode=""></image></view>
-								<view class="">等级：学士</view>
+								<view class="lableIcon mr-1"><image src="../../static/images/racel-icon1.png" mode=""></image></view>
+								<view class="">积分：{{userInfoData.battle_score?userInfoData.battle_score:''}}</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 			
-			<view class="text-center font-34 font-weight mt-4">恭喜你，哆啦A梦，完成答题！</view>
+			<view class="text-center font-34 font-weight mt-4">恭喜你，<open-data type="userNickName"></open-data>，完成对战！</view>
 			<view class="text-center font-26 py-5">
-				<span class="red font-weight" style="font-size:74rpx;">40</span>分
+				<span class="red font-weight" style="font-size:74rpx;">{{score}}</span>分
 			</view>
 			
 			<view class="submitbtn mt-4">
@@ -47,20 +47,65 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{}
+				score:0,
+				userInfoData:{}
 			}
 		},
+		
 		onLoad() {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.score = uni.getStorageSync('score');
+			self.time = uni.getStorageSync('time');
+			self.$Utils.loadAll(['getUserInfoData'], self);
 		},
+		
 		methods: {
-			navigateBack(){
-				uni.navigateBack({
-				});
-			}
+			
+			getUserInfoData() {
+				var self = this;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.noLoading = true;
+				postData.getAfter = {
+					levelName:{
+						tableName:'Level',
+						middleKey:'level',
+						key:'id',
+						searchItem:{
+							status:1
+						},
+						condition:'='
+					},
+				};
+				var callback = function(res) {
+					if (res.info.data.length > 0 && res.info.data[0]) {
+						self.userInfoData = res.info.data[0]
+						self.sheetUpdate()
+					};
+				};
+				self.$apis.userInfoGet(postData, callback);
+			},
+			
+			sheetUpdate() {
+				var self = this;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.noLoading = true;
+				postData.data = {
+					finish:1,
+					score:self.score,
+					time:self.time
+				};
+				postData.searchItem = {
+					id:uni.getStorageSync('sheetId')
+				};
+				var callback = function(res) {
+					if (res && res.solely_code == 100000) {
+						self.$Utils.finishFunc('getUserInfoData');
+					}
+				};
+				self.$apis.sheetUpdate(postData, callback);
+			},
 
 		},
 	};

@@ -3,32 +3,28 @@
 		<pageBj></pageBj>
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">详情</view>
 			</view>
-			<view class="">
-				<view class="font-weight font-34 mx-3 ">考古学家利用激光揭露100公里玛雅石路之谜石路之谜</view>
-				<view class="d-flex j-end a-center mt-1" @click="zan">
+			<view class="" v-if="mainData.title">
+				<view class="font-weight font-34 mx-3 ">{{mainData.title}}</view>
+				<view class="d-flex j-end a-center mt-1" @click="Utils.stopMultiClick(clickGood)">
 					<view class="d-flex j-center a-center zanBtn">
 						<view class="icon mr-1">
-							<image v-show="!is_zan" src="../../static/images/explorel-icon1.png" mode=""></image>
-							<image v-show="is_zan" src="../../static/images/explorel-icon2.png" mode=""></image>
+							<image :src="mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'../../static/images/explorel-icon2.png':'../../static/images/explorel-icon1.png'" mode=""></image>
 						</view>
 						<view class="font-26 color6">点赞</view>
 					</view>
 				</view>
 				<view class="xqInfor mx-3 pt-1">
 					<view class="cont font-26">
-						<view><image class="w" src="../../static/images/explorel-img1.png" mode="widthFix"></image></view>
-						<view>还罚款四氯化硅过会就克劳福德水果零食给扔了供货商挂号费就开始李国峰挂号费数据库打了个个净空法师的火锅后方可吉林省很尴尬规划局开发商搞弗兰克斯挂号费就开始和公交卡发十个开发低功耗规划局开发单身公害</view>
-						<view>还罚款四氯化硅过会就克劳福德水果零食给扔了供货商挂号费就开始李国峰挂号费数据库打了个个净空法师的火锅后方可吉林省很尴尬规划局开发商搞弗兰克斯挂号费就开始和公交卡发十个开发低功耗规划局开发单身公害</view>
-						<view>还罚款四氯化硅过会就克劳福德水果零食给扔了供货商挂号费就开始李国峰挂号费数据库打了个个净空法师的火锅后方可吉林省很尴尬规划局开发商搞弗兰克斯挂号费就开始和公交卡发十个开发低功耗规划局开发单身公害</view>
-						
+						<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
+						</view>
 					</view>
 				</view>
 			</view>
-			
+			<view v-else style="text-align: center;line-height: 100px;font-weight: 700;font-size: 18px;">暂 无 数 据！</view>
 		</view>
 	</view>
 </template>
@@ -39,25 +35,128 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{},
-				is_zan:false
+				is_zan:false,
+				searchItem:{
+					thirdapp_id:2
+				},
+				mainData:{}
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			if(options.id){
+				self.searchItem.id = options.id
+			}else if(options.name){
+				self.searchItem.small_title = options.name
+			}else{
+				self.$Utils.showToast('数据有误，请重试', 'none');
+				setTimeout(function() {
+					uni.navigateBack({
+						delta:1
+					})
+				}, 1000);
+			};
+			self.$Utils.loadAll(['getMainData'], self);
 		},
+		
 		methods: {
-			navigateBack(){
-				uni.navigateBack({
-				});
-			},
-			zan(){
+			
+			
+			clickGood() {
 				const self = this;
-				self.is_zan = !self.is_zan
-			}
+				uni.setStorageSync('canClick', false);	
+				if (self.mainData.log.length == 0) {
+					self.addGoodLog()
+				} else {
+					self.updateGoodLog()
+				};
+			},
+			
+			addGoodLog() {
+				const self = this;
+				const postData = {};
+				postData.data = {
+					type: 1,
+					title: '点赞成功',
+					relation_id: self.mainData.id,
+					relation_table:'Article',
+					user_no: uni.getStorageSync('user_info').user_no,
+				};
+				postData.tokenFuncName = 'getProjectToken';
+				const callback = (res) => {
+					if (res.solely_code == 100000) {
+						self.mainData.log.push({
+							status: 1,
+							id: res.info.id
+						});
+						
+						//self.$Utils.showToast('已收藏', 'none', 1000)
+					} else {
+						self.$Utils.showToast('点赞失败', 'none', 1000)
+					};
+					uni.setStorageSync('canClick', true);	
+				};
+				self.$apis.logAdd(postData, callback);
+			},
+			
+			
+			updateGoodLog() {
+				const self = this;
+			
+				const postData = {
+					searchItem: {
+						id: self.mainData.log[0].id
+					},
+					data: {
+						status: -self.mainData.log[0].status
+					}
+				};
+				postData.tokenFuncName = 'getProjectToken';
+				const callback = (res) => {
+					uni.setStorageSync('canClick', true);
+					if (res.solely_code == 100000) {
+						self.mainData.log[0].status = -self.mainData.log[0].status;
+						
+					} else {
+						self.$Utils.showToast(res.msg, 'none', 1000)
+					};
+				};
+				self.$apis.logUpdate(postData, callback);
+			},
+			
+			getMainData() {
+				const self = this;
+				const postData = {};
+				postData.searchItem = self.$Utils.cloneForm(self.searchItem);
+				postData.getAfter = {
+					log:{
+						token:uni.getStorageSync('user_token'),
+						tableName:'Log',
+						middleKey:'id',
+						key:'relation_id',
+						searchItem:{
+							status:['in',[1,-1]],
+							user_no:uni.getStorageSync('user_info').user_no,
+							relation_table:'Article'
+						},
+						condition:'='
+					}
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0];
+						const regex = new RegExp('<img', 'gi');
+						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;"`);
+					};
+					self.$Utils.finishFunc('getMainData');	
+				};
+				self.$apis.articleGet(postData, callback);
+			},
+			
+			
+			
+			
 
 		},
 	};

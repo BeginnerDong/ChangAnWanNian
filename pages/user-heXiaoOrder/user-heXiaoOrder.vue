@@ -4,41 +4,42 @@
 		
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">核销订单</view>
 			</view>
 			<view class="topNavFix f5bj">
 				<view class="orderNav bg-white d-flex j-sb a-center shadow color6">
-					<view class="tt" :class="curr==1?'on':''" @click="changeCurr('1')">全部</view>
-					<view class="tt" :class="curr==2?'on':''" @click="changeCurr('2')">待核销</view>
-					<view class="tt" :class="curr==3?'on':''" @click="changeCurr('3')">已核销</view>
+					<view class="tt" :class="current==1?'on':''" @click="changeCurr('1')">全部</view>
+			 		<view class="tt" :class="current==2?'on':''" @click="changeCurr('2')">待核销</view>
+					<view class="tt" :class="current==3?'on':''" @click="changeCurr('3')">已核销</view>
 				</view>
 			</view>
 			<view class="topNavH"></view>
 			
-			<view class="R-fixIcon"  @click="Router.navigateTo({route:{path:'/pages/user-heXiaoOrder-confim/user-heXiaoOrder-confim'}})"><image src="../../static/images/merchantsl-icon.png" mode=""></image></view>
+			<view class="R-fixIcon"  @click="scanCode"><image src="../../static/images/merchantsl-icon.png" mode=""></image></view>
 			<view class="mx-3 mt-3">
 				<view class="proRow ">
 					<view class="item mb-3 bg-white">
-						<view class="priList" v-for="(item,index) in orderData" :key="index">
+						<view class="priList" v-for="(item,index) in mainData" :key="index">
 							<view class="font-24 d-flex j-sb a-center mb-2">
-								<view class="color9">交易时间：2020-01-18</view>
-								<view class="red" v-if="curr==1||curr==2">待核销</view>
-								<view class="red" v-if="curr==3">已核销</view>
+								<view class="color9">交易时间：{{item.create_time}}</view>
+								<view class="red" v-if="item.transport_status==0">待核销</view>
+								<view class="red" v-if="item.transport_status==2">已核销</view>
 							</view>
 							<view class="d-flex a-center j-sb">
 								<view class="pic">
-									<image src="../../static/images/the-orderl-img1.png" mode=""></image>
+									<image :src="c_item.orderItem&&c_item.orderItem[0]&&c_item.orderItem[0].snap_product&&c_item.orderItem[0].snap_product.product&&
+								c_item.orderItem[0].snap_product.product.mainImg&&c_item.orderItem[0].snap_product.product.mainImg[0]?c_item.orderItem[0].snap_product.product.mainImg[0].url:''" mode=""></image>
 								</view>
 								<view class="infor">
-									<view class="tit avoidOverflow2">Wellfuns 文坊 许巍蓝莲清雅套装礼盒</view>
+									<view class="tit avoidOverflow2">{{item.title}}</view>
 									<view class="B-price d-flex a-center j-sb">
 										<view class="price font-30 font-weight mt-2 d-flex a-center">
 											<view class="priceIcon"><image src="../../static/images/about-img2.png" mode=""></image></view>
-											<view>666.00</view>
+											<view>{{item.price}}</view>
 										</view>
-										<view class="font-26">×1</view>
+										<view class="font-26">×{{item.count}}</view>
 									</view>
 								</view>
 							</view>
@@ -46,8 +47,8 @@
 						<view class="pb-3 d-flex a-center j-sb font-26 pt-3 border-top">
 							<view class="color9">客户信息：</view>
 							<view class="d-flex a-center j-end">
-								<view>张丹</view>
-								<view class="ml-3">15656522121</view>
+								<view>{{item.snap_address&&item.snap_address.name?item.snap_address.name:''}}</view>
+								<view class="ml-3">{{item.snap_address&&item.snap_address.phone?item.snap_address.phone:''}}</view>
 							</view>
 						</view>
 					</view>
@@ -56,7 +57,7 @@
 			
 			
 			<!-- 无数据 -->
-			<view class="nodata"><image src="../../static/images/nodata.png" mode=""></image></view>
+			<view class="nodata" v-if="mainData.length==0"><image src="../../static/images/nodata.png" mode=""></image></view>
 			
 			
 		</view>	
@@ -69,29 +70,128 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{},
-				is_show:false,
-				curr:1,
-				orderData:1,
-			}
-		},
-		onLoad() {
-			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
-		},
-		methods: {
-			navigateBack(){
-				uni.navigateBack({
-				});
-			},
-			changeCurr(curr){
-				const self = this;
-				if(curr!= self.curr){
-					self.curr = curr
+			
+			
+				mainData:[],
+				current:1,
+				searchItem:{
+					user_type:0,
+					thirdapp_id:2,
+					pay_status:1,
+					//level:1
+					type:2
 				}
 			}
+		},
+		onLoad(options) {
+			const self = this;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+		
+		},
+		
+		onShow() {
+			const self = this;
+			self.getMainData(true)
+		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
+		methods: {
+			scanCode(){
+				const self = this;
+				uni.scanCode({
+				    success: function (res) {
+				        self.getOrderData(res.result)
+				    }
+				});
+			},
+			
+			getOrderData(id) {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getMerchantToken';
+				postData.searchItem = {
+					id:id,
+					user_type:0,
+					//shop_no:uni.getStorageSync('merchant_info').user_no
+				};
+				
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.Router.navigateTo({route:{path:'/pages/user-heXiaoOrder-confim/user-heXiaoOrder-confim?id='+res.info.data[0].id}})
+					}else{
+						self.$Utils.showToast('二维码无效')
+					}
+				};
+				self.$apis.orderGet(postData, callback);
+			},
+			
+			change(current) {
+				const self = this;
+				if(current!=self.current){
+					self.current = current;
+					if(self.current==1){
+						delete self.searchItem.transport_status
+					}else if(self.current==2){
+						self.searchItem.transport_status = 0
+					}else if(self.current==3){
+						self.searchItem.transport_status = 2
+					};
+					self.getMainData(true)
+				}
+			},
+			
+			
+			
+			
+			getMainData(isNew) {
+				const self = this;
+				console.log(2323)
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						is_page: true,
+						pagesize: 10
+					}
+				};
+				const postData = {};
+				postData.tokenFuncName = 'getMerchantToken';
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = self.$Utils.cloneForm(self.searchItem)
+				postData.getAfter = {
+					orderItem:{
+						tableName:'OrderItem',
+						middleKey:'order_no',
+						key:'order_no',
+						searchItem:{
+							status:1
+						},
+						condition:'='
+					},
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData,res.info.data)
+						for (var i = 0; i < self.mainData.length; i++) {
+							self.mainData[i].totalCount = 0;
+							for (var j = 0; j < self.mainData[i].child.length; j++) {
+								self.mainData[i].totalCount += self.mainData[i].child[j].count
+							}
+						}
+					}
+					//self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.orderGet(postData, callback);
+			},
 		}
 	};
 </script>

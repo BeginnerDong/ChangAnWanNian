@@ -35,13 +35,13 @@
 				"onReachBottomDistance":100
 			}
 		},
-		{
+		/* {
 			"path": "pages/OnlineDetail/OnlineDetail",
 			"style": {
 				"navigationBarTitleText": "详情",
 				"onReachBottomDistance":100
 			}
-		},
+		}, */
 		{
 			"path": "pages/orderConfim/orderConfim",
 			"style": {
@@ -203,7 +203,7 @@
 				"onReachBottomDistance":100
 			}
 		},
-		{
+		/* {
 			"path": "pages/buildUp-Answer-Singular-Result/buildUp-Answer-Singular-Result",
 			"style": {
 				"navigationBarTitleText": "答题-结果",
@@ -258,7 +258,7 @@
 				"navigationBarTitleText": "多选-结果",
 				"onReachBottomDistance":100
 			}
-		},
+		}, */
 		// {
 		// 	"path": "pages/buildUp-Answer-multiSeltFive-Result/buildUp-Answer-multiSeltFive-Result",
 		// 	"style": {
@@ -274,7 +274,7 @@
 			}
 		},
 		{
-			"path": "pages/buildUp-Result-History/buildUp-Result-History",
+			"path": "pages/buildUp-Result-Pay/buildUp-Result-Pay",
 			"style": {
 				"navigationBarTitleText": "购买",
 				"onReachBottomDistance":100

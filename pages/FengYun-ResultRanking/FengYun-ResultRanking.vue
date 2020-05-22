@@ -3,25 +3,25 @@
 		<pageBj></pageBj>
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">结果</view>
 			</view>
 			
 			
 			<view class="mx-3 rankingBox">
-				<view class="item d-flex a-center j-sb py-3" v-for="(item,index) in rankingData" :key="index">
+				<view class="item d-flex a-center j-sb py-3" v-for="(item,index) in mainData" :key="index">
 					<view class="ll d-flex a-center">
 						<view class="num color9 font-weight">{{index+1}}</view>
 						<view class="d-flex a-center">
-							<view class="photo"><image src="../../static/images/the-results-ofl-img.png" mode=""></image></view>
+							<view class="photo"><image :src="item.user&&item.user[0]?item.user[0].headImgUrl:''" mode=""></image></view>
 							<view>
-								<view class="font-26 color6 mb-1">哆啦A梦</view>
-								<view class="">对战积分：400</view>
+								<view class="font-26 color6 mb-1">{{item.user&&item.user[0]?item.user[0].nickname:''}}</view>
+								<view class="">对战积分：{{item.user&&item.user[0]&&item.user[0].info?item.user[0].info.battle_score:''}}</view>
 							</view>
 						</view>
 					</view>
-					<view class="rr red text-right">本局积分：88</view>
+					<view class="rr red text-right">本局积分：{{item.score}}</view>
 				</view>
 				
 			</view>
@@ -41,18 +41,49 @@
 				showView: false,
 				score:'',
 				wx_info:{},
-				rankingData:5
+				rankingData:5,
+				mainData:[]
 			}
 		},
+		
 		onLoad() {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.$Utils.loadAll(['getMainData'], self);
 		},
+		
 		methods: {
-			navigateBack(){
-				uni.navigateBack({
-				});
-			}
+			
+			getMainData() {
+				var self = this;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					//set_id :uni.getStorageSync('setId'),
+					set_id:6,
+					user_type:0
+				};
+				postData.order = {
+					score:'desc'
+				};
+				postData.getAfter = {
+					user:{
+						tableName:'User',
+						middleKey:'user_no',
+						key:'user_no',
+						searchItem:{
+							status:1
+						},
+						condition:'='
+					}
+				};
+				var callback = function(res) {
+					if (res.info.data.length > 0 && res.info.data[0]) {
+						self.mainData.push.apply(self.mainData,res.info.data)
+					};
+					
+				};
+				self.$apis.sheetGet(postData, callback);
+			},
 
 		},
 	};

@@ -10,9 +10,9 @@
 			<view>
 				<view class="banner-box px-3">
 					<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="#d2d2d2" indicator-active-color="#dec193">
-						<block v-for="(item,index) in labelData" :key="index">
+						<block v-for="(item,index) in sliderData.mainImg" :key="index">
 							<swiper-item class="swiper-item">
-								<image :src="item" class="slide-image" />
+								<image :src="item.url" class="slide-image" />
 							</swiper-item>
 						</block>
 					</swiper>
@@ -22,18 +22,18 @@
 			<view class="indHome d-flex a-center pt-4 font-24">
 				<view class="item"  @click="Router.navigateTo({route:{path:'/pages/PassThrough/PassThrough'}})">
 					<image src="../../static/images/home-icon.png"></image>
-					<view class="tit">搜索穿越</view>
+					<view class="tit">探索穿越</view>
 				</view>
 				<view class="item" @click="Router.navigateTo({route:{path:'/pages/buildUp/buildUp'}})">
 					<image src="../../static/images/home-icon1.png"></image>
 					<view class="tit">日积月累</view>
 				</view>
 				<view class="item" @click="Router.navigateTo({route:{path:'/pages/FengYun/FengYun'}})">
-					<image src="../../static/images/home-icon2.png"></image>
+					<image src="../../static/images/home-icon2.1.png"></image>
 					<view class="tit">风云际会</view>
 				</view>
 				<view class="item" @click="Router.navigateTo({route:{path:'/pages/week-lecture/week-lecture'}})">
-					<image src="../../static/images/home-icon2.1.png"></image>
+					<image src="../../static/images/home-icon2.png"></image>
 					<view class="tit">周末讲堂</view>
 				</view>
 				<view class="item" @click="Router.navigateTo({route:{path:'/pages/Online-ProList/Online-ProList'}})">
@@ -51,19 +51,20 @@
 					<view>热门文章</view>
 				</view>
 				<view class="proRow prolist">
-					<view class="item d-flex j-sb  rounded10 mb-4" v-for="(item,index) in productData" :key="index" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">
-						<view class="pic"><image src="../../static/images/home-img.png" mode=""></image></view>
+					<view class="item d-flex j-sb  rounded10 mb-4" v-for="(item,index) in mainData" :key="index" :data-id="item.id"
+					@click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?id='+$event.currentTarget.dataset.id}})">
+						<view class="pic"><image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image></view>
 						<view class="infor">
-							<view class="tit avoidOverflow2 font-28">考古学家利用激光揭露100公里玛雅石路之谜</view>
+							<view class="tit avoidOverflow2 font-28">{{item.title}}</view>
 							<view class="B-price">
-								<view class="font-24 color9">5月8日</view>
+								<view class="font-24 color9">{{item.create_time}}</view>
 							</view>
 						</view>
 					</view>
 				</view>
 				
 				<!-- 无数据 -->
-				<view class="nodata"><image src="../../static/images/nodata.png" mode=""></image></view>
+				<view class="nodata" v-if="mainData.length==0"><image src="../../static/images/nodata.png" mode=""></image></view>
 				
 			</view>
 			
@@ -99,30 +100,95 @@
 		data() {
 			return {
 				Router:this.$Router,
-				is_show: false,
-				wx_info:{},
-				is_show:false,
-				labelData: [
-					"../../static/images/home-banner.png",
-					"../../static/images/home-banner.png",
-					"../../static/images/home-banner.png"
-				],
-				productData:4
+				sliderData:{},
+				mainData:[]
 			}
 		},
+		
 		onLoad() {
 			const self = this;
-			// self.$Utils.loadAll(['getMainData'], self);
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getUserData','getSliderData','getMainData'], self);
 		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
 			
-			getMainData() {
+			getMainData(isNew) {
 				const self = this;
-				console.log('852369')
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						is_page: true,
+						pagesize: 10
+					}
+				};
 				const postData = {};
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = {
+					thirdapp_id:2,
+				}
+				postData.getBefore = {
+					article:{
+						tableName:'Label',
+						middleKey:'menu_id',
+						key:'id',
+						searchItem:{
+							title: ['in', ['探索穿越']],
+						},
+						condition:'in'
+					}
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData,res.info.data)
+					};
+					self.$Utils.finishFunc('getMainData');	
+				};
+				self.$apis.articleGet(postData, callback);
+			},
+			
+			
+			getUserData() {
+				var self = this;
+				var postData = {};
 				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				var callback = function(res) {
+					if (res.info.data.length > 0 && res.info.data[0]) {
+						self.userData = res.info.data[0]
+					};
+					self.$Utils.finishFunc('getUserData');
+				};
+				self.$apis.userGet(postData, callback);
+			},
+			
+			getSliderData() {
+				const self = this;
+				const postData = {};
+				postData.searchItem = {
+					thirdapp_id: 2,
+					title:"首页轮播"
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.sliderData = res.info.data[0]
+					}
+					self.$Utils.finishFunc('getSliderData');
+				};
+				self.$apis.labelGet(postData, callback);
+			},
+			
+			
 		}
 	};
 </script>

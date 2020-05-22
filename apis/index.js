@@ -136,6 +136,124 @@ export default {
 		};
 		http.HTTP(allParams);
 	},
+	
+	subjectGet(param, callback) {
+		var allParams = {
+			url: 'Project/Solely/getSubject',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	setGet(param, callback) {
+		var allParams = {
+			url: 'Common/Set/get',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	
+	logGet(param, callback) {
+		var allParams = {
+			url: 'Common/Log/get',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	logAdd(param, callback) {
+		var allParams = {
+			url: 'Common/Log/add',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	setAdd(param, callback) {
+		var allParams = {
+			url: 'Common/Set/add',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	setUpdate(param, callback) {
+		var allParams = {
+			url: 'Common/Set/update',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	sheetGet(param, callback) {
+		var allParams = {
+			url: 'Common/Sheet/get',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	sheetAdd(param, callback) {
+		var allParams = {
+			url: 'Common/Sheet/add',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	sheetUpdate(param, callback) {
+		var allParams = {
+			url: 'Common/Sheet/update',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
 
 	labelGet(param, callback) {
 		var allParams = {
@@ -393,6 +511,30 @@ export default {
 	addressAdd(param, callback) {
 		var allParams = {
 			url: 'Common/UserAddress/add',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	couponBuy(param, callback) {
+		var allParams = {
+			url: 'Func/Coupon/addCoupon',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	couponGet(param, callback) {
+		var allParams = {
+			url: 'Common/Coupon/get',
 			type: 'post',
 			data: param,
 			sCallback: function(data) {

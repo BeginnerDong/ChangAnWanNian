@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="pageBj"><image src="../../static/images/img2.png" mode=""></image></view>
+		<view class="pageBj"><image src="../../static/images/img2.jpg" mode=""></image></view>
 	</view>
 </template>
 

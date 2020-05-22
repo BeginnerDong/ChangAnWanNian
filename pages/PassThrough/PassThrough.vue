@@ -4,9 +4,9 @@
 		
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
-				<view class="tit">搜索穿越</view>
+				<view class="tit">探索穿越</view>
 			</view>
 			
 			<view class="px-3">
@@ -28,19 +28,20 @@
 					</view>
 				</view>
 				<view class="proRow prolist mt-4">
-					<view class="item d-flex j-sb  rounded10 mb-4" v-for="(item,index) in productData" :key="index" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">
-						<view class="pic"><image src="../../static/images/home-img.png" mode=""></image></view>
+					<view class="item d-flex j-sb  rounded10 mb-4" v-for="(item,index) in mainData" :key="index" :data-id="item.id"
+					@click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?id='+$event.currentTarget.dataset.id}})">
+						<view class="pic"><image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image></view>
 						<view class="infor">
-							<view class="tit avoidOverflow2 font-28">考古学家利用激光揭露100公里玛雅石路之谜</view>
+							<view class="tit avoidOverflow2 font-28">{{item.title}}</view>
 							<view class="B-price">
-								<view class="font-24 color9">5月8日</view>
+								<view class="font-24 color9">{{item.create_time}}</view>
 							</view>
 						</view>
 					</view>
 				</view>
 				
 				<!-- 无数据 -->
-				<view class="nodata"><image src="../../static/images/nodata.png" mode=""></image></view>
+				<view class="nodata" v-if="mainData.length==0"><image src="../../static/images/nodata.png" mode=""></image></view>
 				
 			</view>
 			
@@ -54,27 +55,66 @@
 		data() {
 			return {
 				Router:this.$Router,
-				is_show: false,
-				wx_info:{},
-				is_show:false,
-				productData:4
+				mainData:[]
 			}
 		},
+		
 		onLoad() {
 			const self = this;
-			// self.$Utils.loadAll(['getMainData'], self);
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData'], self);
 		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
+			
 			navigateBack(){
 				uni.navigateBack({});
 			},
-			getMainData() {
+			
+			getMainData(isNew) {
 				const self = this;
-				console.log('852369')
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						is_page: true,
+						pagesize: 10
+					}
+				};
 				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = {
+					thirdapp_id:2,
+				}
+				postData.getBefore = {
+					article:{
+						tableName:'Label',
+						middleKey:'menu_id',
+						key:'id',
+						searchItem:{
+							title: ['in', ['探索穿越']],
+						},
+						condition:'in'
+					}
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData,res.info.data)
+					};
+					self.$Utils.finishFunc('getMainData');	
+				};
+				self.$apis.articleGet(postData, callback);
+			},
 		}
 	};
 </script>

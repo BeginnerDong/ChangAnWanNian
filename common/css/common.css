@@ -360,6 +360,7 @@ body{
 .color6{color: #666;}
 .color9{color: #999;}
 .color5{color: #555;}
+.colorRed{color: red;}
 
 /* 行数显示省略号 */
 .avoidOverflow{overflow:hidden;text-overflow:ellipsis; white-space:nowrap;}

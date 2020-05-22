@@ -5,20 +5,20 @@
 		
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">电商文创</view>
 			</view>
 		
 			<view class="banner-box">
-				<image class="slide-image" src="../../static/images/zhoumo-img1.png" />
+				<image class="slide-image" :src="mainData.bannerImg&&mainData.bannerImg[0]?mainData.bannerImg[0].url:''" />
 			</view>
 		
 			<view class="mx-3 py-2">
-				<view class="font-30 font-weight pb-2">长安周末文化讲堂</view>
+				<view class="font-30 font-weight pb-2">{{mainData.title}}</view>
 				<view class="price font-30 font-weight d-flex a-center">
 					<view class="priceIcon"><image src="../../static/images/about-img2.png" mode=""></image></view>
-					<view>666.00</view>
+					<view>{{mainData.price}}</view>
 				</view>
 			</view>
 			
@@ -28,36 +28,30 @@
 			
 			<view class="px-3">
 				<view class="py-3 xqInfor">
-					<view class="font-30 font-weight pb-3">长安周末文化讲堂</view>
+					<view class="font-30 font-weight pb-3">详情介绍</view>
 					<view class="cont fs14 text-center">
-						<view>管理客服电话</view>
-						<view>悲愤交加鹤骨鸡肤供货</view>
-						<view>方点击可供货方都拉黑干活的放假</view>
-						<view>价格过节费考虑到加工费</view>
-						<view><image src="../../static/images/zhoumo-img2.png" mode="widthFix"></image></view>
-						<view>管理客服电话</view>
-						<view>悲愤交加鹤骨鸡肤供货</view>
-						<view>方点击可供货方都拉黑干活的放假</view>
-						<view>价格过节费考虑到加工费</view>
+						<view class="content ql-editor" style="padding:0;"
+						v-html="mainData.content">
+						</view>
+						<video style="width: 100%;margin-top: 20rpx;" controls="true" autoplay="false" :src="item.url" v-for="(item,index) in mainData.videoImg"></video>
 					</view>
 				</view>
 			</view>
 		
 			<view class="xqbotomBar center px-3">
 				<view class="d-flex fs12">
-					<view class="ite flexColumn" @click="zan">
+					<view class="ite flexColumn" @click="Utils.stopMultiClick(clickGood)">
 						<!-- <view class="icon"><image src="../../static/images/electricityl-icon.png" mode=""></image></view> -->
 						<view class="icon">
-							<image v-show="!is_zan" src="../../static/images/explorel-icon1.png" mode=""></image>
-							<image v-show="is_zan" src="../../static/images/explorel-icon2.png" mode=""></image>
+							<image  :src="mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'../../static/images/explorel-icon2.png':'../../static/images/explorel-icon1.png'" mode=""></image>
 						</view>
 						<view class="mt-1">点赞</view>
 					</view>
 				</view>
 				<view class="bottom-btnCont d-flex rounded50 overflow-h text-white font-30">
-					<view class="w-50 text-center payBtn d-flex j-center a-center" style="width: 512rpx;" @click="Router.navigateTo({route:{path:'/pages/week-lecture-orderConfim/week-lecture-orderConfim'}})">
+					<view class="w-50 text-center payBtn d-flex j-center a-center" style="width: 512rpx;" @click="Utils.stopMultiClick(goBuy)">
 						<view class="payBtnBj"><image src="../../static/images/electricityl-icon1.png" mode=""></image></view>
-						<view class="position-relative main-text-color" style="z-index: 2;">立即购买</view>
+						<view class="position-relative main-text-color" style="z-index: 2;" >立即购买</view>
 					</view>
 				</view>
 			</view>
@@ -72,31 +66,161 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				wx_info:{},
-				is_show:false,
-				is_zan:false
+				Utils:this.$Utils,
+				mainData:{}
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
-			// self.$Utils.loadAll(['getMainData'], self);
+			self.id = options.id;
+			
+			console.log('options',options)
+			self.$Utils.loadAll(['getMainData','getUserInfoData'], self);
 		},
+		
+		onShow() {
+			const self = this;
+			self.orderList = [];
+			uni.removeStorageSync('payPro');
+			//self.getUserInfoData()
+		},
+		
 		methods: {
+			
+			clickGood() {
+				const self = this;
+				uni.setStorageSync('canClick', false);	
+				if (self.mainData.log.length == 0) {
+					self.addGoodLog()
+				} else {
+					self.updateGoodLog()
+				};
+			},
+			
+			addGoodLog() {
+				const self = this;
+				const postData = {};
+				postData.data = {
+					type: 1,
+					title: '点赞成功',
+					relation_id: self.mainData.id,
+					relation_table:'Product',
+					user_no: uni.getStorageSync('user_info').user_no,
+				};
+				postData.tokenFuncName = 'getProjectToken';
+				const callback = (res) => {
+					if (res.solely_code == 100000) {
+						self.mainData.log.push({
+							status: 1,
+							id: res.info.id
+						});
+						
+						//self.$Utils.showToast('已收藏', 'none', 1000)
+					} else {
+						self.$Utils.showToast('点赞失败', 'none', 1000)
+					};
+					uni.setStorageSync('canClick', true);	
+				};
+				self.$apis.logAdd(postData, callback);
+			},
+			
+			
+			updateGoodLog() {
+				const self = this;
+			
+				const postData = {
+					searchItem: {
+						id: self.mainData.log[0].id
+					},
+					data: {
+						status: -self.mainData.log[0].status
+					}
+				};
+				postData.tokenFuncName = 'getProjectToken';
+				const callback = (res) => {
+					uni.setStorageSync('canClick', true);
+					if (res.solely_code == 100000) {
+						self.mainData.log[0].status = -self.mainData.log[0].status;
+						
+					} else {
+						self.$Utils.showToast(res.msg, 'none', 1000)
+					};
+				};
+				self.$apis.logUpdate(postData, callback);
+			},
+			
+			goBuy(){
+				const self = this;
+				uni.setStorageSync('canClick',false);
+				
+				self.orderList.push(
+					{product_id:self.mainData.id,count:1,
+					type:1,product:self.mainData},
+				);
+				uni.setStorageSync('payPro', self.orderList);
+				self.Router.navigateTo({route:{path:'/pages/week-lecture-orderConfim/week-lecture-orderConfim'}})
+				uni.setStorageSync('canClick',true);
+			},
+			
+			getUserInfoData() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					user_no:uni.getStorageSync('user_info').user_no
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userInfoData = res.info.data[0];
+					}
+					console.log('self.userInfoData', self.userInfoData)
+					self.$Utils.finishFunc('getUserInfoData');
+				};
+				self.$apis.userInfoGet(postData, callback);
+			},
+			
 			navigateBack(){
 				uni.navigateBack({});
 			},
+			
 			zan(){
 				const self = this;
 				self.is_zan = !self.is_zan
 			},
+			
 			getMainData() {
 				const self = this;
-				console.log('852369')
 				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				postData.searchItem = {
+					thirdapp_id: 2,
+					id: self.id
+				};
+				postData.getAfter = {
+					log:{
+						token:uni.getStorageSync('user_token'),
+						tableName:'Log',
+						middleKey:'id',
+						key:'relation_id',
+						searchItem:{
+							status:['in',[1,-1]],
+							user_no:uni.getStorageSync('user_info').user_no,
+							relation_table:'Product'
+						},
+						condition:'='
+					}
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0];
+						const regex = new RegExp('<img', 'gi');
+						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;"`);
+					}
+					console.log('self.mainData', self.mainData)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.productGet(postData, callback);
+			},
 		}
 	};
 </script>

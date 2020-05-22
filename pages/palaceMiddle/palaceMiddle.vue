@@ -3,61 +3,61 @@
 		<pageBj></pageBj>
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">宫殿</view>
 			</view>
 			<view style="width: 100%;height: 450rpx;"><image class="w" src="../../static/images/palaceBox-img2.png" mode="widthFix"></image></view>
 			
 			<!-- 宫城 -->
-			<view class="" style="width: 750rpx;height: 308rpx;"  @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">
+			<view class="" style="width: 750rpx;height: 308rpx;"  @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=宫城'}})">
 				<image src="../../static/images/palaceBox-img2.1.png" mode=""></image>
 			</view>
 			
 			<!-- 皇城 -->
-			<view class="" style="width: 750rpx;height: 490rpx;"  @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">
+			<view class="" style="width: 750rpx;height: 490rpx;"  @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=皇城'}})">
 				<image src="../../static/images/palaceBox-img2.2.png" mode=""></image>
 			</view>
 			
 			<view class="palaceBox position-relative text-center">
 				<view class="cont font-30">
 					<view class="box1 d-flex a-center flex-wrap">
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">太平</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">善和</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">兴道</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">务本</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">通义</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">通化</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">开化</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">崇义</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">兴化</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">丰乐</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">安仁</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">长兴</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">崇德</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">安业</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">光福</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">永乐</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">怀贞</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">崇业</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">靖善</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">靖安</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">宣义</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">永达</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">兰陵</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">安善</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">丰安</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">道德</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">开明</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">大业</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">昌明</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">光兴</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">保宁</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">昌乐</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">安乐</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">延祚</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">安义</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail'}})">安德</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=太平'}})">太平</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=善和'}})">善和</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=兴道'}})">兴道</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=务本'}})">务本</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=通义'}})">通义</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=通化'}})">通化</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=开化'}})">开化</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=崇义'}})">崇义</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=兴化'}})">兴化</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=丰乐'}})">丰乐</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=安仁'}})">安仁</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=长兴'}})">长兴</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=崇德'}})">崇德</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=安业'}})">安业</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=光福'}})">光福</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=永乐'}})">永乐</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=怀贞'}})">怀贞</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=崇业'}})">崇业</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=靖善'}})">靖善</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=靖安'}})">靖安</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=宣义'}})">宣义</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=永达'}})">永达</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=兰陵'}})">兰陵</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=安善'}})">安善</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=丰安'}})">丰安</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=道德'}})">道德</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=开明'}})">开明</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=大业'}})">大业</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=昌明'}})">昌明</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=光兴'}})">光兴</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=保宁'}})">保宁</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=昌乐'}})">昌乐</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=安乐'}})">安乐</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=延祚'}})">延祚</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=安义'}})">安义</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=安德'}})">安德</view>
 						
 					</view>
 				</view>

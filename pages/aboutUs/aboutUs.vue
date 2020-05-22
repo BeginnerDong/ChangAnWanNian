@@ -9,9 +9,9 @@
 			<view class="mx-3">
 				<view class="xqInfor">
 					<view class="cont font-26">
-						<view>还罚款四氯化硅过会就克劳福德水果零食给扔了供货商挂号费就开始李国峰挂号费数据库打了个个净空法师的火锅后方可吉林省很尴尬规划局开发商搞弗兰克斯挂号费就开始和公交卡发十个开发低功耗规划局开发单身公害</view>
-						<view>还罚款四氯化硅过会就克劳福德水果零食给扔了供货商挂号费就开始李国峰挂号费数据库打了个个净空法师的火锅后方可吉林省很尴尬规划局开发商搞弗兰克斯挂号费就开始和公交卡发十个开发低功耗规划局开发单身公害</view>
-						<view><image class="w" src="../../static/images/about-usl-img.png" mode="widthFix"></image></view>
+						<view class="content ql-editor" style="padding:0;"
+						v-html="mainData.content">
+						</view>
 					</view>
 				</view>
 			</view>
@@ -43,24 +43,50 @@
 </template>
 
 <script>
-	import pageBj from 'components/pageBj/pageBj'
 	export default {
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{}
+				mainData:{}
 			}
 		},
+		
 		onLoad() {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.$Utils.loadAll(['getMainData'], self);
 		},
+		
 		methods: {
-
-
-		},
+			
+			getMainData() {
+				const self = this;
+				const postData = {};
+				postData.searchItem = {
+					thirdapp_id:2
+				};
+				postData.getBefore = {
+					article:{
+						tableName:'Label',
+						middleKey:'menu_id',
+						key:'id',
+						searchItem:{
+							title: ['in', ['关于我们']],
+						},
+						condition:'in'
+					}
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0];
+						const regex = new RegExp('<img', 'gi');
+						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;"`);
+					};
+					console.log(self.mainData)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.articleGet(postData, callback);
+			},
+		}
 	};
 </script>
 

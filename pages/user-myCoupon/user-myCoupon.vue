@@ -3,7 +3,7 @@
 		<pageBj></pageBj>
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">优惠券</view>
 			</view>
@@ -16,32 +16,23 @@
 			</view>
 			<view class="tooling_indNavH mb-3"></view>
 			
-			<view class="integral mx-3" v-if="curr==1">
-				<view class="item rounded10 overflow-h position-relative mb-3 px-3 py-4" v-for="(item,index) in integralData" :key="index">
-					<view class="position-absoluteXY"><image src="../../static/images/integral-malli-img.png" mode=""></image></view>
+			<view class="integral mx-3">
+				<view class="item rounded10 overflow-h position-relative mb-3 px-3 py-4" v-for="(item,index) in mainData" :key="index">
+					<view class="position-absoluteXY" v-if="item.use_step==1"><image src="../../static/images/integral-malli-img.png" mode=""></image></view>
+					<view class="position-absoluteXY" v-if="item.use_step==2"><image src="../../static/images/couponal-icon1.png" mode=""></image></view>
 					<view class="infor d-flex a-center j-sb main-text-color">
 						<view class="ll">
-							<view class="font-40 font-weight">抵扣券10元</view>
-							<view class="font-30 mt-4">积分：500可兑换</view>
+							<view class="font-40 font-weight">抵扣券{{item.value}}元</view>
+							<!-- <view class="font-30 mt-4">积分：500可兑换</view> -->
 						</view>
 						<!-- <view class="rr font-30 text-center color2 font-weight"></view> -->
-					</view>
-				</view>
-			</view>
-			<view class="integral mx-3" v-if="curr==2">
-				<view class="item rounded10 overflow-h position-relative mb-3 px-3 py-4" v-for="(item,index) in integralData" :key="index">
-					<view class="position-absoluteXY"><image src="../../static/images/couponal-icon1.png" mode=""></image></view>
-					<view class="infor d-flex a-center j-sb main-text-color">
-						<view class="ll">
-							<view class="font-40 font-weight">抵扣券10元</view>
-							<view class="font-30 mt-4">积分：500可兑换</view>
-						</view>
-						<view class="rr d-flex j-center a-center">
+						<view class="rr d-flex j-center a-center" v-if="item.use_step==2">
 							<view class="overdue"><image src="../../static/images/couponal-icon.png" mode=""></image></view>
 						</view>
 					</view>
 				</view>
 			</view>
+
 			
 		</view>
 	</view>
@@ -59,23 +50,65 @@
 				is_show:false,
 				curr:1,
 				integralData:2,
+				mainData:[],
+				searchItem:{
+					thirdapp_id:2,
+					use_step:1,
+					pay_status:1
+				}
 			}
 		},
-		onLoad() {
+		onLoad(options) {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData'], self);
 		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
-			navigateBack(){
-				uni.navigateBack({
-				});
-			},
+			
 			currChange(curr){
 				const self = this;
 				if(curr!=self.curr){
-					self.curr = curr
+					self.curr = curr;
+					self.searchItem.use_step = self.curr;
+					self.getMainData(true)
 				}
-			}
+			},
+			
+			getMainData(isNew) {
+				const self = this;
+				var now =  (new Date()).getTime();
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						is_page: true,
+						pagesize: 10
+					}
+				};
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = self.$Utils.cloneForm(self.searchItem);
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data);
+					}
+					console.log('self.mainData', self.mainData)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.userCouponGet(postData, callback);
+			},
 		}
 	};
 </script>

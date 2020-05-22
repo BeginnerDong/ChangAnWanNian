@@ -3,21 +3,28 @@
 		<pageBj></pageBj>
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="backBtn" @click="navigateBack"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">题目解析</view>
 			</view>
 			
-			<view class="answerList" v-for="(item,index) in answerData" :key="index">
+			<view class="answerList" v-for="(item,index) in mainData" :key="index">
 				<view class="mx-3">
-					<view>1、“先天下之忧而优，后天下之乐而乐”这是哪位诗人所写的？</view>
+					<view>{{index+1}}:{{item.title}}</view>
 					<view class="answerBj px-3 d-flex a-start py-2 mt-2 ">
 						<view class="color6 mr-5 ">答案</view>
-						<view class="mr-2">范仲淹</view>
-						<view class="answerImg"><image src="../../static/images/anti-img2.png" mode=""></image></view>
+						<view class="mr-2" v-for="(c_item,c_index) in item.Option" v-if="c_item.answer==1&&c_item.option!=''">
+							{{c_item.option}}
+						</view>
+						<view class="answerImg" v-for="(c_item,c_index) in item.Option" v-if="c_item.answer==1&&c_item.mainImg.length!=0">
+							<image :src="c_item.mainImg&&c_item.mainImg[0]?c_item.mainImg[0].url:''" mode=""></image>
+						</view>
 					</view>
 					<view class="jiexiTit mt-3 font-weight">题目解析</view>
-					<view class="color6 my-2">行政划分进口量胆识过人红素个人更健康粉红色客服号房会热哥斯拉回顾思考和狗肉火锅已五谷丰登沙鲁克汗个他如果和共同繁荣和</view>
+					<view class="color6 my-2">
+						<view class="content ql-editor" style="padding:0;" v-html="item.content">
+						</view>
+					</view>
 				</view>
 				<view class="f5Bj-H20 mb-3"><image src="../../static/images/home-icon4.png" mode=""></image></view>
 			</view>
@@ -36,19 +43,64 @@
 				showView: false,
 				score:'',
 				wx_info:{},
-				answerData:3
-				
+				answerData:3,
+				mainData:[]
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.type==options.type;
+			if(options.type==1){
+				self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+				self.$Utils.loadAll(['getMainData'], self)
+			}else if(options.type==3){
+				self.mainData = uni.getStorageSync('subjectData');
+			};
+			//self.$Utils.loadAll(['getMainData'], self)
 		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')&&self.type==1) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
-			navigateBack(){
-				uni.navigateBack({
-				});
-			}
+			
+			getMainData() {
+				var self = this;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = {
+					type:1,
+					relation_table:'Subject',
+					behavior:1,
+				}
+				postData.getAfter = {
+					subject:{
+						tableName:'Subject',
+						middleKey:'relation_id',
+						key:'id',
+						searchItem:{
+							status:1
+						},
+						condition:'='
+					},
+				};
+				var callback = function(res) {
+					if (res.info.data.length > 0 && res.info.data[0]) {
+						for (var i = 0; i < res.info.data.length; i++) {
+							self.mainData.push(res.info.data[i].subject[0])
+						}
+					}
+				};
+				self.$apis.logGet(postData, callback);
+			},
 
 		},
 	};

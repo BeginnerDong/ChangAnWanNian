@@ -2,7 +2,7 @@
 	<view>
 		
 		<pageBj></pageBj>
-		
+		 
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
@@ -11,12 +11,12 @@
 			<view class="userHead">
 				<view class="infor mx-3">
 					<view class="d-flex a-center mt-3">
-						<view><image class="photo" src="../../static/images/about-img.png" mode=""></image></view>
+						<view class="photo" style="overflow: hidden;"><open-data type="userAvatarUrl"></open-data></view>
 						<view style="width: 70%;">
-							<view class="font-32">哆啦A梦</view>
-							<view class="d-flex a-center mt-1">
+							<view class="font-32"><open-data type="userNickName"></open-data></view>
+							<view class="d-flex a-center mt-1" v-show="isMember">
 								<view class="priceIcon"><image src="../../static/images/about-img1.png" mode=""></image></view>
-								<view class="font-24 color9">剩余3天</view>
+								<view class="font-24 color9">会员到期时间：{{Utils.timeto(userInfoData.member_time*1000,'ymd')}}</view>
 							</view>
 						</view>
 					</view>
@@ -25,7 +25,8 @@
 		
 			<view class="mx-3">
 				
-				<view class="rounded10 mt-4 px-3 pt-4 pb-2 position-relative shadow-sm" style="height: 170rpx;" @click="Router.navigateTo({route:{path:'/pages/user-Vip/user-Vip'}})">
+				<view class="rounded10 mt-4 px-3 pt-4 pb-2 position-relative shadow-sm" style="height: 170rpx;" v-show="!isMember"
+				@click="Router.navigateTo({route:{path:'/pages/user-Vip/user-Vip'}})">
 					<view class="position-absoluteXY"><image src="../../static/images/about-img3.png" mode=""></image></view>
 					<view class="position-relative" style="z-index: 2;color: #cb9b3e;">
 						<view class="font-36 font-weight">购买会员，享受优惠</view>
@@ -40,9 +41,10 @@
 							<view class="mr-1" style="width: 38rpx;height: 38rpx;"><image src="../../static/images/about-img2.png" mode=""></image></view>
 							<view>余额</view>
 						</view>
-						<view class="font-32 font-weight mt-2">156,00</view>
+						<view class="font-32 font-weight mt-2">{{userInfoData.balance?userInfoData.balance:''}}</view>
 					</view>
-					<view class="payBtn position-relative d-flex j-center a-center" style="width: 160rpx;height: 60rpx;" @click="Router.navigateTo({route:{path:'/pages/uesr-Recharge/uesr-Recharge'}})">
+					<view class="payBtn position-relative d-flex j-center a-center" style="width: 160rpx;height: 60rpx;"
+					 @click="Router.navigateTo({route:{path:'/pages/uesr-Recharge/uesr-Recharge'}})">
 						<view class="payBtnBj"><image src="../../static/images/about-icon.png" mode=""></image></view>
 						<view class="position-relative main-text-color" style="z-index: 2;">充值</view>
 					</view>
@@ -132,17 +134,35 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{}
+				Utils:this.$Utils,
+				userInfoData:{},
+				isMember:false
 			}
 		},
+		
 		onLoad() {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.$Utils.loadAll(['getUserInfoData'], self);
 		},
+		
 		methods: {
-
+			
+			getUserInfoData() {
+				var self = this;
+				var nowTime = (new Date()).getTime() / 1000;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				var callback = function(res) {
+					if (res.info.data.length > 0 && res.info.data[0]) {
+						self.userInfoData = res.info.data[0];
+						if(self.userInfoData.member_time>nowTime){
+							self.isMember = true
+						}
+					};
+					self.$Utils.finishFunc('getUserInfoData');
+				};
+				self.$apis.userInfoGet(postData, callback);
+			},
 
 		},
 	};

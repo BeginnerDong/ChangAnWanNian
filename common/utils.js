@@ -5,41 +5,62 @@ export default {
 	
 
 	realPay(param, callback) {
-	
-		function onBridgeReady(param) {
-			WeixinJSBridge.invoke(
-				'getBrandWCPayRequest', {
-					"appId": "wx7db54ed176405e24", //公众号名称，由商户传入     
-					'timeStamp': param.timeStamp,
-					'nonceStr': param.nonceStr,
-					'package': param.package,
-					'signType': param.signType,
-					'paySign': param.paySign,
-				},
-				function(res) {
-	
-					if (res.err_msg == "get_brand_wcpay_request:ok") {
-						// 使用以上方式判断前端返回,微信团队郑重提示：
-						//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-						callback && callback(1);
-					} else {
-/* 						alert(JSON.stringify(res));
-						alert(res.err_msg); */
-						callback && callback(0);
-					}
+		uni.requestPayment({
+			provider: 'wxpay',
+			'timeStamp': param.timeStamp,
+			'nonceStr': param.nonceStr,
+			'package': param.package,
+			'signType': param.signType,
+			'paySign': param.paySign,
+			success: function(res) {
+				console.log(res);
+				wx.showToast({
+					title: '支付成功',
+					icon: 'none',
+					duration: 1000,
+					mask: true
 				});
-		}
-		if (typeof WeixinJSBridge == "undefined") {
-			if (document.addEventListener) {
-				document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-			} else if (document.attachEvent) {
-				document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-				document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-			}
-		} else {
-			onBridgeReady(param);
-		}
 	
+				callback && callback(1);
+			},
+			fail: function(res) {
+				console.log(res);
+				wx.showToast({
+					title: '支付失败',
+					icon: 'none',
+					duration: 1000,
+					mask: true
+				});
+				callback && callback(0);
+			}
+		});
+	},
+	
+	getAuthSetting(callback) {
+		wx.getSetting({
+			success: setting => {
+				if (!setting.authSetting['scope.userInfo']) {
+					wx.hideLoading();
+					uni.setStorageSync('canClick', true);
+					this.showToast('授权请点击同意', 'none');
+				} else {
+					uni.getUserInfo({
+						provider: 'weixin',
+						success: function(infoRes) {
+							console.log('-------获取微信用户所有-----');
+							console.log(JSON.stringify(infoRes.userInfo));
+							callback && callback(infoRes.userInfo, setting);
+						}
+					});
+	
+					/* wx.getUserInfo({
+						success: function(user) {
+							
+						}
+					}); */
+				};
+			}
+		});
 	},
 	
 	getHashParameters() {
@@ -104,6 +125,14 @@ export default {
 		
 		return array.indexOf(parseInt(value));
 	},
+	
+	//判断两数组是否相同，顺序无所谓
+	arrayIsEquals(listA,listB){
+		var result = listA.length === listB.length && listA.every(a => listB.some(b => a === b)) && listB.every(_b => listA.some(_a => _a === _b));
+		return result;
+	},
+	
+	
 
 	finishFunc(funcName) {
 		uni.setStorageSync('canClick', true);
@@ -660,7 +689,20 @@ export default {
 		var mydata = format.replace('-', '/');
 		mydata = mydata.replace('-', '/');
 		return new Date(mydata) / 1000;
-
+	},
+	
+	numToChinese(index) {
+		var num = (index+'').split("");
+		var array = ['零','壹','贰','叁','肆','伍','陆','柒','捌','玖','拾'];
+		var str = ''
+		for (var i = 0; i < num.length; i++) {
+			for (var j = 0; j < array.length; j++) {
+				if(num[i]==j){
+					str += array[j]
+				}
+			}
+		};
+		return str;
 	},
 
 	timeto(date, type) {

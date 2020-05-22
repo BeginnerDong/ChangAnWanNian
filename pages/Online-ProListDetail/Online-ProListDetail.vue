@@ -11,14 +11,14 @@
 			</view>
 		
 			<view class="banner-box">
-				<image class="slide-image" src="../../static/images/electricityl-img1.png" />
+				<image class="slide-image" :src="mainData.bannerImg&&mainData.bannerImg[0]?mainData.bannerImg[0].url:''" />
 			</view>
 		
 			<view class="mx-3 py-2">
-				<view class="font-30 font-weight pb-2">墨西哥牛油果8枚单果200g左右</view>
+				<view class="font-30 font-weight pb-2">{{mainData.title}}</view>
 				<view class="price font-30 font-weight d-flex a-center">
 					<view class="priceIcon"><image src="../../static/images/about-img2.png" mode=""></image></view>
-					<view>666.00</view>
+					<view>{{mainData.price}}</view>
 				</view>
 			</view>
 			
@@ -30,28 +30,23 @@
 				<view class="py-3 xqInfor">
 					<view class="font-30 font-weight pb-3">商品详情</view>
 					<view class="cont fs14 text-center">
-						<view>管理客服电话</view>
-						<view>悲愤交加鹤骨鸡肤供货</view>
-						<view>方点击可供货方都拉黑干活的放假</view>
-						<view>价格过节费考虑到加工费</view>
-						<view><image src="../../static/images/electricityl-img2.png" mode="widthFix"></image></view>
-						<view>管理客服电话</view>
-						<view>悲愤交加鹤骨鸡肤供货</view>
-						<view>方点击可供货方都拉黑干活的放假</view>
-						<view>价格过节费考虑到加工费</view>
+						<view class="content ql-editor" style="padding:0;"
+						v-html="mainData.content">
+						</view>
 					</view>
 				</view>
 			</view>
 		
 			<view class="xqbotomBar center px-3">
 				<view class="d-flex fs12">
-					<view class="ite flexColumn" @click="navigateBack">
+					<view class="ite flexColumn" @click="Router.reLaunch({route:{path:'/pages/index/index'}})">
 						<view class="icon"><image src="../../static/images/electricityl-icon.png" mode=""></image></view>
 						<view class="mt-1">返回</view>
 					</view>
 				</view>
 				<view class="bottom-btnCont d-flex rounded50 overflow-h text-white font-30">
-					<view class="w-50 text-center payBtn d-flex j-center a-center" style="width: 512rpx;" @click="Router.navigateTo({route:{path:'/pages/orderConfim/orderConfim'}})">
+					<view class="w-50 text-center payBtn d-flex j-center a-center" style="width: 512rpx;" 
+					@click="Utils.stopMultiClick(goBuy)">
 						<view class="payBtnBj"><image src="../../static/images/electricityl-icon1.png" mode=""></image></view>
 						<view class="position-relative main-text-color" style="z-index: 2;">立即购买</view>
 					</view>
@@ -68,26 +63,79 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				wx_info:{},
-				is_show:false,
+				Utils:this.$Utils,
+				mainData:{}
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
-			// self.$Utils.loadAll(['getMainData'], self);
+			self.id = options.id;
+			
+			console.log('options',options)
+			self.$Utils.loadAll(['getMainData','getUserInfoData'], self);
 		},
+		
+		onShow() {
+			const self = this;
+			self.orderList = [];
+			uni.removeStorageSync('payPro');
+			//self.getUserInfoData()
+		},
+		
 		methods: {
 			navigateBack(){
 				uni.navigateBack({});
 			},
+			
 			getMainData() {
 				const self = this;
-				console.log('852369')
+				const postData = {};
+				postData.searchItem = {
+					thirdapp_id: 2,
+					id: self.id
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0];
+						const regex = new RegExp('<img', 'gi');
+						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;"`);
+					}
+					console.log('self.mainData', self.mainData)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.productGet(postData, callback);
+			},
+			
+			goBuy(){
+				const self = this;
+				uni.setStorageSync('canClick',false);
+				
+				self.orderList.push(
+					{product_id:self.mainData.id,count:1,
+					type:1,product:self.mainData},
+				);
+				uni.setStorageSync('payPro', self.orderList);
+				self.Router.navigateTo({route:{path:'/pages/orderConfim/orderConfim'}})
+				uni.setStorageSync('canClick',true);
+			},
+			
+			getUserInfoData() {
+				const self = this;
 				const postData = {};
 				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				postData.searchItem = {
+					user_no:uni.getStorageSync('user_info').user_no
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userInfoData = res.info.data[0];
+					}
+					console.log('self.userInfoData', self.userInfoData)
+					self.$Utils.finishFunc('getUserInfoData');
+				};
+				self.$apis.userInfoGet(postData, callback);
+			},
 		}
 	};
 </script>
