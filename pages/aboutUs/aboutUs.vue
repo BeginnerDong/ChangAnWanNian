@@ -43,7 +43,11 @@
 </template>
 
 <script>
+	import pageBj from 'components/pageBj/pageBj';
 	export default {
+		components: {
+			pageBj
+		},
 		data() {
 			return {
 				Router:this.$Router,

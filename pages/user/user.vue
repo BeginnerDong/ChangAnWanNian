@@ -36,17 +36,34 @@
 				
 				
 				<view class="rounded10 bg-white mt-3 px-3 py-2 d-flex a-center j-sb  shadow-sm">
-					<view class="">
-						<view class="d-flex a-center">
-							<view class="mr-1" style="width: 38rpx;height: 38rpx;"><image src="../../static/images/about-img2.png" mode=""></image></view>
-							<view>余额</view>
+					<view class="d-flex a-center j-sb pr-3 leftChange position-relative" style="width: 50%;">
+						<view>
+							<view class="d-flex a-center">
+								<view class="mr-1" style="width: 38rpx;height: 38rpx;"><image src="../../static/images/about-img2.png" mode=""></image></view>
+								<view>余额</view>
+							</view>
+							<view class="font-32 font-weight mt-2">{{userInfoData.balance?userInfoData.balance:''}}</view>
 						</view>
-						<view class="font-32 font-weight mt-2">{{userInfoData.balance?userInfoData.balance:''}}</view>
+						<view class="payBtn position-relative d-flex j-center a-center" style="width: 140rpx;height: 60rpx;"
+						 @click="Router.navigateTo({route:{path:'/pages/uesr-Recharge/uesr-Recharge'}})">
+							<view class="payBtnBj"><image src="../../static/images/about-icon.png" mode=""></image></view>
+							<view class="position-relative main-text-color" style="z-index: 2;">充值</view>
+						</view>
 					</view>
-					<view class="payBtn position-relative d-flex j-center a-center" style="width: 160rpx;height: 60rpx;"
-					 @click="Router.navigateTo({route:{path:'/pages/uesr-Recharge/uesr-Recharge'}})">
-						<view class="payBtnBj"><image src="../../static/images/about-icon.png" mode=""></image></view>
-						<view class="position-relative main-text-color" style="z-index: 2;">充值</view>
+					
+					<view class="d-flex a-center j-sb  pl-3" style="width: 50%;">
+						<view>
+							<view class="d-flex a-center">
+								<view class="mr-1" style="width: 42rpx;height: 33rpx;"><image src="../../static/images/yuanbao-img.png" mode=""></image></view>
+								<view>元宝</view>
+							</view>
+							<view class="font-32 font-weight mt-2">{{userInfoData.balance?userInfoData.balance:''}}</view>
+						</view>
+						<view class="payBtn position-relative d-flex j-center a-center" style="width: 140rpx;height: 60rpx;"
+						 @click="Router.navigateTo({route:{path:'/pages/uesr-lngotRecharge/uesr-lngotRecharge'}})">
+							<view class="payBtnBj"><image src="../../static/images/about-icon.png" mode=""></image></view>
+							<view class="position-relative main-text-color" style="z-index: 2;">充值</view>
+						</view>
 					</view>
 					
 				</view>
@@ -130,7 +147,11 @@
 </template>
 
 <script>
+	import pageBj from 'components/pageBj/pageBj';
 	export default {
+		components: {
+			pageBj
+		},
 		data() {
 			return {
 				Router:this.$Router,
@@ -181,4 +202,5 @@
 	.userBox2 .item .icon{width: 50rpx;height:50rpx;display: block;margin: 0 auto;margin-bottom: 16rpx;position: relative;}
 	.userBox2 .item .icon image{width: 100%;height: 100%;}
 	
+	.leftChange:after{content: '';width: 1px;height: 40rpx;background: #e1e1e1;position: absolute;right: 0;top: 50%;transform: translateY(-50%);}
 </style>

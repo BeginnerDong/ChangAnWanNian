@@ -307,6 +307,13 @@
 				"navigationBarTitleText": "结果",
 				"onReachBottomDistance":100
 			}
+		},
+		{
+			"path": "pages/uesr-lngotRecharge/uesr-lngotRecharge",
+			"style": {
+				"navigationBarTitleText": "充值",
+				"onReachBottomDistance":100
+			}
 		}
 		
     ],

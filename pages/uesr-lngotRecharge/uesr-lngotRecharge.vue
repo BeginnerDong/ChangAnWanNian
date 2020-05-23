@@ -10,11 +10,11 @@
 			</view>
 			<view class="myHead text-center d-flex a-center flex-column">
 				<view class="mny font-weight">{{balance}}</view>
-				<view class="d-flex a-center font-26 mt-2"><image style="width:36rpx; height: 36rpx;margin-right: 10rpx;" src="../../static/images/about-img2.png" mode=""></image>余额(元)</view>
+				<view class="d-flex a-center font-26 mt-2"><image style="width:42rpx; height: 33rpx;margin-right: 10rpx;" src="../../static/images/yuanbao-img.png" mode=""></image>元宝(个)</view>
 			</view>
 			
 			<view class="px-3 ">
-				<view class="font-weight pt-3">充值金额</view>
+				<view class="font-weight pt-3">充值金额 (1元=1元宝)</view>
 				<!-- <view class="input-money py-2" ><input type="number" value="100" placeholder="请输入金额" /></view>
 				 -->
 				<view class="specsList d-flex a-center text-center  pt-3" >
@@ -25,6 +25,23 @@
 				</view>
 			</view>
 			
+			<view class="px-3 pt-5">
+				<view class="font-26 color6">支付方式</view>
+				<view class="mt-2 d-flex a-center j-sb" @click="payChange('1')">
+					<view class="d-flex a-center">
+						<image style="width: 34rpx;height: 34rpx;" src="../../static/images/about-img2.png" mode=""></image>
+						<view class="ml-1">余额支付</view>
+					</view>
+					<view class="seltIcon"><image :src="payCurr==1?'../../static/images/the-orderl-icon4.png':'../../static/images/the-orderl-icon5.png'" mode=""></image></view>
+				</view>
+				<view class="mt-3 d-flex a-center j-sb" @click="payChange('2')">
+					<view class="d-flex a-center">
+						<image style="width: 34rpx;height: 34rpx;" src="../../static/images/yuanbao-icon.png" mode=""></image>
+						<view class="ml-1">微信支付</view>
+					</view>
+					<view class="seltIcon"><image :src="payCurr==2?'../../static/images/the-orderl-icon4.png':'../../static/images/the-orderl-icon5.png'" mode=""></view>
+				</view>
+			</view>
 			<view class="submitbtn pdtb15"  style="margin-top: 80rpx;">
 				<button class="btn" type="button"  @click="addOrder()">
 					<view class="btnBj"><image src="../../static/images/buttonl-icon.png" mode=""></image></view>
@@ -50,7 +67,8 @@
 				specsList:[],
 				curr:0,
 				balance:0,
-				price:0
+				price:0,
+				payCurr:1
 			}
 		},
 		
@@ -70,7 +88,12 @@
 		},
 		
 		methods: {
-			
+			payChange(payCurr){
+				const self = this;
+				if(payCurr!=self.payCurr){
+					self.payCurr = payCurr
+				}
+			},
 			addOrder() {
 				const self = this;
 				uni.setStorageSync('canClick', false);	
@@ -187,5 +210,6 @@ page{padding-bottom: 60rpx;}
 .specsList .item.on .num{color: #222;}
 .specsList .item .num{z-index: 2;position: relative;}
 
+.seltIcon{width: 38rpx;height: 38rpx;}
 </style>
 
