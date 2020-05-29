@@ -61,8 +61,8 @@
 				var postData = {};
 				postData.tokenFuncName = 'getProjectToken';
 				postData.searchItem = {
-					//set_id :uni.getStorageSync('setId'),
-					set_id:6,
+					set_id :uni.getStorageSync('setId'),
+					//set_id:,
 					user_type:0
 				};
 				postData.order = {

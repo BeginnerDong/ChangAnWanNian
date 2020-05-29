@@ -9,12 +9,12 @@
 				<view class="tit">我的</view>
 			</view>
 			<view class="myHead text-center d-flex a-center flex-column">
-				<view class="mny font-weight">{{balance}}</view>
+				<view class="mny font-weight">{{yb}}</view>
 				<view class="d-flex a-center font-26 mt-2"><image style="width:42rpx; height: 33rpx;margin-right: 10rpx;" src="../../static/images/yuanbao-img.png" mode=""></image>元宝(个)</view>
 			</view>
 			
 			<view class="px-3 ">
-				<view class="font-weight pt-3">充值金额 (1元=1元宝)</view>
+				<view class="font-weight pt-3">充值金额 ({{yb_price}}元={{yb_num}}元宝)</view>
 				<!-- <view class="input-money py-2" ><input type="number" value="100" placeholder="请输入金额" /></view>
 				 -->
 				<view class="specsList d-flex a-center text-center  pt-3" >
@@ -66,9 +66,11 @@
 				is_show:false,
 				specsList:[],
 				curr:0,
-				balance:0,
+				yb:0,
 				price:0,
-				payCurr:1
+				payCurr:1,
+				yb_price:0,
+				yb_num:0
 			}
 		},
 		
@@ -76,9 +78,11 @@
 			const self = this;
 			uni.showLoading();
 			const callback = (res) => {
-				self.balance = uni.getStorageSync('user_info').info.balance;
-				self.specsList = uni.getStorageSync('user_info').thirdApp.charge_price.split(',');
+				self.yb = uni.getStorageSync('user_info').info.yb_score + uni.getStorageSync('user_info').info.yb_today;
+				self.specsList = uni.getStorageSync('user_info').thirdApp.yb_price.split(',');
 				self.price = parseFloat(self.specsList[self.curr]);
+				self.yb_price = uni.getStorageSync('user_info').thirdApp.yb_price;
+				self.yb_num = uni.getStorageSync('user_info').thirdApp.yb_num;
 				uni.hideLoading();
 			};
 			self.$Token.getProjectToken(callback, {
@@ -88,27 +92,29 @@
 		},
 		
 		methods: {
+			
 			payChange(payCurr){
 				const self = this;
 				if(payCurr!=self.payCurr){
 					self.payCurr = payCurr
 				}
 			},
+			
 			addOrder() {
 				const self = this;
 				uni.setStorageSync('canClick', false);	
 				self.price =  parseFloat(self.price);
 				var ratio = parseFloat(uni.getStorageSync('user_info').thirdApp.charge_rate)/100;
 				if(self.curr<0){
-					self.$Utils.showToast('请选择充值金额', 'none');
+					self.$Utils.showToast('请选择购买数量', 'none');
 					return
 				};
 				const postData = {};	
 				postData.tokenFuncName = 'getProjectToken',
 				postData.data = {
-					price:parseFloat(self.price*ratio).toFixed(2),
+					price:parseFloat(self.price).toFixed(2),
 					level:1,
-					type:7
+					type:6
 				}
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
@@ -126,11 +132,18 @@
 				const self = this;
 				uni.setStorageSync('canClick', false);	
 				self.price =  parseFloat(self.price);
-				var ratio = parseFloat(uni.getStorageSync('user_info').thirdApp.charge_rate)/100;
+				//var ratio = parseFloat(uni.getStorageSync('user_info').thirdApp.charge_rate)/100;
 				const postData = {};	
-				postData.wxPay = {
-					price:parseFloat(self.price*ratio).toFixed(2),
-				};
+				if(self.payCurr==1){
+					postData.balance = {
+						price:parseFloat(self.price).toFixed(2),
+					};
+				}else{
+					postData.wxPay = {
+						price:parseFloat(self.price).toFixed(2),
+					};
+				}
+				
 				postData.tokenFuncName = 'getProjectToken',
 				postData.searchItem = {
 					id: self.orderId
@@ -140,9 +153,9 @@
 						tableName: 'FlowLog',
 						FuncName: 'add',
 						data: {
-							type:2,
-							count:self.price,
-							trade_info:'充值',
+							type:6,
+							count:self.yb_num,
+							trade_info:'购买元宝',
 							account:1,
 							thirdapp_id:2,
 							user_no:uni.getStorageSync('user_info').user_no
@@ -155,7 +168,7 @@
 							const payCallback = (payData) => {
 								console.log('payData', payData)
 								if (payData == 1) {
-									self.$Utils.showToast('支付成功', 'none');
+									self.$Utils.showToast('购买成功', 'none');
 									setTimeout(function() {
 										uni.navigateBack({
 											delta: 1
@@ -163,12 +176,12 @@
 									}, 1000);
 								} else {
 									uni.setStorageSync('canClick', true);
-									self.$Utils.showToast('支付失败', 'none');
+									self.$Utils.showToast('购买失败', 'none');
 								};
 							};
 							self.$Utils.realPay(res.info, payCallback);
 						} else {						
-							self.$Utils.showToast('支付成功', 'none');
+							self.$Utils.showToast('购买成功', 'none');
 							setTimeout(function() {
 								uni.navigateBack({
 									delta: 1

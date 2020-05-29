@@ -57,7 +57,7 @@
 								<view class="mr-1" style="width: 42rpx;height: 33rpx;"><image src="../../static/images/yuanbao-img.png" mode=""></image></view>
 								<view>元宝</view>
 							</view>
-							<view class="font-32 font-weight mt-2">{{userInfoData.balance?userInfoData.balance:''}}</view>
+							<view class="font-32 font-weight mt-2">{{yb}}</view>
 						</view>
 						<view class="payBtn position-relative d-flex j-center a-center" style="width: 140rpx;height: 60rpx;"
 						 @click="Router.navigateTo({route:{path:'/pages/uesr-lngotRecharge/uesr-lngotRecharge'}})">
@@ -179,6 +179,7 @@
 						if(self.userInfoData.member_time>nowTime){
 							self.isMember = true
 						}
+						self.yb = parseFloat(self.userInfoData.yb_score) +parseFloat(self.userInfoData.yb_today)
 					};
 					self.$Utils.finishFunc('getUserInfoData');
 				};

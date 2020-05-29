@@ -102,6 +102,18 @@
 				postData.searchItem = {
 					id:uni.getStorageSync('sheetId')
 				};
+				postData.saveAfter = [{
+					  tableName:'FlowLog',
+					  FuncName:'add',
+					  data:{
+						 type:5,
+						 count:self.score,
+						 trade_info:'对战积分',
+						 account:1,
+						 thirdapp_id:2,
+						 user_no:uni.getStorageSync('user_info').user_no
+					  }
+				}];
 				var callback = function(res) {
 					if (res && res.solely_code == 100000) {
 						self.$Utils.finishFunc('getUserInfoData');

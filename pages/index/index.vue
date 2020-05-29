@@ -111,7 +111,7 @@
 		onLoad() {
 			const self = this;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
-			self.$Utils.loadAll(['getUserData','getSliderData','getMainData'], self);
+			self.$Utils.loadAll(['getUserInfoData','getSliderData','getMainData'], self);
 		},
 		
 		onReachBottom() {
@@ -162,17 +162,26 @@
 			},
 			
 			
-			getUserData() {
+			getUserInfoData() {
 				var self = this;
 				var postData = {};
+				var dayTime = new Date(new Date().toLocaleDateString()).getTime();
+				console.log('dayTime',dayTime);
+				
 				postData.tokenFuncName = 'getProjectToken';
 				var callback = function(res) {
 					if (res.info.data.length > 0 && res.info.data[0]) {
-						self.userData = res.info.data[0]
+						self.userInfoData = res.info.data[0];
+						if(self.userInfoData.yb_daytime<dayTime){
+							/* if(self.userInfoData.yb_today>0){
+								self.deleteFlowLog()
+							} */
+							self.addFlowLog()
+						}
 					};
-					self.$Utils.finishFunc('getUserData');
+					self.$Utils.finishFunc('getUserInfoData');
 				};
-				self.$apis.userGet(postData, callback);
+				self.$apis.userInfoGet(postData, callback);
 			},
 			
 			getSliderData() {
@@ -189,6 +198,48 @@
 					self.$Utils.finishFunc('getSliderData');
 				};
 				self.$apis.labelGet(postData, callback);
+			},
+			
+			addFlowLog() {
+				const self = this;
+				const postData = {};
+				if(uni.getStorageSync('user_info').thirdApp.yuanbao<=parseFloat(self.userInfoData.yb_today)){
+					return
+				};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.data = {
+					type:7,
+					count:uni.getStorageSync('user_info').thirdApp.yuanbao - parseFloat(self.userInfoData.yb_today),
+					trade_info:'每日免费元宝',
+					account:1,
+					thirdapp_id:2,
+					user_no:uni.getStorageSync('user_info').user_no
+				};
+				postData.saveAfter = [{
+					  tableName:'UserInfo',
+					  FuncName:'update',
+					  data:{
+						 yb_daytime:new Date(new Date().toLocaleDateString()).getTime()
+					  }
+				}];
+				const callback = (res) => {
+					if (res.solely_code == 100000) {
+						uni.showModal({
+							title:'赠送',
+							content:'恭喜获得系统每日免费赠送元宝，快去答题吧（每日清零）',
+							showCancel:false,
+							confirmText:'知道了',
+							success(res) {
+								if(res.confirm){
+									console.log('确定')
+								}else{
+									console.log('取消')
+								}
+							}
+						})
+					}
+				};
+				self.$apis.flowLogAdd(postData, callback);
 			},
 			
 			

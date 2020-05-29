@@ -81,15 +81,16 @@
 			const self = this;
 			uni.showLoading();
 			const callback = (res) => {
-				uni.removeStorageSync('subjectData');
-				uni.removeStorageSync('setId');
-				uni.removeStorageSync('sheetId');
-				uni.removeStorageSync('score');
-				self.$Utils.loadAll(['getUserInfoData'], self);
 				if(options.set_id){
 					self.shareSetId = options.set_id
 					uni.setStorageSync('setId',self.shareSetId);
 				}
+				uni.removeStorageSync('subjectData');
+				uni.removeStorageSync('setId');
+				uni.removeStorageSync('sheetId');
+				uni.removeStorageSync('score');
+				self.$Utils.loadAll(['getSheetData'], self);
+				
 			};
 			self.$Token.getProjectToken(callback, {
 				refreshToken: true
@@ -136,6 +137,74 @@
 		},
 		
 		methods: {
+			
+			getSheetData() {
+				var self = this;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					type:1,
+					finish:0,
+					deadline:['>',(new Date()).getTime() / 1000],
+					user_no:uni.getStorageSync('user_info').user_no
+				};
+				postData.getAfter = {
+					set:{
+						tableName:'Set',
+						middleKey:'set_id',
+						key:'id',
+						searchItem:{
+							status:1
+						},
+						condition:'in'
+					},
+					subject:{
+						tableName:'Subject',
+						middleKey:['set',0,'subject_array'],
+						key:'id',
+						searchItem:{
+							status:1
+						},
+						condition:'in'
+					},
+					log:{
+						tableName:'Log',
+						middleKey:'id',
+						key:'sheet_id',
+						searchItem:{
+							status:1,
+						},
+						condition:'in',
+						order:{
+							create_time:'asc'
+						}
+					},
+				};
+				var callback = function(res) {
+					if (res.info.data.length > 0 && res.info.data[0]) {
+						self.sheetData = res.info.data[0];
+						//self.getNofinishData();
+						uni.showModal({
+							title:'提示',
+							content:'您有未完成的对战，是否立即前往继续答题？',
+							showCancel:true,
+							confirmText:'继续',
+							success(res) {
+								if(res.confirm){
+									uni.setStorageSync('subjectData',self.sheetData.subject);
+									uni.setStorageSync('sheetId',self.sheetData.id);
+									uni.setStorageSync('setId',self.sheetData.set[0].id);
+									self.$Router.navigateTo({route:{path:'/pages/buildUp-Answer-Singular/buildUp-Answer-Singular'}})
+								}else{
+									console.log('取消')
+								}
+							}
+						})
+					};
+					self.$Utils.finishFunc('getSheetData');
+				};
+				self.$apis.sheetGet(postData, callback);
+			},
 			
 			noshare(){
 				uni.showModal({
@@ -246,6 +315,7 @@
 							})
 							return
 						}
+						uni.setStorageSync('setId',self.setData.id);
 						uni.setStorageSync('subjectData',self.setData.subject);
 					}else{
 						self.$Utils.showToast(res.msg,'none');
@@ -285,32 +355,71 @@
 						confirmText:'前往',
 						success(res) {
 							if(res.confirm){
-								console.log()
+								self.$Router.redirectTo({route:{path:'/pages/uesr-lngotRecharge/uesr-lngotRecharge'}})
 							}else{
 								console.log('取消')
 							}
 						}
 					})
-				};
-				var postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				postData.noLoading = true;
-				postData.type = 1;
-				postData.free = 0;
-				postData.num = uni.getStorageSync('user_info').thirdApp.battle_num;
-				var callback = function(res) {
-					if (res.info.data&&res.info.data.length > 0 && res.info.data[0]) {
-						uni.setStorageSync('subjectData',res.info.data);
-						self.subjectData = res.info.data;
-						for (var i = 0; i < res.info.data.length; i++) {
-							self.idArray.push(res.info.data[i].id) 
-						};
-						self.setAdd();
+				}else{
+					const postData = {};
+					
+					postData.tokenFuncName = 'getProjectToken';
+					postData.data = {
+						//type:7,
+						//count:uni.getStorageSync('user_info').thirdApp.yuanbao - parseFloat(self.userInfoData.yb_today),
+						trade_info:'对战花费元宝',
+						account:1,
+						thirdapp_id:2,
+						user_no:uni.getStorageSync('user_info').user_no
+					};
+					if(parseFloat(self.userInfoData.yb_today)>10){
+						postData.type = 7;
+						postData.count = -10;
 					}else{
-						self.$Utils.showToast(res.msg,'none');
-					}
-				};
-				self.$apis.subjectGet(postData, callback);
+						postData.type = 7;
+						postData.count = -parseFloat(self.userInfoData.yb_today);
+						postData.saveAfter = [
+							{
+								tableName: 'FlowLog',
+								FuncName: 'add',
+								data: {
+									type:6,
+									count:-(10-parseFloat(self.userInfoData.yb_today)),
+									trade_info:'对战花费元宝',
+									account:1,
+									thirdapp_id:2,
+									user_no:uni.getStorageSync('user_info').user_no
+								},
+							},
+						];
+					};
+					const callback = (res) => {
+						if (res.solely_code == 100000) {
+							var c_postData = {};
+							c_postData.tokenFuncName = 'getProjectToken';
+							c_postData.noLoading = true;
+							c_postData.type = 1;
+							c_postData.free = 0;
+							c_postData.num = uni.getStorageSync('user_info').thirdApp.battle_num;
+							var c_callback = function(res) {
+								if (res.info.data&&res.info.data.length > 0 && res.info.data[0]) {
+									uni.setStorageSync('subjectData',res.info.data);
+									self.subjectData = res.info.data;
+									for (var i = 0; i < res.info.data.length; i++) {
+										self.idArray.push(res.info.data[i].id) 
+									};
+									self.setAdd();
+								}else{
+									self.$Utils.showToast(res.msg,'none');
+								}
+							};
+							self.$apis.subjectGet(c_postData, c_callback);
+						}
+					};
+					self.$apis.flowLogAdd(postData, callback);
+				}
+				
 			},
 			
 			setAdd() {
