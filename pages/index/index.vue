@@ -4,7 +4,7 @@
 		
 		<view class="pageBox">
 			<view class="page-head d-flex a-center j-center">
-				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
+				<view class="headBj"></view>
 				<view class="tit">首页</view>
 			</view>
 			<view>
@@ -165,7 +165,7 @@
 			getUserInfoData() {
 				var self = this;
 				var postData = {};
-				var dayTime = new Date(new Date().toLocaleDateString()).getTime();
+				var dayTime = new Date(new Date().toLocaleDateString()).getTime()/1000;
 				console.log('dayTime',dayTime);
 				
 				postData.tokenFuncName = 'getProjectToken';
@@ -203,9 +203,9 @@
 			addFlowLog() {
 				const self = this;
 				const postData = {};
-				if(uni.getStorageSync('user_info').thirdApp.yuanbao<=parseFloat(self.userInfoData.yb_today)){
+				/* if(uni.getStorageSync('user_info').thirdApp.yuanbao<=parseFloat(self.userInfoData.yb_today)){
 					return
-				};
+				}; */
 				postData.tokenFuncName = 'getProjectToken';
 				postData.data = {
 					type:7,
@@ -219,7 +219,10 @@
 					  tableName:'UserInfo',
 					  FuncName:'update',
 					  data:{
-						 yb_daytime:new Date(new Date().toLocaleDateString()).getTime()
+						 yb_daytime:new Date(new Date().toLocaleDateString()).getTime()/1000
+					  },
+					  searchItem:{
+						  user_no:uni.getStorageSync('user_info').user_no
 					  }
 				}];
 				const callback = (res) => {

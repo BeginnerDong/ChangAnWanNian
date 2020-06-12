@@ -43,7 +43,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="pb-3 d-flex a-center j-sb font-26">
+						<view class="pb-3 d-flex a-center j-sb font-26" v-if="item.transport_status==0">
 							<view>核销码：</view>
 							<view class="hxEwm"   @click="hxEwmShow(index)"><image :src="item.qrcode" mode=""></image></view>
 						</view>

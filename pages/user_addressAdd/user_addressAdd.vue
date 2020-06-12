@@ -68,6 +68,7 @@
 		
 		data() {
 			return {
+				Router:this.$Router,
 				submitData: {
 					name: '',
 					city:'',

@@ -47,7 +47,7 @@
 					</view>
 					<view class="d-flex j-sb a-center pt-3 border-top">
 						<view>优惠券</view>
-						<view class="d-flex j-end a-center color6 font-26" v-if="couponData.length==0" @click="couponShow">
+						<view class="d-flex j-end a-center color6 font-26" v-if="couponData.length==0">
 							暂无优惠券使用<image class="arrowR ml-1" src="../../static/images/the-orderl-icon.png" mode=""></image>
 						</view>
 						<view class="d-flex j-end a-center color6 font-26" v-if="couponData.length>0&&chooseCoupon.length==0" @click="couponShow">
@@ -60,7 +60,23 @@
 				</view>
 			</view>
 			
-			
+			<view class="px-3 pt-5">
+				<view class="font-26 color6">支付方式</view>
+				<view class="mt-2 d-flex a-center j-sb" @click="payChange('1')">
+					<view class="d-flex a-center">
+						<image style="width: 34rpx;height: 34rpx;" src="../../static/images/about-img2.png" mode=""></image>
+						<view class="ml-1">余额支付</view>
+					</view>
+					<view class="seltIcon"><image :src="payCurr==1?'../../static/images/the-orderl-icon4.png':'../../static/images/the-orderl-icon5.png'" mode=""></image></view>
+				</view>
+				<view class="mt-3 d-flex a-center j-sb" @click="payChange('2')">
+					<view class="d-flex a-center">
+						<image style="width: 34rpx;height: 34rpx;" src="../../static/images/yuanbao-icon.png" mode=""></image>
+						<view class="ml-1">微信支付</view>
+					</view>
+					<view class="seltIcon"><image :src="payCurr==2?'../../static/images/the-orderl-icon4.png':'../../static/images/the-orderl-icon5.png'" mode=""></view>
+				</view>
+			</view>
 			
 			
 			<view class="xqbotomBar pl-3" style="height: 100rpx;">
@@ -88,14 +104,16 @@
 					<view class="font-26 main-text-color"  @click="useCoupon">确定</view>
 				</view>
 				
-				
-				<view class="pt-1 font-26">
-					<view class="item d-flex j-sb a-center px-3 mt-3" v-for="(item,index) in couponData" :key="index" 
-					@click="couponChange(index)">
-						<view>抵扣券{{item.value}}元</view>
-						<view class="seltIcon"><image :src="couponCurr==index?'../../static/images/the-orderl-icon4.png':'../../static/images/the-orderl-icon5.png'" mode=""></image></view>
+				<scroll-view scroll-y="true" style="height: 400rpx;">
+					<view class="pt-1 font-26">
+						<view class="item d-flex j-sb a-center px-3 mt-3" v-for="(item,index) in couponData" :key="index" 
+						@click="couponChange(index)">
+							<view>抵扣券{{item.value}}元</view>
+							<view class="seltIcon"><image :src="couponCurr==index?'../../static/images/the-orderl-icon4.png':'../../static/images/the-orderl-icon5.png'" mode=""></image></view>
+						</view>
 					</view>
-				</view>
+				</scroll-view>
+				
 			</view>
 			
 		</view>
@@ -130,7 +148,8 @@
 					coupon:[]
 				},
 				mainData:[],
-				chooseCoupon:[]
+				chooseCoupon:[],
+				payCurr:2
 			}
 		},
 		
@@ -148,6 +167,24 @@
 		
 		methods: {
 			
+			payChange(payCurr){
+				const self = this;
+				if(payCurr!=self.payCurr){
+					self.payCurr = payCurr;
+					if(self.payCurr==1){
+						delete self.pay.wxPay
+						self.pay.balance = {
+							price: self.totalPrice,
+						};	
+					}else if(self.payCurr==2){
+						delete self.pay.balance
+						self.pay.wxPay = {
+							price: self.totalPrice,
+						};	
+					};
+				}
+			},
+			
 			getUserCouponData() {
 				const self = this;
 				var now = Date.parse(new Date());
@@ -155,6 +192,7 @@
 				postData.tokenFuncName = 'getProjectToken';
 				postData.searchItem = {
 					use_step: 1,
+					pay_status:1,
 				};
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
@@ -171,8 +209,18 @@
 			/* 	console.log(index)
 				console.log(self.couponData);
 				console.log(self.couponData[0]); */
+				if(self.couponData[self.couponCurr]&&self.couponData[self.couponCurr].id){
+					var id = self.couponData[self.couponCurr].id;
+				}else{
+					self.pay.coupon = []
+					self.chooseCoupon = [];
+					self.is_show = !self.is_show;
+					self.is_couponShow = !self.is_couponShow;
+					self.countTotalPrice();
+					console.log('self.pay',self.pay)
+					return
+				}
 				
-				var id = self.couponData[self.couponCurr].id;
 				
 				var findCoupon = self.$Utils.findItemInArray(self.couponData, 'id', id);
 				var findItem = self.$Utils.findItemInArray(self.pay.coupon, 'id', id);
@@ -190,10 +238,15 @@
 					return;
 				};
 				if (findItem) {
-					self.pay.coupon.splice(findItem[0], 1);
-					self.chooseCoupon = []
+					/* self.pay.coupon.splice(findItem[0], 1);
+					self.chooseCoupon = []; */
+					self.is_show = !self.is_show;
+					self.is_couponShow = !self.is_couponShow;
+					self.countTotalPrice();
+					console.log('self.pay',self.pay)
+					return
 				} else {
-					console.log('self.data.price - self.data.couponTotalPrice',self.totalPrice - self.couponTotalPrice);
+					/* console.log('self.data.price - self.data.couponTotalPrice',self.totalPrice - self.couponTotalPrice);
 					console.log('findCoupon.condition',findCoupon.condition);
 					if ((self.totalPrice - self.couponTotalPrice) < findCoupon.condition) {
 						self.$Utils.showToast('未达满减标准', 'none');				
@@ -204,7 +257,7 @@
 						self.$Utils.showToast('叠加使用超限', 'none');
 					
 						return;
-					};
+					}; */
 					if (findCoupon.type == 1) {
 						var couponPrice = findCoupon.value;
 						console.log('findCoupon.discount', findCoupon.discount)
@@ -213,13 +266,15 @@
 						var couponPrice = parseFloat(self.totalPrice).toFixed(2) - parseFloat(findCoupon.discount / 100 * self.totalPrice)
 							.toFixed(2);
 					};
-					if (parseFloat(couponPrice) + parseFloat(self.couponTotalPrice) > parseFloat(self.totalPrice)) {
+					/* if (parseFloat(couponPrice) + parseFloat(self.couponTotalPrice) > parseFloat(self.totalPrice)) {
 						couponPrice = parseFloat(self.totalPrice).toFixed(2) - parseFloat(self.couponTotalPrice).toFixed(2);
-					};
+					}; */
+					console.log('couponPrice', couponPrice)
 					self.pay.coupon.push({
 						id: id,
 						price: couponPrice.toFixed(2),
 					});
+					console.log('self.pay',self.pay)
 					self.chooseCoupon.push({
 						id: id,
 						price: couponPrice,
@@ -232,7 +287,11 @@
 			
 			couponChange(index){
 				const self = this;
-				self.couponCurr = index;
+				if(self.couponCurr!=index){
+					self.couponCurr = index;
+				}else{
+					self.couponCurr = -1
+				}
 			},
 			
 			couponShow(){
@@ -253,11 +312,11 @@
 				self.totalPrice = (parseFloat(self.totalPrice) - parseFloat(self.couponTotalPrice)).toFixed(2)
 				//console.log('score',score)
 				if (self.totalPrice > 0) {
-					self.pay.score = {
+					self.pay.wxPay = {
 						price: self.totalPrice,
 					};
 				} else {
-					  delete self.pay.score;	 
+					  delete self.pay.wxPay;	 
 				};
 				console.log(self.pay)
 			},
@@ -334,7 +393,7 @@
 				postData.searchItem = {
 					id: self.orderId
 				};	
-				if(self.pay.score&&self.pay.score.price>0){
+				if(self.totalPrice&&self.totalPrice>0){
 					postData.payAfter = [
 						{
 							tableName: 'FlowLog',
@@ -344,7 +403,7 @@
 								thirdapp_id:2,
 								user_no:uni.getStorageSync('user_info').user_no,
 								account:1,
-								count:self.pay.score.price,
+								count:self.totalPrice,
 								trade_info:'购物返积分'
 							},
 						},

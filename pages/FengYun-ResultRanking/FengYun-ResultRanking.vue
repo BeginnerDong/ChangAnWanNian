@@ -83,7 +83,7 @@
 					if (res.info.data.length > 0 && res.info.data[0]) {
 						self.mainData.push.apply(self.mainData,res.info.data)
 					};
-					
+					self.$Utils.finishFunc('getMainData');
 				};
 				self.$apis.sheetGet(postData, callback);
 			},

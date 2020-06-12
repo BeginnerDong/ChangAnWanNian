@@ -190,6 +190,19 @@ export default {
 		http.HTTP(allParams);
 	},
 	
+	logUpdate(param, callback) {
+		var allParams = {
+			url: 'Common/Log/update',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
 	setAdd(param, callback) {
 		var allParams = {
 			url: 'Common/Set/add',

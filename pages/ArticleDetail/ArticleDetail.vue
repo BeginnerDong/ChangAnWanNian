@@ -42,7 +42,8 @@
 				searchItem:{
 					thirdapp_id:2
 				},
-				mainData:{}
+				mainData:{},
+				Utils:this.$Utils,
 			}
 		},
 		

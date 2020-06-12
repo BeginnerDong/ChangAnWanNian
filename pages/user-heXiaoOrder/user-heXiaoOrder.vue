@@ -10,9 +10,9 @@
 			</view>
 			<view class="topNavFix f5bj">
 				<view class="orderNav bg-white d-flex j-sb a-center shadow color6">
-					<view class="tt" :class="current==1?'on':''" @click="changeCurr('1')">全部</view>
-			 		<view class="tt" :class="current==2?'on':''" @click="changeCurr('2')">待核销</view>
-					<view class="tt" :class="current==3?'on':''" @click="changeCurr('3')">已核销</view>
+					<view class="tt" :class="current==1?'on':''" @click="change('1')">全部</view>
+			 		<view class="tt" :class="current==2?'on':''" @click="change('2')">待核销</view>
+					<view class="tt" :class="current==3?'on':''" @click="change('3')">已核销</view>
 				</view>
 			</view>
 			<view class="topNavH"></view>
@@ -20,8 +20,8 @@
 			<view class="R-fixIcon"  @click="scanCode"><image src="../../static/images/merchantsl-icon.png" mode=""></image></view>
 			<view class="mx-3 mt-3">
 				<view class="proRow ">
-					<view class="item mb-3 bg-white">
-						<view class="priList" v-for="(item,index) in mainData" :key="index">
+					<view class="item mb-3 bg-white"  v-for="(item,index) in mainData" :key="index">
+						<view class="priList">
 							<view class="font-24 d-flex j-sb a-center mb-2">
 								<view class="color9">交易时间：{{item.create_time}}</view>
 								<view class="red" v-if="item.transport_status==0">待核销</view>
@@ -29,8 +29,8 @@
 							</view>
 							<view class="d-flex a-center j-sb">
 								<view class="pic">
-									<image :src="c_item.orderItem&&c_item.orderItem[0]&&c_item.orderItem[0].snap_product&&c_item.orderItem[0].snap_product.product&&
-								c_item.orderItem[0].snap_product.product.mainImg&&c_item.orderItem[0].snap_product.product.mainImg[0]?c_item.orderItem[0].snap_product.product.mainImg[0].url:''" mode=""></image>
+									<image :src="item.orderItem&&item.orderItem[0]&&item.orderItem[0].snap_product&&item.orderItem[0].snap_product&&
+								item.orderItem[0].snap_product.mainImg&&item.orderItem[0].snap_product.mainImg[0]?item.orderItem[0].snap_product.mainImg[0].url:''" mode=""></image>
 								</view>
 								<view class="infor">
 									<view class="tit avoidOverflow2">{{item.title}}</view>
@@ -176,7 +176,8 @@
 						middleKey:'order_no',
 						key:'order_no',
 						searchItem:{
-							status:1
+							status:1,
+							user_type:0
 						},
 						condition:'='
 					},
@@ -184,12 +185,12 @@
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData.push.apply(self.mainData,res.info.data)
-						for (var i = 0; i < self.mainData.length; i++) {
+						/* for (var i = 0; i < self.mainData.length; i++) {
 							self.mainData[i].totalCount = 0;
 							for (var j = 0; j < self.mainData[i].child.length; j++) {
 								self.mainData[i].totalCount += self.mainData[i].child[j].count
 							}
-						}
+						} */
 					}
 					//self.$Utils.finishFunc('getMainData');
 				};

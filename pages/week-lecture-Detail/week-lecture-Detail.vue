@@ -33,7 +33,15 @@
 						<view class="content ql-editor" style="padding:0;"
 						v-html="mainData.content">
 						</view>
-						<video style="width: 100%;margin-top: 20rpx;" controls="true" autoplay="false" :src="item.url" v-for="(item,index) in mainData.videoImg"></video>
+						<cover-view style="position: relative;">
+							<video  style="width: 100%;margin-top: 20rpx;" controls="true"
+							:src="item.url" id="myVideo"  v-for="(item,index) in mainData.videoImg"></video>
+							<cover-view v-show="!play" style="margin-top:20rpx;position: absolute;width: 100%;z-index: 1;top:0;left:0;height: 100%;background-color: #000000;opacity: 0.5;"
+							@click="vedioPlay">
+								
+							</cover-view>
+						</cover-view>
+						
 					</view>
 				</view>
 			</view>
@@ -70,7 +78,8 @@
 			return {
 				Router:this.$Router,
 				Utils:this.$Utils,
-				mainData:{}
+				mainData:{},
+				isMember:false
 			}
 		},
 		
@@ -91,8 +100,36 @@
 		
 		methods: {
 			
+			submit(){
+				const self = this;
+				if(!self.isMember){
+					self.$Utils.showToast('非会员无权限', 'none', 1000)
+					return
+				}
+			},
+			
+			vedioPlay() {
+				const self = this;
+				var videoContextPrev = wx.createVideoContext('myVideo')
+				if(self.play){
+					videoContextPrev.pause();
+					self.play = false
+				}else{
+					if(!self.isMember){
+						self.$Utils.showToast('非会员无权限', 'none', 1000)
+						return
+					}
+					videoContextPrev.play();
+					self.play = true;
+				}
+			},
+			
 			clickGood() {
 				const self = this;
+				if(!self.isMember){
+					self.$Utils.showToast('非会员无权限', 'none', 1000)
+					return
+				};
 				uni.setStorageSync('canClick', false);	
 				if (self.mainData.log.length == 0) {
 					self.addGoodLog()
@@ -168,14 +205,19 @@
 			
 			getUserInfoData() {
 				const self = this;
+				var nowTime = (new Date()).getTime() / 1000;
 				const postData = {};
 				postData.tokenFuncName = 'getProjectToken';
+				
 				postData.searchItem = {
 					user_no:uni.getStorageSync('user_info').user_no
 				};
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.userInfoData = res.info.data[0];
+						if(self.userInfoData.member_time>nowTime){
+							self.isMember = true
+						}
 					}
 					console.log('self.userInfoData', self.userInfoData)
 					self.$Utils.finishFunc('getUserInfoData');

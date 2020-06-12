@@ -21,8 +21,8 @@
 			
 			<view class="mx-3 mt-3">
 				<view class="proRow ">
-					<view class="item mb-3 bg-white">
-						<view class="priList" v-for="(item,index) in mainData" :key="index">
+					<view class="item mb-3 bg-white"  v-for="(item,index) in mainData" :key="index">
+						<view class="priList">
 							<view class="font-24 d-flex j-sb a-center mb-2">
 								<view class="color9">交易时间：{{item.create_time}}</view>
 								<view class="red" v-if="item.pay_status==0">待支付</view>
@@ -47,7 +47,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="underBtn d-flex j-end a-center pb-3" v-if="item.pay_status==0">
+						<view class="underBtn d-flex j-end a-center pb-3" @click="pay(index)" v-if="item.pay_status==0">
 							<view class="Bbtn position-relative">
 								<view class="position-absoluteXY"><image src="../../static/images/about-icon.png" mode=""></image></view>
 								<view class="text">去支付</view>
@@ -110,6 +110,67 @@
 		},
 		
 		methods: {
+			
+			
+			pay(index) {
+				const self = this;
+				const postData = {};	
+				postData.wxPay = {
+					price:parseFloat(self.mainData[index].price).toFixed(2)
+				};
+				postData.tokenFuncName = 'getProjectToken',
+				postData.searchItem = {
+					id: self.mainData[index].id
+				};
+				const callback = (res) => {
+					if (res.solely_code == 100000) {
+						if (res.info) {
+							const payCallback = (payData) => {
+								console.log('payData', payData)
+								if (payData == 1) {
+									uni.showToast({
+										title: '支付成功',
+										duration: 1000,
+										success: function() {
+											
+										}
+									});
+									setTimeout(function() {
+										
+										self.getMainData(true)
+									}, 1000);
+								} else {
+									uni.setStorageSync('canClick', true);
+									uni.showToast({
+										title: '支付失败',
+										duration: 2000
+									});
+								};
+							};
+							self.$Utils.realPay(res.info, payCallback);
+						} else {
+							
+							uni.showToast({
+								title: '支付成功',
+								duration: 1000,
+								success: function() {
+									
+								}
+							});
+							setTimeout(function() {
+								self.getMainData(true)
+							}, 1000);
+						};
+					} else {
+						uni.setStorageSync('canClick', true);
+						uni.showToast({
+							title: res.msg,
+							duration: 2000
+						});
+					};
+				};
+				self.$apis.pay(postData, callback);
+			},
 			
 			orderUpdate(index) {
 				const self = this;

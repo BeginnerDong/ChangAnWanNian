@@ -39,7 +39,7 @@
 		
 			<view class="xqbotomBar center px-3">
 				<view class="d-flex fs12">
-					<view class="ite flexColumn" @click="Router.reLaunch({route:{path:'/pages/index/index'}})">
+					<view class="ite flexColumn" @click="Router.back(1)">
 						<view class="icon"><image src="../../static/images/electricityl-icon.png" mode=""></image></view>
 						<view class="mt-1">返回</view>
 					</view>
@@ -88,7 +88,9 @@
 		
 		methods: {
 			navigateBack(){
-				uni.navigateBack({});
+				uni.navigateBack({
+					delta:1
+				});
 			},
 			
 			getMainData() {

@@ -174,6 +174,7 @@
 				postData.tokenFuncName = 'getProjectToken';
 				postData.searchItem = {
 					use_step: 1,
+					pay_status:1,
 				};
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
@@ -191,7 +192,17 @@
 				console.log(self.couponData);
 				console.log(self.couponData[0]); */
 				
-				var id = self.couponData[self.couponCurr].id;
+				if(self.couponData[self.couponCurr]&&self.couponData[self.couponCurr].id){
+					var id = self.couponData[self.couponCurr].id;
+				}else{
+					self.pay.coupon = []
+					self.chooseCoupon = [];
+					self.is_show = !self.is_show;
+					self.is_couponShow = !self.is_couponShow;
+					self.countTotalPrice();
+					console.log('self.pay',self.pay)
+					return
+				}
 				
 				var findCoupon = self.$Utils.findItemInArray(self.couponData, 'id', id);
 				var findItem = self.$Utils.findItemInArray(self.pay.coupon, 'id', id);
@@ -209,21 +220,13 @@
 					return;
 				};
 				if (findItem) {
-					self.pay.coupon.splice(findItem[0], 1);
-					self.chooseCoupon = []
+					self.is_show = !self.is_show;
+					self.is_couponShow = !self.is_couponShow;
+					self.countTotalPrice();
+					console.log('self.pay',self.pay)
+					return
 				} else {
-					console.log('self.data.price - self.data.couponTotalPrice',self.totalPrice - self.couponTotalPrice);
-					console.log('findCoupon.condition',findCoupon.condition);
-					if ((self.totalPrice - self.couponTotalPrice) < findCoupon.condition) {
-						self.$Utils.showToast('未达满减标准', 'none');				
-						return;
-					};			
-					 console.log('findSameCoupon.length', findSameCoupon.length)
-					if (self.pay.coupon.length >= 1) {
-						self.$Utils.showToast('叠加使用超限', 'none');
 					
-						return;
-					};
 					if (findCoupon.type == 1) {
 						var couponPrice = findCoupon.value;
 						console.log('findCoupon.discount', findCoupon.discount)
@@ -232,9 +235,9 @@
 						var couponPrice = parseFloat(self.totalPrice).toFixed(2) - parseFloat(findCoupon.discount / 100 * self.totalPrice)
 							.toFixed(2);
 					};
-					if (parseFloat(couponPrice) + parseFloat(self.couponTotalPrice) > parseFloat(self.totalPrice)) {
+					/* if (parseFloat(couponPrice) + parseFloat(self.couponTotalPrice) > parseFloat(self.totalPrice)) {
 						couponPrice = parseFloat(self.totalPrice).toFixed(2) - parseFloat(self.couponTotalPrice).toFixed(2);
-					};
+					}; */
 					self.pay.coupon.push({
 						id: id,
 						price: couponPrice.toFixed(2),
@@ -275,11 +278,11 @@
 				self.totalPrice = (parseFloat(self.totalPrice) - parseFloat(self.couponTotalPrice)).toFixed(2)
 				//console.log('score',score)
 				if (self.totalPrice > 0) {
-					self.pay.score = {
+					self.pay.wxPay = {
 						price: self.totalPrice,
 					};
 				} else {
-					  delete self.pay.score;	 
+					  delete self.pay.wxPay;	 
 				};
 				console.log(self.pay)
 			},
@@ -348,7 +351,7 @@
 				postData.searchItem = {
 					id: self.orderId
 				};	
-				if(self.pay.score&&self.pay.score.price>0){
+				if(self.pay.wxPay&&self.pay.wxPay.price>0){
 					postData.payAfter = [
 						{
 							tableName: 'FlowLog',
@@ -358,7 +361,7 @@
 								thirdapp_id:2,
 								user_no:uni.getStorageSync('user_info').user_no,
 								account:1,
-								count:self.pay.score.price,
+								count:self.pay.wxPay.price,
 								trade_info:'购物返积分'
 							},
 						},
@@ -421,26 +424,22 @@
 				uni.navigateBack({
 				});
 			},
+			
 			couponChange(index){
 				const self = this;
-				self.couponCurr = index;
+				if(self.couponCurr!=index){
+					self.couponCurr = index;
+				}else{
+					self.couponCurr = -1
+				}
 			},
+			
 			couponShow(){
 				const self = this;
 				self.is_show = !self.is_show;
 				self.is_couponShow = !self.is_couponShow;
 			},
-			counter(type) {
-				const self = this;			
-				if (type == '+') {
-					self.count++;
-				} else {
-					if (self.count > 1) {
-						self.count--;
-					}
-				};			
-				self.countTotalPrice();
-			}
+			
 		}
 	};
 </script>

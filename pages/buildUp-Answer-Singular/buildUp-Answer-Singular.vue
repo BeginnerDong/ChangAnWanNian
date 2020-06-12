@@ -29,10 +29,10 @@
 			
 			<view class="answerTit px-4 py-5 font-34 mt-2">
 				<view>{{currentSubject.title?currentSubject.title:''}}</view>
-				<view style="width: 100%;" v-for="(item,index) in currentSubject.mainImg" @click="previewImage(index)">
-					<image style="width: 100%;" :src="item.url"></image>
+				<view style="width: 100%;height: 200px;" v-for="(item,index) in currentSubject.mainImg" @click="previewImage(index)">
+					<image style="width: 100%;height: 100%;" :src="item.url"></image>
 				</view>
-				<view class="d-flex j-end" v-if="currentSubject.battle==1">
+				<view class="d-flex j-end" v-if="currentSubject.battle==0">
 					<view class="zanBtn mr-1" @click="Utils.stopMultiClick(clickGood)">
 						<image  :src="logData&&logData.status&&logData.status==1?'../../static/images/explorel-icon2.png':'../../static/images/explorel-icon1.png'" mode=""></image>
 					</view>
@@ -70,7 +70,7 @@
 						<view class="seltIconL errorIcon" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0"><image src="../../static/images/anti-icon4.png" mode=""></image></view>
 						<view class="btnBj" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
 						<view class="btnBj" v-if="!hasResult||(hasResult&&Utils.inArray(index,chooseArray)<0&&Utils.inArray(index,rightArray)<0)"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-						<view class="btnBj" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)>=0"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
+						<view class="btnBj" v-if="hasResult&&Utils.inArray(index,rightArray)>=0"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
 						<view class="btnTit color2" :class="Utils.inArray(index,chooseArray)>=0?'colorRed':''">{{item.option}}</view>
 						<view class="seltIconR rightIcon" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)>=0"><image src="../../static/images/anti-icon3.png" mode=""></image></view>
 					</button>
@@ -195,11 +195,17 @@
 			}
 		},
 		
-		onLoad() {
+		onLoad(options) {
 			const self = this;
 			//self.$Utils.loadAll(['getMainData'], self);
 			self.subjectArray = uni.getStorageSync('subjectData');
 			console.log('self.subjectArray',self.subjectArray);
+			if(options.curr){
+				self.currentIndex = parseInt(options.curr)
+			};
+			if(options.score){
+				self.score = parseInt(options.score)
+			};
 			self.currentSubject = self.subjectArray[self.currentIndex];
 			if(self.currentSubject.type==4){
 				for (var i = 0; i < self.currentSubject.Option.length; i++) {
@@ -219,6 +225,16 @@
 					}
 				}, 1000);
 			}
+		},
+		
+		onUnload() {
+			const self = this;
+			clearInterval(self.interval);
+		},
+		
+		onHide() {
+			const self = this;
+			clearInterval(self.interval);
 		},
 		
 		methods: {
@@ -262,12 +278,16 @@
 			//选择待提交选项
 			dxChoose(index){
 				const self = this;
+				console.log('index',index)
 				var options = self.$Utils.inArray(index,self.chooseArray);
+				console.log('options',options)
 				if(options>=0){
-					self.chooseArray.splice(1,options)
+					console.log('23',23)
+					self.chooseArray.splice(options,1)
 				}else{
 					self.chooseArray.push(index)
 				}
+				console.log('self.chooseArray',self.chooseArray)
 			},
 			
 			//提交选项
@@ -411,8 +431,10 @@
 							};
 							self.currentIndex++;
 							self.currentSubject = self.subjectArray[self.currentIndex];
+							self.logData = {};
 							self.getLogData();
 							self.time = self.currentSubject.time;
+							clearInterval(self.interval);
 							self.interval = setInterval(function() {
 								self.time--; //每执行一次让倒计时秒数减一
 								//如果当秒数小于等于0时 停止计时器 
@@ -440,9 +462,10 @@
 					searchItem: {
 						relation_id: self.currentSubject.id,
 						relation_table:'Subject',
-						behavior:1,
+						//behavior:1,
 						status:['in',[1,-1]],
-						user_no:uni.getStorageSync('user_info').user_no
+						user_no:uni.getStorageSync('user_info').user_no,
+						type:2
 					},
 				};
 				postData.tokenFuncName = 'getProjectToken';
@@ -462,7 +485,7 @@
 			clickGood() {
 				const self = this;
 				uni.setStorageSync('canClick', false);	
-				if (self.logData.status) {
+				if (!self.logData.status) {
 					self.addGoodLog()
 				} else {
 					self.updateGoodLog()
@@ -473,19 +496,24 @@
 				const self = this;
 				const postData = {};
 				postData.data = {
-					type: 1,
+					type: 2,
 					title: '点赞成功',
 					relation_id: self.currentSubject.id,
 					relation_table:'Subject',
 					user_no: uni.getStorageSync('user_info').user_no,
+					behavior:1
+				};
+				if(self.currentSubject.battle==1){
+					postData.data.behavior = 2
+					//postData.saveAfter[0].data.type = 5
 				};
 				postData.tokenFuncName = 'getProjectToken';
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
-						self.mainData.log.push({
+						self.logData = {
 							status: 1,
 							id: res.info.id
-						});
+						};
 						
 						//self.$Utils.showToast('已收藏', 'none', 1000)
 					} else {

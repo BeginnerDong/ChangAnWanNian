@@ -78,7 +78,7 @@
 			const self = this;
 			uni.showLoading();
 			const callback = (res) => {
-				self.yb = uni.getStorageSync('user_info').info.yb_score + uni.getStorageSync('user_info').info.yb_today;
+				self.yb = parseFloat(parseFloat(uni.getStorageSync('user_info').info.yb_score) + parseFloat(uni.getStorageSync('user_info').info.yb_today)).toFixed(2);
 				self.specsList = uni.getStorageSync('user_info').thirdApp.yb_price.split(',');
 				self.price = parseFloat(self.specsList[self.curr]);
 				self.yb_price = uni.getStorageSync('user_info').thirdApp.yb_price;

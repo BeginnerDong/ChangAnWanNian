@@ -13,7 +13,11 @@
 					<view class="d-flex a-center mt-3">
 						<view class="photo" style="overflow: hidden;"><open-data type="userAvatarUrl"></open-data></view>
 						<view style="width: 70%;">
-							<view class="font-32"><open-data type="userNickName"></open-data></view>
+							<view class="d-flex a-center mt-1">
+								<view class="font-32"><open-data type="userNickName"></open-data></view>
+								<view class="font-24 color9 ml-2">等级：{{userInfoData.levelName&&userInfoData.levelName.length>0?userInfoData.levelName[0].title:'无'}}</view>
+							</view>
+							
 							<view class="d-flex a-center mt-1" v-show="isMember">
 								<view class="priceIcon"><image src="../../static/images/about-img1.png" mode=""></image></view>
 								<view class="font-24 color9">会员到期时间：{{Utils.timeto(userInfoData.member_time*1000,'ymd')}}</view>
@@ -27,7 +31,7 @@
 				
 				<view class="rounded10 mt-4 px-3 pt-4 pb-2 position-relative shadow-sm" style="height: 170rpx;" v-show="!isMember"
 				@click="Router.navigateTo({route:{path:'/pages/user-Vip/user-Vip'}})">
-					<view class="position-absoluteXY"><image src="../../static/images/about-img3.png" mode=""></image></view>
+					<view class="position-absoluteXY"><image src="../../static/images/about-img3.jpg" mode=""></image></view>
 					<view class="position-relative" style="z-index: 2;color: #cb9b3e;">
 						<view class="font-36 font-weight">购买会员，享受优惠</view>
 						<view class="main-text-color font-24 mt-1">精彩答题等你来答</view>
@@ -157,13 +161,19 @@
 				Router:this.$Router,
 				Utils:this.$Utils,
 				userInfoData:{},
-				isMember:false
+				isMember:false,
+				yb:0
 			}
 		},
 		
 		onLoad() {
 			const self = this;
-			self.$Utils.loadAll(['getUserInfoData'], self);
+			//self.$Utils.loadAll(['getUserInfoData'], self);
+		},
+		
+		onShow() {
+			const self = this;
+			self.getUserInfoData()
 		},
 		
 		methods: {
@@ -173,13 +183,24 @@
 				var nowTime = (new Date()).getTime() / 1000;
 				var postData = {};
 				postData.tokenFuncName = 'getProjectToken';
+				postData.getAfter = {
+					levelName:{
+						tableName:'Level',
+						middleKey:'level',
+						key:'id',
+						searchItem:{
+							status:1
+						},
+						condition:'='
+					}
+				};
 				var callback = function(res) {
 					if (res.info.data.length > 0 && res.info.data[0]) {
 						self.userInfoData = res.info.data[0];
 						if(self.userInfoData.member_time>nowTime){
 							self.isMember = true
 						}
-						self.yb = parseFloat(self.userInfoData.yb_score) +parseFloat(self.userInfoData.yb_today)
+						self.yb = parseFloat(parseFloat(self.userInfoData.yb_score) +parseFloat(self.userInfoData.yb_today)).toFixed(2)
 					};
 					self.$Utils.finishFunc('getUserInfoData');
 				};

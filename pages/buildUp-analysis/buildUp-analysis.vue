@@ -54,12 +54,14 @@
 		onLoad(options) {
 			const self = this;
 			self.type==options.type;
-			if(options.type==1){
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData'], self)
+			/* if(options.type==1){
 				self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
 				self.$Utils.loadAll(['getMainData'], self)
 			}else if(options.type==3){
 				self.mainData = uni.getStorageSync('subjectData');
-			};
+			}; */
 			//self.$Utils.loadAll(['getMainData'], self)
 		},
 		
@@ -83,7 +85,10 @@
 					type:1,
 					relation_table:'Subject',
 					behavior:1,
-				}
+				};
+				if(self.type==3){
+					postData.searchItem.sheet_id = uni.getStorageSync('sheet_id')
+				};
 				postData.getAfter = {
 					subject:{
 						tableName:'Subject',
@@ -101,6 +106,7 @@
 							self.mainData.push(res.info.data[i].subject[0])
 						}
 					}
+					self.$Utils.finishFunc('getMainData');
 				};
 				self.$apis.logGet(postData, callback);
 			},

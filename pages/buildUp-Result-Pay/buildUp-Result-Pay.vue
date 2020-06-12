@@ -68,7 +68,8 @@
 				canTodayFree:false,
 				isMember:false,
 				isFree:false,
-				payType:1
+				payType:1,
+				idArray:[]
 			}
 		},
 		
@@ -90,6 +91,40 @@
 		},
 		
 		methods: {
+			
+			getSubjectData1() {
+				var self = this;
+				uni.showLoading();
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.noLoading = true;
+				postData.type = 0;
+				
+				if(parseFloat(self.price)>0){
+					postData.free = 0
+					postData.num = self.num
+				}else{
+					postData.free = 1;
+					if(self.isMember){
+						postData.num = self.num
+					}else{
+						postData.num = 5
+					}	
+				};
+				var callback = function(res) {
+					if(res.solely_code==100000){
+						if (res.info.data&&res.info.data.length > 0 && res.info.data[0]) {
+							//uni.setStorageSync('subjectData',res.info.data);
+							self.subjectData = res.info.data;
+							/* for (var i = 0; i < res.info.data.length; i++) {
+								self.idArray.push(res.info.data[i].id) 
+							};
+							self.setAdd(); */
+						}
+					}
+				};
+				self.$apis.subjectGet(postData, callback);
+			},
 			
 			change(type){
 				const self = this;
@@ -113,8 +148,6 @@
 				}else if(self.type==3){
 					if(self.isFree){
 						self.$Router.redirectTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=3'}})
-					}else if(uni.getStorageSync('user_info').info.member_time>nowTime){
-						self.$Router.redirectTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=3'}})
 					}else{
 						self.addOrder()
 					}
@@ -130,10 +163,10 @@
 				postData.type = 0;
 				
 				if(parseFloat(self.price)>0){
-					postData.data.free = 0
+					postData.free = 0
 					postData.num = self.num
 				}else{
-					postData.data.free = 1;
+					postData.free = 1;
 					if(self.isMember){
 						postData.num = self.num
 					}else{
@@ -141,13 +174,17 @@
 					}	
 				};
 				var callback = function(res) {
-					if (res.info.data&&res.info.data.length > 0 && res.info.data[0]) {
-						uni.setStorageSync('subjectData',res.info.data);
-						self.subjectData = res.info.data;
-						for (var i = 0; i < res.info.data.length; i++) {
-							self.idArray.push(res.info.data[i].id) 
-						};
-						self.setAdd();
+					if(res.solely_code==100000){
+						if (res.info.data&&res.info.data.length > 0 && res.info.data[0]) {
+							uni.setStorageSync('subjectData',res.info.data);
+							self.subjectData = res.info.data;
+							for (var i = 0; i < res.info.data.length; i++) {
+								self.idArray.push(res.info.data[i].id) 
+							};
+							self.setAdd();
+						}else{
+							self.$Utils.showToast(res.msg,'none');
+						}
 					}else{
 						self.$Utils.showToast(res.msg,'none');
 					}
@@ -162,7 +199,7 @@
 				postData.noLoading = true;
 				postData.data = {
 					type:1,
-					subject_id:self.idArray,
+					subject_array:self.idArray,
 				};
 				if(parseFloat(self.price)>0){
 					postData.data.free = 0
@@ -275,7 +312,11 @@
 				if(self.type==1){
 					self.$Router.redirectTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=1'}})
 				}else if(self.type==2){
-					self.getSubjectData()
+					if(self.subjectData){
+						self.getSubjectData()
+					}else{
+						self.$Utils.showToast('题目数量不足', 'none');
+					};
 				}else if(self.type==3){
 					self.$Router.redirectTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=3'}})
 				}
@@ -335,7 +376,8 @@
 				var callback = function(res) {
 					if (res.info.data.length > 0 && res.info.data[0]) {
 						self.num = uni.getStorageSync('user_info').thirdApp.answer_num;
-						self.price =  uni.getStorageSync('user_info').thirdApp.answer_price
+						self.price =  uni.getStorageSync('user_info').thirdApp.answer_price;
+						self.getSubjectData1()
 					}else{
 						self.canTodayFree = true
 					}
@@ -368,7 +410,7 @@
 					if (res.info.data.length > 0 && res.info.data[0]) {
 						self.logData.push.apply(self.logData,res.info.data)
 					}
-					self.price = self.logData.length*parseFloat(uni.getStorageSync('user_info').thirdApp.unit_price)
+					self.price = (self.logData.length*parseFloat(uni.getStorageSync('user_info').thirdApp.unit_price)).toFixed(2)
 					self.$Utils.finishFunc('getLogData');
 				};
 				self.$apis.logGet(postData, callback);

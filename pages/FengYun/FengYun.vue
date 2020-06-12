@@ -18,7 +18,7 @@
 							<view class="font-40 font-weight"><open-data type="userNickName"></open-data></view>
 							<view class="d-flex a-center mt-3 font-30">
 								<view class="lableIcon mr-1"><image src="../../static/images/racel-icon1.png" mode=""></image></view>
-								<view class="">积分：{{userInfoData.yb_score?userInfoData.yb_score:''}}</view>
+								<view class="">积分：{{userInfoData.yb_score?userInfoData.yb_score:'0.00'}}</view>
 							</view>
 						</view>
 					</view>
@@ -81,14 +81,15 @@
 			const self = this;
 			uni.showLoading();
 			const callback = (res) => {
-				if(options.set_id){
-					self.shareSetId = options.set_id
-					uni.setStorageSync('setId',self.shareSetId);
-				}
 				uni.removeStorageSync('subjectData');
 				uni.removeStorageSync('setId');
 				uni.removeStorageSync('sheetId');
 				uni.removeStorageSync('score');
+				if(options.id){
+					self.shareSetId = options.id
+					uni.setStorageSync('setId',self.shareSetId);
+				}
+				
 				self.$Utils.loadAll(['getSheetData'], self);
 				
 			};
@@ -107,7 +108,7 @@
 			if (ops.from === 'button') {
 				return {
 					title: '一起来答题吧！',
-					path: '/pages/FengYun/FengYun?set_id=' + self.set_id, //点击分享的图片进到哪一个页面
+					path: '/pages/FengYun/FengYun?id=' + self.set_id, //点击分享的图片进到哪一个页面
 					//imageUrl: self.mainData.mainImg[0].url ? self.mainData.mainImg[0].url : '',
 					success: function(res) {
 						// 转发成功
@@ -143,7 +144,7 @@
 				var postData = {};
 				postData.tokenFuncName = 'getProjectToken';
 				postData.searchItem = {
-					type:1,
+					type:2,
 					finish:0,
 					deadline:['>',(new Date()).getTime() / 1000],
 					user_no:uni.getStorageSync('user_info').user_no
@@ -197,10 +198,13 @@
 									self.$Router.navigateTo({route:{path:'/pages/buildUp-Answer-Singular/buildUp-Answer-Singular'}})
 								}else{
 									console.log('取消')
+									
 								}
 							}
 						})
-					};
+					}else{
+						self.getUserInfoData()
+					}
 					self.$Utils.finishFunc('getSheetData');
 				};
 				self.$apis.sheetGet(postData, callback);
@@ -256,7 +260,7 @@
 				var postData = {};
 				postData.tokenFuncName = 'getProjectToken';
 				postData.searchItem = {
-					id:set_id,
+					id:id,
 					user_type:0
 				};
 				postData.getAfter = {
@@ -326,6 +330,7 @@
 			
 			shareSheetAdd(id) {
 				var self = this;
+				
 				var postData = {};
 				postData.noLoading = true;
 				postData.tokenFuncName = 'getProjectToken';
@@ -347,79 +352,100 @@
 			getSubjectData() {
 				var self = this;
 				uni.showLoading();
-				if(self.userInfoData.member_time<(new Date()).getTime() / 1000&&(parseFloat(self.userInfoData.yb_score)+parseFloat(self.userInfoData.yb_today))<10){
-					uni.showModal({
-						title:'提示',
-						content:'您的元宝积分不足，是否立即去充值',
-						showCancel:true,
-						confirmText:'前往',
-						success(res) {
-							if(res.confirm){
-								self.$Router.redirectTo({route:{path:'/pages/uesr-lngotRecharge/uesr-lngotRecharge'}})
-							}else{
-								console.log('取消')
-							}
-						}
-					})
-				}else{
-					const postData = {};
-					
-					postData.tokenFuncName = 'getProjectToken';
-					postData.data = {
-						//type:7,
-						//count:uni.getStorageSync('user_info').thirdApp.yuanbao - parseFloat(self.userInfoData.yb_today),
-						trade_info:'对战花费元宝',
-						account:1,
-						thirdapp_id:2,
-						user_no:uni.getStorageSync('user_info').user_no
-					};
-					if(parseFloat(self.userInfoData.yb_today)>10){
-						postData.type = 7;
-						postData.count = -10;
-					}else{
-						postData.type = 7;
-						postData.count = -parseFloat(self.userInfoData.yb_today);
-						postData.saveAfter = [
-							{
-								tableName: 'FlowLog',
-								FuncName: 'add',
-								data: {
-									type:6,
-									count:-(10-parseFloat(self.userInfoData.yb_today)),
-									trade_info:'对战花费元宝',
-									account:1,
-									thirdapp_id:2,
-									user_no:uni.getStorageSync('user_info').user_no
-								},
-							},
-						];
-					};
-					const callback = (res) => {
-						if (res.solely_code == 100000) {
-							var c_postData = {};
-							c_postData.tokenFuncName = 'getProjectToken';
-							c_postData.noLoading = true;
-							c_postData.type = 1;
-							c_postData.free = 0;
-							c_postData.num = uni.getStorageSync('user_info').thirdApp.battle_num;
-							var c_callback = function(res) {
-								if (res.info.data&&res.info.data.length > 0 && res.info.data[0]) {
-									uni.setStorageSync('subjectData',res.info.data);
-									self.subjectData = res.info.data;
-									for (var i = 0; i < res.info.data.length; i++) {
-										self.idArray.push(res.info.data[i].id) 
-									};
-									self.setAdd();
+				if(self.userInfoData.member_time<(new Date()).getTime() / 1000){
+					if((parseFloat(self.userInfoData.yb_score)+parseFloat(self.userInfoData.yb_today))<10){
+						uni.showModal({
+							title:'提示',
+							content:'您的元宝积分不足，是否立即去充值',
+							showCancel:true,
+							confirmText:'前往',
+							success(res) {
+								if(res.confirm){
+									self.$Router.redirectTo({route:{path:'/pages/uesr-lngotRecharge/uesr-lngotRecharge'}})
 								}else{
-									self.$Utils.showToast(res.msg,'none');
+									console.log('取消')
 								}
+							}
+						})
+					}else{
+						const postData = {};
+						
+						postData.tokenFuncName = 'getProjectToken';
+						postData.data = {
+							//type:7,
+							//count:uni.getStorageSync('user_info').thirdApp.yuanbao - parseFloat(self.userInfoData.yb_today),
+							trade_info:'对战花费元宝',
+							account:1,
+							thirdapp_id:2,
+							user_no:uni.getStorageSync('user_info').user_no
+						};
+						if(parseFloat(self.userInfoData.yb_today)>10){
+							postData.data.type = 7;
+							postData.data.count = -10;
+						}else{
+							postData.data.type = 7;
+							postData.data.count = -parseFloat(self.userInfoData.yb_today);
+							postData.saveAfter = [
+								{
+									tableName: 'FlowLog',
+									FuncName: 'add',
+									data: {
+										type:6,
+										count:-(10-parseFloat(self.userInfoData.yb_today)),
+										trade_info:'对战花费元宝',
+										account:1,
+										thirdapp_id:2,
+										user_no:uni.getStorageSync('user_info').user_no
+									},
+								},
+							];
+						};
+						const callback = (res) => {
+							if (res.solely_code == 100000) {
+								var c_postData = {};
+								c_postData.tokenFuncName = 'getProjectToken';
+								c_postData.noLoading = true;
+								c_postData.type = 1;
+								c_postData.free = 0;
+								c_postData.num = uni.getStorageSync('user_info').thirdApp.battle_num;
+								var c_callback = function(res) {
+									if (res.info.data&&res.info.data.length > 0 && res.info.data[0]) {
+										uni.setStorageSync('subjectData',res.info.data);
+										self.subjectData = res.info.data;
+										for (var i = 0; i < res.info.data.length; i++) {
+											self.idArray.push(res.info.data[i].id) 
+										};
+										self.setAdd();
+									}else{
+										self.$Utils.showToast(res.msg,'none');
+									}
+								};
+								self.$apis.subjectGet(c_postData, c_callback);
+							}
+						};
+						self.$apis.flowLogAdd(postData, callback);
+					}
+				}else{
+					var postData = {};
+					postData.tokenFuncName = 'getProjectToken';
+					postData.noLoading = true;
+					postData.type = 1;
+					postData.free = 0;
+					postData.num = uni.getStorageSync('user_info').thirdApp.battle_num;
+					var callback = function(res) {
+						if (res.info.data&&res.info.data.length > 0 && res.info.data[0]) {
+							uni.setStorageSync('subjectData',res.info.data);
+							self.subjectData = res.info.data;
+							for (var i = 0; i < res.info.data.length; i++) {
+								self.idArray.push(res.info.data[i].id) 
 							};
-							self.$apis.subjectGet(c_postData, c_callback);
+							self.setAdd();
+						}else{
+							self.$Utils.showToast(res.msg,'none');
 						}
 					};
-					self.$apis.flowLogAdd(postData, callback);
+					self.$apis.subjectGet(postData, callback);
 				}
-				
 			},
 			
 			setAdd() {
@@ -488,10 +514,11 @@
 						self.userInfoData = res.info.data[0]
 						if(self.shareSetId){
 							self.isShare = true;
+							
 							self.getSetData(self.shareSetId)
 						}else{
 							uni.showModal({
-								title:'生成对战',
+								title:'生成新的对战',
 								content:self.userInfoData.member_time<(new Date()).getTime() / 1000?'是否确定生成对战题目，将花费您10元宝积分':'是否确定生成对战题目，会员免费',
 								showCancel:true,
 								confirmText:'继续',
