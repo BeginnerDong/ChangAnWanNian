@@ -2,69 +2,70 @@
 	<view>
 		<pageBj></pageBj>
 		
+		<view class="topBar"></view>
+		<view class="page-head d-flex a-center j-center">
+			<view class="headBj"></view>
+			<view class="tit">首页</view>
+		</view>
 		<view class="pageBox">
-			<view class="page-head d-flex a-center j-center">
-				<view class="headBj"></view>
-				<view class="tit">首页</view>
-			</view>
-			<view>
-				<view class="banner-box px-3">
-					<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="#d2d2d2" indicator-active-color="#dec193">
-						<block v-for="(item,index) in sliderData.mainImg" :key="index">
-							<swiper-item class="swiper-item">
-								<image :src="item.url" class="slide-image" />
-							</swiper-item>
-						</block>
-					</swiper>
-				</view>
-			</view>
-			
-			<view class="indHome d-flex a-center pt-4 font-24">
-				<view class="item"  @click="Router.navigateTo({route:{path:'/pages/PassThrough/PassThrough'}})">
-					<image src="../../static/images/home-icon.png"></image>
-					<view class="tit">探索穿越</view>
-				</view>
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/buildUp/buildUp'}})">
-					<image src="../../static/images/home-icon1.png"></image>
-					<view class="tit">日积月累</view>
-				</view>
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/FengYun/FengYun'}})">
-					<image src="../../static/images/home-icon2.1.png"></image>
-					<view class="tit">风云际会</view>
-				</view>
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/week-lecture/week-lecture'}})">
-					<image src="../../static/images/home-icon2.png"></image>
-					<view class="tit">周末讲堂</view>
-				</view>
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/Online-ProList/Online-ProList'}})">
-					<image src="../../static/images/home-icon3.png"></image>
-					<view class="tit">电商文创</view>
-				</view>
-			</view>
-			<view class="f5Bj-H20">
-				<image src="../../static/images/home-icon4.png" mode=""></image>
-			</view>
-			
-			<view class="px-3 mt-3">
-				<view class="font-30 font-weight d-flex a-start title-xian mb-3">
-					<view class="xain"></view>
-					<view>热门文章</view>
-				</view>
-				<view class="proRow prolist">
-					<view class="item d-flex j-sb  rounded10 mb-4" v-for="(item,index) in mainData" :key="index" :data-id="item.id"
-					@click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?id='+$event.currentTarget.dataset.id}})">
-						<view class="pic"><image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image></view>
-						<view class="infor">
-							<view class="tit avoidOverflow2 font-28">{{item.title}}</view>
-							<view class="B-price">
-								<view class="font-24 color9">{{item.create_time}}</view>
-							</view>
-						</view>
+				<view>
+					<view class="banner-box px-3">
+						<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="#d2d2d2" indicator-active-color="#dec193">
+							<block v-for="(item,index) in sliderData.mainImg" :key="index">
+								<swiper-item class="swiper-item">
+									<image :src="item.url" class="slide-image" />
+								</swiper-item>
+							</block>
+						</swiper>
 					</view>
 				</view>
 				
-				<!-- 无数据 -->
-				<view class="nodata" v-if="mainData.length==0"><image src="../../static/images/nodata.png" mode=""></image></view>
+				<view class="indHome d-flex a-center pt-4 font-24">
+					<view class="item"  @click="Router.navigateTo({route:{path:'/pages/PassThrough/PassThrough'}})">
+						<image src="../../static/images/home-icon.png"></image>
+						<view class="tit">探索穿越</view>
+					</view>
+					<view class="item" @click="Router.navigateTo({route:{path:'/pages/buildUp/buildUp'}})">
+						<image src="../../static/images/home-icon1.png"></image>
+						<view class="tit">日积月累</view>
+					</view>
+					<view class="item" @click="Router.navigateTo({route:{path:'/pages/FengYun/FengYun'}})">
+						<image src="../../static/images/home-icon2.1.png"></image>
+						<view class="tit">风云际会</view>
+					</view>
+					<view class="item" @click="Router.navigateTo({route:{path:'/pages/week-lecture/week-lecture'}})">
+						<image src="../../static/images/home-icon2.png"></image>
+						<view class="tit">周末讲堂</view>
+					</view>
+					<view class="item" @click="Router.navigateTo({route:{path:'/pages/Online-ProList/Online-ProList'}})">
+						<image src="../../static/images/home-icon3.png"></image>
+						<view class="tit">电商文创</view>
+					</view>
+				</view>
+				<view class="f5Bj-H20">
+					<image src="../../static/images/home-icon4.png" mode=""></image>
+				</view>
+				
+				<view class="px-3 mt-3">
+					<view class="font-30 font-weight d-flex a-start title-xian mb-3">
+						<view class="xain"></view>
+						<view>热门文章</view>
+					</view>
+					<view class="proRow prolist">
+						<view class="item d-flex j-sb  rounded10 mb-4" v-for="(item,index) in mainData" :key="index" :data-id="item.id"
+						@click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?id='+$event.currentTarget.dataset.id}})">
+							<view class="pic"><image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image></view>
+							<view class="infor">
+								<view class="tit avoidOverflow2 font-28">{{item.title}}</view>
+								<view class="B-price">
+									<view class="font-24 color9">{{item.create_time}}</view>
+								</view>
+							</view>
+						</view>
+					</view>
+					
+					<!-- 无数据 -->
+					<view class="nodata" v-if="mainData.length==0"><image src="../../static/images/nodata.png" mode=""></image></view>
 				
 			</view>
 			
@@ -263,4 +264,5 @@
 	.indHome .item{flex: 1;text-align: center;color: #222;display: flex; flex-direction: column;margin-bottom: 40rpx;line-height: 36rpx; }
 	.indHome .item image{width:111rpx;height:112rpx; margin: 0 auto 16rpx auto;}
 	
+	.topBar{padding-top: var(--status-bar-height);}
 </style>

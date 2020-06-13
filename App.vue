@@ -31,4 +31,5 @@
 	uni-swiper .uni-swiper-dot-active{width: 28rpx;border-radius: 10rpx;} 
 	.ql-editor img{max-width: 100%;margin: 0 auto;}
 	
+	/* .page-head{margin-top: var(--status-bar-height);} */
 </style>
