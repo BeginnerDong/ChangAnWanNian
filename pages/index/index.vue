@@ -2,8 +2,7 @@
 	<view>
 		<pageBj></pageBj>
 		
-		<view class="topBar"></view>
-		<view class="page-head d-flex a-center j-center">
+		<view class="page-head d-flex a-center j-center" style="padding-top:{{statusBarHeight}}px">
 			<view class="headBj"></view>
 			<view class="tit">首页</view>
 		</view>
@@ -105,7 +104,8 @@
 			return {
 				Router:this.$Router,
 				sliderData:{},
-				mainData:[]
+				mainData:[],
+				statusBarHeight: uni.getSystemInfoSync()['statusBarHeight']
 			}
 		},
 		
@@ -264,5 +264,4 @@
 	.indHome .item{flex: 1;text-align: center;color: #222;display: flex; flex-direction: column;margin-bottom: 40rpx;line-height: 36rpx; }
 	.indHome .item image{width:111rpx;height:112rpx; margin: 0 auto 16rpx auto;}
 	
-	.topBar{padding-top: var(--status-bar-height);}
 </style>
