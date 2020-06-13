@@ -1,13 +1,13 @@
 <template>
 	<view>
 		<pageBj></pageBj>
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">优惠券</view>
 			</view>
-			
+			<view class="pageBox">
 			<view class=" tooling_indNav color6 mx-3">
 				<view class="list rounded50 d-flex text-center j-sb bg-white shadow-sm">
 					<view class="tt" :class="curr==1?'on':''" @click="currChange('1')">未使用</view>

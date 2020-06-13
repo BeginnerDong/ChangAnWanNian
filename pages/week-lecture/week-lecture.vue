@@ -3,13 +3,13 @@
 		
 		<pageBj></pageBj>
 		
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">周末讲堂</view>
 			</view>
-			
+			<view class="pageBox">
 			<view class="productList d-flex j-sb flex-wrap mx-3">
 				<view class="item mb-3" v-for="(item,index) in mainData" :key="index" :data-id="item.id"
 				@click="Router.navigateTo({route:{path:'/pages/week-lecture-Detail/week-lecture-Detail?id='+$event.currentTarget.dataset.id}})">

@@ -1,14 +1,14 @@
 <template>
 	<view v-if="showAll">
 		<pageBj></pageBj>
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">登录</view>
 			</view>
 			
-			
+			<view class="pageBox">
 			<view class="loginCont">
 				<view class="item d-flex a-center px-2">
 					<view class="icon"><image src="../../static/images/the-loginl-icon.png" mode=""></image></view>

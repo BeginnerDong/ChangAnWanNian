@@ -3,13 +3,13 @@
 		
 		<pageBj></pageBj>
 		
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">电商文创</view>
 			</view>
-			
+		<view class="pageBox">	
 			<view class="productList d-flex j-sb flex-wrap mx-3">
 				<view class="item rounded10 mb-3" v-for="(item,index) in mainData" :key="index" :data-id="item.id"
 				 @click="Router.navigateTo({route:{path:'/pages/Online-ProListDetail/Online-ProListDetail?id='+$event.currentTarget.dataset.id}})">
@@ -110,5 +110,5 @@
 	@import "../../assets/style/productList.css";
 	
 	page{padding-bottom: 60rpx;background-color: #F5F5F5;}	
-	.backBtn{width:20rpx;height: 35rpx;position: absolute;top: 66rpx;left: 20rpx; z-index: 10;}
+
 </style>

@@ -2,12 +2,13 @@
 	<view>
 		<pageBj></pageBj>
 		
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">确认订单</view>
 			</view>
+			<view class="pageBox">
 			<view class="bg-white boxShaow overflow-h mb-3 mx-3 rounded10 overflow-h">
 				<view style="width: 100%;height: 19rpx;"><image src="../../static/images/zhoumo-img4.png" mode=""></image></view>
 				<view class="px-3 py-3">
@@ -226,10 +227,10 @@
 				var findItem = self.$Utils.findItemInArray(self.pay.coupon, 'id', id);
 				console.log('findCoupon', findCoupon)
 				self.showCoupon = false;
-				if(self.pay.coupon.length>=1){
+				/* if(self.pay.coupon.length>=1){
 					self.pay.coupon = []
 					self.chooseCoupon = []
-				};
+				}; */
 				if (findCoupon) {
 					findCoupon = findCoupon[1];
 					var findSameCoupon =  self.$Utils.findItemsInArray(self.pay.coupon, 'product_id', id);
@@ -238,12 +239,14 @@
 					return;
 				};
 				if (findItem) {
-					/* self.pay.coupon.splice(findItem[0], 1);
+					/* self.pay.coupon.splice(findItem[0], 1);\
+					
 					self.chooseCoupon = []; */
+						console.log('self.pay',self.pay)
 					self.is_show = !self.is_show;
 					self.is_couponShow = !self.is_couponShow;
 					self.countTotalPrice();
-					console.log('self.pay',self.pay)
+					console.log('self.pay1',self.pay)
 					return
 				} else {
 					/* console.log('self.data.price - self.data.couponTotalPrice',self.totalPrice - self.couponTotalPrice);

@@ -1,11 +1,12 @@
 <template>
 	<view>
 		<pageBj></pageBj>
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">关于我们</view>
 			</view>
+		<view class="pageBox">
 			<view class="mx-3">
 				<view class="xqInfor">
 					<view class="cont font-26">

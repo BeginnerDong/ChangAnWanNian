@@ -2,13 +2,13 @@
 	<view>
 		<pageBj></pageBj>
 		
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">核销订单</view>
 			</view>
-			
+			<view class="pageBox">
 			<view class="proRow mx-3">
 				<view class="item mb-3 bg-white">
 					<view class="priList">

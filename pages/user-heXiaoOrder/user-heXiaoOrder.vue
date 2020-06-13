@@ -2,12 +2,13 @@
 	<view>
 		<pageBj></pageBj>
 		
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">核销订单</view>
 			</view>
+			<view class="pageBox">
 			<view class="topNavFix f5bj">
 				<view class="orderNav bg-white d-flex j-sb a-center shadow color6">
 					<view class="tt" :class="current==1?'on':''" @click="change('1')">全部</view>

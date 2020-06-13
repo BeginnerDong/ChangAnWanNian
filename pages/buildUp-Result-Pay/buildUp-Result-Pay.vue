@@ -1,14 +1,14 @@
 <template>
 	<view>
 		<pageBj></pageBj>
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">购买</view>
 			</view>
 			
-			
+		<view class="pageBox">	
 			<view class="px-5 mx-3 text-center" style="margin-top: 180rpx;">
 				<view class="" style="height: 100rpx;" v-if="type==1">
 					<view>查看历史答题解析需要购买</view>

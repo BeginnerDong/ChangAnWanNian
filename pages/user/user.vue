@@ -3,11 +3,12 @@
 		
 		<pageBj></pageBj>
 		 
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">我的</view>
 			</view>
+			<view class="pageBox">
 			<view class="userHead">
 				<view class="infor mx-3">
 					<view class="d-flex a-center mt-3">

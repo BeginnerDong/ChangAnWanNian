@@ -2,7 +2,7 @@
 	<view>
 		<pageBj></pageBj>
 		
-		<view class="page-head d-flex a-center j-center" style="padding-top:{{statusBarHeight}}px">
+		<view class="page-head d-flex a-center j-center">
 			<view class="headBj"></view>
 			<view class="tit">首页</view>
 		</view>

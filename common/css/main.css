@@ -62,10 +62,16 @@ uni-button:after{border: 0;}
 
 /* 页面铺满背景图 */
 .pageBj{width: 100%;height: 100%;position: fixed;left: 0;top: 0;right: 0;bottom:0rpx;z-index: 0;}
-.pageBox{position: fixed; z-index: 1;margin-top: 72px;height: 100%;overflow: scroll;padding-bottom: 160px;width: 100%;}
-.page-head{font-size: 16px;height:72px;text-align: center;position: fixed;left: 0;top: 0;right: 0;z-index: 10;padding-bottom: 7px;padding-top: var(--status-bar-height);}
+.pageBox{position: fixed; z-index: 1;margin-top: 100rpx;height: 100%;overflow: scroll;padding-bottom: 160px;width: 100%;}
+.page-head{font-size: 16px;text-align: center;position: fixed;left: 0;top: 0;right: 0;padding-top: var(--status-bar-height);}
 .page-head .headBj{position: absolute;left: 0;top: 0;right: 0;bottom: 0;z-index: 1;}
-.page-head .tit{position: relative;z-index: 2;}
+.page-head .tit{position: relative;z-index: 2;font-weight: 700;}
 
 /* 顶部返回箭头按钮 */
-.backBtn{width:18rpx;height: 31rpx;position: absolute;top: 70rpx;left: 30rpx; z-index: 5;}
+.backBtn{width:18rpx;height: 31rpx;position: absolute;top: var(--status-bar-height);left: 30rpx; z-index: 5;}
+@media only screen and (min-device-width : 375px) and (max-device-width : 821px) {
+	.backBtn{width:18rpx;height: 31rpx;position: absolute;top:68rpx;left: 30rpx; z-index: 5;}
+  .page-head{font-size: 16px;text-align: center;position: fixed;left: 0;top: 0;right: 0;padding-top: 68rpx;}
+  .pageBox{position: fixed; z-index: 1;margin-top: 140rpx;height: 100%;overflow: scroll;padding-bottom: 160px;width: 100%;}
+}
+

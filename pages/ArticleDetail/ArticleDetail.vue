@@ -1,12 +1,13 @@
 <template>
 	<view>
 		<pageBj></pageBj>
-		<view class="pageBox">
+		
 			<view class="page-head d-flex a-center j-center">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">详情</view>
 			</view>
+		<view class="pageBox">
 			<view class="" v-if="mainData.title">
 				<view class="font-weight font-34 mx-3 ">{{mainData.title}}</view>
 				<view class="d-flex j-end a-center mt-1" @click="Utils.stopMultiClick(clickGood)">
