@@ -3,12 +3,12 @@
 		<pageBj></pageBj>
 		
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">确认订单</view>
 			</view>
-			<view class="pageBox">
+			<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="bg-white boxShaow overflow-h mb-3 mx-3 rounded10 overflow-h">
 				<view style="width: 100%;height: 19rpx;"><image src="../../static/images/zhoumo-img4.png" mode=""></image></view>
 				<view class="px-3 py-3">
@@ -123,6 +123,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -150,7 +151,8 @@
 				},
 				mainData:[],
 				chooseCoupon:[],
-				payCurr:2
+				payCurr:2,
+				statusBar:app.globalData.statusBar
 			}
 		},
 		

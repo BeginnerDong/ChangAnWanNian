@@ -4,12 +4,12 @@
 		<pageBj></pageBj>
 		
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">添加地址</view>
 			</view>
-			<view class="pageBox">
+			<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="myRowBetween mx-3 bg-white rounded10">
 				<view class="item d-flex j-sb a-center">
 					<view class="ll">姓名</view>
@@ -59,7 +59,7 @@
 	// https://github.com/zhetengbiji/mpvue-citypicker
 	import mpvueCityPicker from '../../components/mpvue-citypicker/mpvueCityPicker.vue'
 	import cityData from '../../common/city.data.js';
-
+	const app = getApp();
 	export default {
 		components: {
 			mpvuePicker,
@@ -88,6 +88,7 @@
 				deepLength: 1,
 				pickerValueDefault: [0],
 				pickerValueArray:[],
+				statusBar:app.globalData.statusBar
 				
 			}
 		},

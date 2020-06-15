@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<pageBj></pageBj>
-		
-		<view class="page-head d-flex a-center j-center">
+		<!-- <view  :style="{marginTop:statusBar + 'px'}"></view> -->
+		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
 			<view class="headBj"></view>
 			<view class="tit">首页</view>
 		</view>
-		<view class="pageBox">
+		<view class="pageBox" :style="{top:statusBar + 'px'}">
 				<view>
 					<view class="banner-box px-3">
 						<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="#d2d2d2" indicator-active-color="#dec193">
@@ -96,6 +96,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -105,7 +106,9 @@
 				Router:this.$Router,
 				sliderData:{},
 				mainData:[],
-				statusBarHeight: uni.getSystemInfoSync()['statusBarHeight']
+				statusBar: app.globalData.statusBar,
+				customBar: app.globalData.customBar,
+				custom: app.globalData.custom
 			}
 		},
 		
@@ -113,6 +116,9 @@
 			const self = this;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
 			self.$Utils.loadAll(['getUserInfoData','getSliderData','getMainData'], self);
+			
+			console.log('状态栏高度：',self.statusBar,'----计算得到定义的状态栏高度：',self.customBar)
+			console.log(self.custom,'菜单按钮')
 		},
 		
 		onReachBottom() {

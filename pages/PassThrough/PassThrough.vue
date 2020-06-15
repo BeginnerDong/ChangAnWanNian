@@ -3,12 +3,12 @@
 		<pageBj></pageBj>
 		
 		
-			<view class="page-head d-flex a-center j-center"  :style="'padding-top:'+statusBarHeight+'px'">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">探索穿越</view>
 			</view>
-			<view class="pageBox">
+			<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="px-3">
 				<view class="font-30 font-weight mt-1">唐长安城地图</view>
 				<view class="map mt-2">
@@ -51,6 +51,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -59,8 +60,7 @@
 			return {
 				Router:this.$Router,
 				mainData:[],
-				statusBarHeight:wx.getSystemInfoSync()['statusBarHeight']
-				  
+				statusBar:app.globalData.statusBar
 			}
 		},
 		

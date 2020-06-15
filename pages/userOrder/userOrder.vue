@@ -3,12 +3,12 @@
 		<pageBj></pageBj>
 		
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">我的订单</view>
 			</view>
-			<view class="pageBox">
+			<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="topNavFix f5bj">
 				<view class="orderNav bg-white d-flex j-sb a-center shadow color6">
 					<view class="tt" :class="curr==1?'on':''" @click="changeCurr('1')">全部</view>
@@ -73,6 +73,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -91,7 +92,8 @@
 					thirdapp_id:2,
 					//pay_status:1,
 					type:1
-				}
+				},
+				statusBar:app.globalData.statusBar
 			}
 		},
 		
@@ -267,7 +269,7 @@
 	/* @import "../../assets/style/editInfor.css"; */
 	page{background: #F5F5F5;}
 	
-	.topNavFix{width: 100%;height: 80rpx;position: fixed;top:72px;right: 0;left: 0;box-sizing: border-box;z-index: 22;}
+	.topNavFix{width: 100%;height: 80rpx;position: fixed;right: 0;left: 0;box-sizing: border-box;z-index: 22;}
 	.topNavH{height: 80rpx;}
 	
 	.proRow .item{padding: 0 30rpx;}

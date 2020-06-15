@@ -2,12 +2,12 @@
 	<view>
 		<pageBj></pageBj>
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">宫殿</view>
 			</view>
-		<view class="pageBox">
+		<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view style="width: 100%;height: 450rpx;"><image class="w" src="../../static/images/palaceBox-img2.png" mode="widthFix"></image></view>
 			
 			<!-- 宫城 -->
@@ -70,6 +70,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -80,7 +81,8 @@
 				showView: false,
 				score:'',
 				wx_info:{},
-				nameData:["安兴","光福","永乐","怀贞","崇业","靖善","靖安","宣义","永达","兰陵","安善","丰安","道德","开明","大兴","昌明","光兴","保宁","昌乐","安乐","延祚","安义","安德"]
+				nameData:["安兴","光福","永乐","怀贞","崇业","靖善","靖安","宣义","永达","兰陵","安善","丰安","道德","开明","大兴","昌明","光兴","保宁","昌乐","安乐","延祚","安义","安德"],
+				statusBar:app.globalData.statusBar
 			}
 		},
 		onLoad() {

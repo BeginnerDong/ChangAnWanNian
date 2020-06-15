@@ -4,12 +4,12 @@
 		<pageBj></pageBj>
 		
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">电商文创</view>
 			</view>
-		<view class="pageBox">	
+		<view class="pageBox" :style="{top:statusBar + 'px'}">	
 			<view class="productList d-flex j-sb flex-wrap mx-3">
 				<view class="item rounded10 mb-3" v-for="(item,index) in mainData" :key="index" :data-id="item.id"
 				 @click="Router.navigateTo({route:{path:'/pages/Online-ProListDetail/Online-ProListDetail?id='+$event.currentTarget.dataset.id}})">
@@ -33,6 +33,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -40,7 +41,8 @@
 		data() {
 			return {
 				Router:this.$Router,
-				mainData:[]
+				mainData:[],
+				statusBar:app.globalData.statusBar
 			}
 		},
 		

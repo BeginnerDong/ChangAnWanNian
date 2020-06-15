@@ -3,12 +3,12 @@
 		<pageBj></pageBj>
 		
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">核销订单</view>
 			</view>
-			<view class="pageBox">
+			<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="proRow mx-3">
 				<view class="item mb-3 bg-white">
 					<view class="priList">
@@ -57,6 +57,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -71,7 +72,8 @@
 				curr:1,
 				orderData:1,
 				is_hxEwmShow:false,
-				mainData:{}
+				mainData:{},
+				statusBar:app.globalData.statusBar
 			}
 		},
 		

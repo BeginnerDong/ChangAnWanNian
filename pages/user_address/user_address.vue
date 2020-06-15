@@ -3,12 +3,12 @@
 		<pageBj></pageBj>
 		
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">收货地址</view>
 			</view>
-			<view class="pageBox">
+			<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="myaddress-lis bg-white rounded10 overflow-h mx-3 mb-3" v-for="(item,index) in mainData" :key="index">
 				<view class="name" @click="choose(index)">{{item.name}}<view class="numb">{{item.phone}}</view></view>
 				<view class="adrs">{{item.city+item.detail}}</view>
@@ -34,6 +34,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -42,7 +43,8 @@
 			return {
 				mainData: [],
 				Router: this.$Router,
-				choosedIndex: -1
+				choosedIndex: -1,
+				statusBar:app.globalData.statusBar
 			}
 		},
 

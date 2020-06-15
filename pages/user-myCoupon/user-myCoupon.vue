@@ -2,12 +2,12 @@
 	<view>
 		<pageBj></pageBj>
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">优惠券</view>
 			</view>
-			<view class="pageBox">
+			<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class=" tooling_indNav color6 mx-3">
 				<view class="list rounded50 d-flex text-center j-sb bg-white shadow-sm">
 					<view class="tt" :class="curr==1?'on':''" @click="currChange('1')">未使用</view>
@@ -40,6 +40,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -58,7 +59,8 @@
 					thirdapp_id:2,
 					use_step:1,
 					pay_status:1
-				}
+				},
+				statusBar:app.globalData.statusBar
 			}
 		},
 		onLoad(options) {
@@ -120,7 +122,7 @@
 	@import "../../assets/style/orderNav.css";
 	
 	
-	.tooling_indNav{position: fixed;top:72px;right: 0;left: 0;z-index: 12;}
+	.tooling_indNav{position: fixed;right: 0;left: 0;z-index: 12;}
 	.tooling_indNavH{height: 70rpx;}
 	
 	.integral .item{width: 100%;height: 220rpx;}

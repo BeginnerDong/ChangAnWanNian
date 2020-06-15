@@ -3,12 +3,12 @@
 		<pageBj></pageBj>
 		
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
-				<view class="tit">我的</view>
+				<view class="tit">余额充值</view>
 			</view>
-		<view class="pageBox">
+		<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="myHead text-center d-flex a-center flex-column">
 				<view class="mny font-weight">{{balance}}</view>
 				<view class="d-flex a-center font-26 mt-2"><image style="width:36rpx; height: 36rpx;margin-right: 10rpx;" src="../../static/images/about-img2.png" mode=""></image>余额(元)</view>
@@ -38,6 +38,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -51,7 +52,8 @@
 				specsList:[],
 				curr:0,
 				balance:0,
-				price:0
+				price:0,
+				statusBar:app.globalData.statusBar
 			}
 		},
 		

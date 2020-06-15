@@ -2,13 +2,13 @@
 	<view>
 		<pageBj></pageBj>
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">结果</view>
 			</view>
 			
-		<view class="pageBox">	
+		<view class="pageBox" :style="{top:statusBar + 'px'}">	
 			<view class="mx-3 rankingBox">
 				<view class="item d-flex a-center j-sb py-3" v-for="(item,index) in mainData" :key="index">
 					<view class="ll d-flex a-center">
@@ -34,6 +34,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -45,7 +46,8 @@
 				score:'',
 				wx_info:{},
 				rankingData:5,
-				mainData:[]
+				mainData:[],
+				status:app.globalData.statusBar
 			}
 		},
 		

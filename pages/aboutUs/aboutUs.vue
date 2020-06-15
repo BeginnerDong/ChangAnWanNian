@@ -2,11 +2,11 @@
 	<view>
 		<pageBj></pageBj>
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">关于我们</view>
 			</view>
-		<view class="pageBox">
+		<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="mx-3">
 				<view class="xqInfor">
 					<view class="cont font-26">
@@ -45,6 +45,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -52,7 +53,8 @@
 		data() {
 			return {
 				Router:this.$Router,
-				mainData:{}
+				mainData:{},
+				statusBar: app.globalData.statusBar,
 			}
 		},
 		

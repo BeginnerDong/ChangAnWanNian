@@ -4,11 +4,11 @@
 		<pageBj></pageBj>
 		 
 		
-			<view class="page-head d-flex a-center j-center">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">我的</view>
 			</view>
-			<view class="pageBox">
+			<view class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="userHead">
 				<view class="infor mx-3">
 					<view class="d-flex a-center mt-3">
@@ -153,6 +153,7 @@
 
 <script>
 	import pageBj from 'components/pageBj/pageBj';
+	const app = getApp();
 	export default {
 		components: {
 			pageBj
@@ -163,7 +164,8 @@
 				Utils:this.$Utils,
 				userInfoData:{},
 				isMember:false,
-				yb:0
+				yb:0,
+				statusBar:app.globalData.statusBar
 			}
 		},
 		
