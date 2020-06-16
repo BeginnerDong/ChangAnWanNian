@@ -1,56 +1,60 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-
-		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
-			<view class="backBtn" @click="Router.back(1)">
-				<image src="../../static/images/back-icon.png" mode=""></image>
+		
+		<view class="Box">
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
+				<view class="backBtn" @click="Router.back(1)">
+					<image src="../../static/images/back-icon.png" mode=""></image>
+				</view>
+				<view class="tit">会员卡</view>
 			</view>
-			<view class="headBj">
-				<image src="../../static/images/head-img.png" mode=""></image>
-			</view>
-			<view class="tit">会员卡</view>
-		</view>
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
-			<view class="px-3 mt-5">
-				<view class="vipCard text-center position-relative">
-					<view class="position-absoluteXY">
-						<image src="../../static/images/vip-img.png" mode=""></image>
-					</view>
-					<view class="position-relative" style="z-index: 2;">
-						<view class="text-white font-weight" style="font-size: 52rpx; padding: 110rpx 0 100rpx 0;">月卡</view>
-						<view class="d-flex j-center">
-							<view class="price font-30 font-weight d-flex a-center">
-								<view style="width: 36rpx;height: 36rpx;">
-									<image src="../../static/images/about-img2.png" mode=""></image>
+			<view class="pagebox":style="{marginTop:statusBar*2 + 'px'}">
+				<view class="px-3 mt-5">
+					<view class="vipCard text-center position-relative">
+						<view class="position-absoluteXY">
+							<image src="../../static/images/vip-img.png" mode=""></image>
+						</view>
+						<view class="position-relative" style="z-index: 2;">
+							<view class="text-white font-weight" style="font-size: 52rpx; padding: 110rpx 0 100rpx 0;">月卡</view>
+							<view class="d-flex j-center">
+								<view class="price font-30 font-weight d-flex a-center">
+									<view style="width: 36rpx;height: 36rpx;">
+										<image src="../../static/images/about-img2.png" mode=""></image>
+									</view>
+									<view class="ml-1 font-36">{{price}}</view>
 								</view>
-								<view class="ml-1 font-36">{{price}}</view>
 							</view>
 						</view>
+			
 					</view>
-
-				</view>
-
-				<view class="font-weight font-30 mt-2">会员权益：</view>
-				<view class="xqInfor pt-1">
-					<view class="cont font-26">
-						<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
+			
+					<view class="font-weight font-30 mt-2">会员权益：</view>
+					<view class="xqInfor pt-1">
+						<view class="cont font-26">
+							<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
+							</view>
+							<view>hbaisdhwiuhwubcwbv</view>
+							<view>hbaisdhwiuhwubcwbv</view>
+							<view>hbaisdhwiuhwubcwbv</view>
+							<view>hbaisdhwiuhwubcwbv</view>
 						</view>
 					</view>
 				</view>
-			</view>
-
-			<view class="submitbtn pdtb15" style="margin-top: 80rpx;">
-				<button class="btn" type="button" open-type="getUserInfo" @getuserinfo="Utils.stopMultiClick(submit)">
-					<view class="btnBj">
-						<image src="../../static/images/buttonl-icon.png" mode=""></image>
-					</view>
-					<view class="btnTit">购买</view>
-				</button>
-			</view>
 			
-			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view>
+				<view class="submitbtn pdtb15" style="margin-top: 80rpx;">
+					<button class="btn" type="button" open-type="getUserInfo" @getuserinfo="Utils.stopMultiClick(submit)">
+						<view class="btnBj">
+							<image src="../../static/images/buttonl-icon.png" mode=""></image>
+						</view>
+						<view class="btnTit">购买</view>
+					</button>
+				</view>
+				
+				<view style="height: 260rpx;width: 100%;"></view>
+			</view>
+		</view>
+		
 	</view>
 </template>
 
@@ -226,7 +230,7 @@
 	@import "../../assets/style/detail.css";
 
 	page {
-		padding-bottom: 40rpx;
+		height: 100%;
 	}
 
 	.vipCard {
@@ -234,4 +238,8 @@
 		height: 688rpx;
 		margin: 0 auto;
 	}
+	
+	.Box{height: 100%;display: flex; flex-direction: column;}
+	.page-head{position: absolute;}
+	.pagebox{position: relative;width: 100%;flex: 1;overflow-y: auto;}
 </style>
