@@ -1,14 +1,18 @@
 <template>
 	<view>
 		<pageBj></pageBj>
-		
-		
-			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
-				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
-				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
-				<view class="tit">核销订单</view>
+
+
+		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
+			<view class="backBtn" @click="Router.back(1)">
+				<image src="../../static/images/back-icon.png" mode=""></image>
 			</view>
-			<view class="pageBox" :style="{top:statusBar + 'px'}">
+			<view class="headBj">
+				<image src="../../static/images/head-img.png" mode=""></image>
+			</view>
+			<view class="tit">核销订单</view>
+		</view>
+		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="proRow mx-3">
 				<view class="item mb-3 bg-white">
 					<view class="priList">
@@ -20,13 +24,16 @@
 						<view class="d-flex a-center j-sb">
 							<view class="pic">
 								<image :src="mainData.orderItem&&mainData.orderItem[0]&&mainData.orderItem[0].snap_product&&mainData.orderItem[0].snap_product&&
-								mainData.orderItem[0].snap_product.mainImg&&mainData.orderItem[0].snap_product.mainImg[0]?mainData.orderItem[0].snap_product.mainImg[0].url:''" mode=""></image>
+								mainData.orderItem[0].snap_product.mainImg&&mainData.orderItem[0].snap_product.mainImg[0]?mainData.orderItem[0].snap_product.mainImg[0].url:''"
+								 mode=""></image>
 							</view>
 							<view class="infor">
 								<view class="tit avoidOverflow2">{{mainData.title}}</view>
 								<view class="B-price d-flex a-center j-sb">
 									<view class="price font-30 font-weight mt-2 d-flex a-center">
-										<view class="priceIcon"><image src="../../static/images/about-img2.png" mode=""></image></view>
+										<view class="priceIcon">
+											<image src="../../static/images/about-img2.png" mode=""></image>
+										</view>
 										<view>{{mainData.price}}</view>
 									</view>
 									<view class="font-26">×{{mainData.count}}</view>
@@ -43,15 +50,17 @@
 					</view>
 				</view>
 			</view>
-			
-			<view class="submitbtn pdtb15"  style="margin-top:100rpx;">
+
+			<view class="submitbtn pdtb15" style="margin-top:100rpx;">
 				<button class="btn" type="button" v-if="mainData.transport_status==0" @click="orderUpdate(mainData.id)">
-					<view class="btnBj"><image src="../../static/images/buttonl-icon.png" mode=""></image></view>
+					<view class="btnBj">
+						<image src="../../static/images/buttonl-icon.png" mode=""></image>
+					</view>
 					<view class="btnTit">确认</view>
 				</button>
 			</view>
-			
-		</view>	
+
+		</scroll-view>
 	</view>
 </template>
 
@@ -64,36 +73,36 @@
 		},
 		data() {
 			return {
-				Router:this.$Router,
+				Router: this.$Router,
 				showView: false,
-				score:'',
-				wx_info:{},
-				is_show:false,
-				curr:1,
-				orderData:1,
-				is_hxEwmShow:false,
-				mainData:{},
-				statusBar:app.globalData.statusBar
+				score: '',
+				wx_info: {},
+				is_show: false,
+				curr: 1,
+				orderData: 1,
+				is_hxEwmShow: false,
+				mainData: {},
+				statusBar: app.globalData.statusBar
 			}
 		},
-		
+
 		onLoad(options) {
 			const self = this;
 			self.id = options.id;
 			self.$Utils.loadAll(['getMainData'], self);
 		},
-		
+
 		methods: {
-			
+
 			getMainData() {
 				const self = this;
 				const postData = {};
 				postData.tokenFuncName = 'getMerchantToken';
 				postData.searchItem = {
-					id:self.id,
-					user_type:0
+					id: self.id,
+					user_type: 0
 				};
-				
+
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData = res.info.data[0];
@@ -103,58 +112,72 @@
 				};
 				self.$apis.orderGet(postData, callback);
 			},
-			
+
 			orderUpdate(id) {
 				const self = this;
 				uni.setStorageSync('canClick', false);
 				uni.showModal({
-				    title: '提示',
-				    content: '确定要核销此订单吗',
-					confirmColor:'#db1b1b',
-				    success: function (res) {
-				        if (res.confirm) {
-				            const postData = {};
-				            postData.tokenFuncName = 'getMerchantToken';
-				            postData.data = {
-				            	transport_status:2
-				            };
-				            postData.searchItem = {
-				            	id:id,
-				            	user_type:0
-				            };
-				            const callback = (data) => {
-				            	uni.setStorageSync('canClick', true);
-				            	if (data && data.solely_code == 100000) {
-				            		self.$Utils.showToast('操作成功','none');
-				            		
-				            		setTimeout(function() {
-				            			uni.navigateBack({
-				            				delta:1
-				            			})
-				            		}, 1000);
-				            	} else {
-				            		self.$Utils.showToast(data.msg,'none')
-				            	}
-				            };
-				            self.$apis.orderUpdate(postData, callback);
-				        } else if (res.cancel) {
-			
-				        }
-				    }
+					title: '提示',
+					content: '确定要核销此订单吗',
+					confirmColor: '#db1b1b',
+					success: function(res) {
+						if (res.confirm) {
+							const postData = {};
+							postData.tokenFuncName = 'getMerchantToken';
+							postData.data = {
+								transport_status: 2
+							};
+							postData.searchItem = {
+								id: id,
+								user_type: 0
+							};
+							const callback = (data) => {
+								uni.setStorageSync('canClick', true);
+								if (data && data.solely_code == 100000) {
+									self.$Utils.showToast('操作成功', 'none');
+
+									setTimeout(function() {
+										uni.navigateBack({
+											delta: 1
+										})
+									}, 1000);
+								} else {
+									self.$Utils.showToast(data.msg, 'none')
+								}
+							};
+							self.$apis.orderUpdate(postData, callback);
+						} else if (res.cancel) {
+
+						}
+					}
 				});
-				
-			 },
+
+			},
 		}
 	};
 </script>
 
 <style>
 	@import "../../assets/style/proRow.css";
-	page{background: #F5F5F5;}
-	
-	.proRow .item{padding: 0 30rpx;}
-	.proRow .item .priList{padding: 30rpx 0;border-top: 1px solid #eee;}
-	.proRow .item .priList:first-child{border-top: 0;}	
-	.orderNav .tt.on::after{bottom: 0;}
-	
+
+	page {
+		background: #F5F5F5;
+	}
+
+	.proRow .item {
+		padding: 0 30rpx;
+	}
+
+	.proRow .item .priList {
+		padding: 30rpx 0;
+		border-top: 1px solid #eee;
+	}
+
+	.proRow .item .priList:first-child {
+		border-top: 0;
+	}
+
+	.orderNav .tt.on::after {
+		bottom: 0;
+	}
 </style>

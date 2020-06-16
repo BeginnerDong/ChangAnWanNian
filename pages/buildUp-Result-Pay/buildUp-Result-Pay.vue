@@ -8,7 +8,7 @@
 				<view class="tit">购买</view>
 			</view>
 			
-		<view class="pageBox" :style="{top:statusBar + 'px'}">	
+		<view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">	
 			<view class="px-5 mx-3 text-center" style="margin-top: 180rpx;">
 				<view class="" style="height: 100rpx;" v-if="type==1">
 					<view>查看历史答题解析需要购买</view>
@@ -101,12 +101,12 @@
 				postData.tokenFuncName = 'getProjectToken';
 				postData.noLoading = true;
 				postData.type = 0;
-				
+				postData.free = 1;
 				if(parseFloat(self.price)>0){
-					postData.free = 0
+
 					postData.num = self.num
 				}else{
-					postData.free = 1;
+					
 					if(self.isMember){
 						postData.num = self.num
 					}else{
@@ -163,18 +163,8 @@
 				postData.tokenFuncName = 'getProjectToken';
 				postData.noLoading = true;
 				postData.type = 0;
-				
-				if(parseFloat(self.price)>0){
-					postData.free = 0
-					postData.num = self.num
-				}else{
-					postData.free = 1;
-					if(self.isMember){
-						postData.num = self.num
-					}else{
-						postData.num = 5
-					}	
-				};
+				postData.free = 0;
+				postData.num = self.num;
 				var callback = function(res) {
 					if(res.solely_code==100000){
 						if (res.info.data&&res.info.data.length > 0 && res.info.data[0]) {
@@ -203,11 +193,11 @@
 					type:1,
 					subject_array:self.idArray,
 				};
-				if(parseFloat(self.price)>0){
-					postData.data.free = 0
-				}else{
+				if(self.canTodayFree){
 					postData.data.free = 1
-				}
+				}else{
+					postData.data.free = 0
+				};
 				var callback = function(res) {
 					if (res && res.solely_code == 100000&&res.info.id) {
 						self.sheetAdd(res.info.id)

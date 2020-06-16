@@ -1,56 +1,62 @@
 <template>
 	<view>
-		
+
 		<pageBj></pageBj>
-		
-		
-			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
-				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
-				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
-				<view class="tit">添加地址</view>
+
+
+		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
+			<view class="backBtn" @click="Router.back(1)">
+				<image src="../../static/images/back-icon.png" mode=""></image>
 			</view>
-			<view class="pageBox" :style="{top:statusBar + 'px'}">
+			<view class="headBj">
+				<image src="../../static/images/head-img.png" mode=""></image>
+			</view>
+			<view class="tit">添加地址</view>
+		</view>
+		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="myRowBetween mx-3 bg-white rounded10">
 				<view class="item d-flex j-sb a-center">
 					<view class="ll">姓名</view>
 					<view class="rr fs13">
 						<input type="text" v-model="submitData.name" placeholder="请写姓名" placeholder-class="placeholder">
 					</view>
-				</view>	
+				</view>
 				<view class="item d-flex j-sb a-center">
 					<view class="ll">手机号</view>
-					<view class="rr fs13" >
+					<view class="rr fs13">
 						<input type="number" v-model="submitData.phone" placeholder="请写手机号" placeholder-class="placeholder">
 					</view>
-				</view>	
+				</view>
 				<view class="item d-flex j-sb a-center">
 					<view class="ll">所在地区</view>
 					<view class="rr fs13 color9" @click="chooseAddress()">
-						<input type="text" placeholder="选择您的位置" disabled="true"   v-model="submitData.city">
+						<input type="text" placeholder="选择您的位置" disabled="true" v-model="submitData.city">
 						<image class="arrowR" src="../../static/images/the-orderl-icon.png" mode=""></image>
 					</view>
-				</view>	
+				</view>
 				<view class="item d-flex j-sb a-center">
 					<view class="ll">详细地址</view>
-					<view class="rr fs13" >
+					<view class="rr fs13">
 						<input type="text" v-model="submitData.detail" placeholder="请填写" placeholder-class="placeholder">
 					</view>
-				</view>	
+				</view>
 				<view class="item d-flex j-sb a-center">
 					<view class="ll">设为默认地址</view>
 					<view class="rr">
 						<switch style="transform:scale(0.75);" @change="choose" :checked="submitData.isdefault==1?true:false" color="#d0b487" />
 					</view>
-				</view>	
-				
+				</view>
+
 			</view>
-			<view class="submitbtn pdtb15"  style="margin-top: 200rpx;">
-				<button class="btn" type="button"  @click="Utils.stopMultiClick(submit)">
-					<view class="btnBj"><image src="../../static/images/buttonl-icon.png" mode=""></image></view>
+			<view class="submitbtn pdtb15" style="margin-top: 200rpx;">
+				<button class="btn" type="button" @click="Utils.stopMultiClick(submit)">
+					<view class="btnBj">
+						<image src="../../static/images/buttonl-icon.png" mode=""></image>
+					</view>
 					<view class="btnTit">新增</view>
 				</button>
 			</view>
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -65,176 +71,176 @@
 			mpvuePicker,
 			mpvueCityPicker
 		},
-		
-		
+
+
 		data() {
 			return {
-				Router:this.$Router,
+				Router: this.$Router,
 				submitData: {
 					name: '',
-					city:'',
+					city: '',
 					detail: '',
-					phone:'',
-					isdefault:0,
-					latitude:'',
-					longitude:''
+					phone: '',
+					isdefault: 0,
+					latitude: '',
+					longitude: ''
 				},
-				
+
 				mulLinkageTwoPicker: cityData,
 				cityPickerValueDefault: [0, 0, 0],
 				themeColor: '#F98A48',
-				Utils:this.$Utils,
+				Utils: this.$Utils,
 				mode: '',
 				deepLength: 1,
 				pickerValueDefault: [0],
-				pickerValueArray:[],
-				statusBar:app.globalData.statusBar
-				
+				pickerValueArray: [],
+				statusBar: app.globalData.statusBar
+
 			}
 		},
 		onLoad(options) {
 			const self = this;
-			if(options.id){
+			if (options.id) {
 				self.id = options.id;
-				var res = self.$Token.getProjectToken(function(){
+				var res = self.$Token.getProjectToken(function() {
 					self.$Utils.loadAll(['getMainData'], self)
 				});
-				if(res){
+				if (res) {
 					self.$Utils.loadAll(['getMainData'], self)
 				};
 			}
 		},
-		
+
 		methods: {
-			
-			
-			
+
+
+
 			chooseAddress(e) {
 				const self = this;
 				uni.authorize({
-				    scope: 'scope.userLocation',
-				    success() {
-				        uni.chooseLocation({
-				        	success: (res) => {
-				        		console.log(res)
-				        		self.submitData.city = res.name;
-				        		self.submitData.longitude = res.longitude;
+					scope: 'scope.userLocation',
+					success() {
+						uni.chooseLocation({
+							success: (res) => {
+								console.log(res)
+								self.submitData.city = res.name;
+								self.submitData.longitude = res.longitude;
 								self.submitData.latitude = res.latitude;
-				        	},
-				        	fail: (e) => {
-				        		uni.getSetting({
-				        			success: (res) => {
-				        				console.log(res)
-				        				let locaAuth = res.authSetting['scope.userLocation']
-				        				if (locaAuth) {/* 判断位置是否已经授权，是选择地图位置点击取消触发的fail，再选择位置 */
-				        					console.log('地图点击取消')
-				        					uni.chooseLocation({
-				        						success: (res) => {
-				        							self.submitData.city = res.name;
-				        							self.submitData.longitude = res.longitude;
-				        							self.submitData.latitude = res.latitude;
-				        						},
-				        					});
-				        				}
-				        				if (!locaAuth) { /* 如果地理位置没授权 */
-				        					console.log(222)
-				        					uni.showModal({
-				        					    title: '提示',
-				        					    content: '需要授权位置信息',
-				        						confirmColor:'#FC73AA',
-				        						showCancel:true,
-				        					    success: function (res) {
-				        					        if (res.confirm) {
-				        					            uni.openSetting({
-				        					            	success: (res) => {
-				        					            		console.log(res.authSetting)
-				        					            	},
-				        					            	fail: (res) => {
-				        					            		console.log(res)
-				        					            	},
-				        					            });
-				        					        } else if (res.cancel) {
-				        					           
-				        					        }
-				        					    }
-				        					});			
-				        					
-				        				
-				        				}
-				        			}
-				        		})
-				        	}
-				        });
-				    },
+							},
+							fail: (e) => {
+								uni.getSetting({
+									success: (res) => {
+										console.log(res)
+										let locaAuth = res.authSetting['scope.userLocation']
+										if (locaAuth) { /* 判断位置是否已经授权，是选择地图位置点击取消触发的fail，再选择位置 */
+											console.log('地图点击取消')
+											uni.chooseLocation({
+												success: (res) => {
+													self.submitData.city = res.name;
+													self.submitData.longitude = res.longitude;
+													self.submitData.latitude = res.latitude;
+												},
+											});
+										}
+										if (!locaAuth) { /* 如果地理位置没授权 */
+											console.log(222)
+											uni.showModal({
+												title: '提示',
+												content: '需要授权位置信息',
+												confirmColor: '#FC73AA',
+												showCancel: true,
+												success: function(res) {
+													if (res.confirm) {
+														uni.openSetting({
+															success: (res) => {
+																console.log(res.authSetting)
+															},
+															fail: (res) => {
+																console.log(res)
+															},
+														});
+													} else if (res.cancel) {
+
+													}
+												}
+											});
+
+
+										}
+									}
+								})
+							}
+						});
+					},
 					fail: (e) => {
 						uni.showModal({
-						    title: '提示',
-						    content: '需要授权位置信息',
-							confirmColor:'#FC73AA',
-							showCancel:true,
-						    success: function (res) {
-						        if (res.confirm) {
-						            uni.openSetting({
-						            	success: (res) => {
-						            		console.log(res.authSetting)
-						            	},
-						            	fail: (res) => {
-						            		console.log(res)
-						            	},
-						            });
-						        } else if (res.cancel) {
-						           
-						        }
-						    }
+							title: '提示',
+							content: '需要授权位置信息',
+							confirmColor: '#FC73AA',
+							showCancel: true,
+							success: function(res) {
+								if (res.confirm) {
+									uni.openSetting({
+										success: (res) => {
+											console.log(res.authSetting)
+										},
+										fail: (res) => {
+											console.log(res)
+										},
+									});
+								} else if (res.cancel) {
+
+								}
+							}
 						});
 					}
 				})
-				
+
 			},
-			
-			
-			chooseLocation(){
-				
+
+
+			chooseLocation() {
+
 				const self = this;
 				uni.chooseLocation({
-				    success: function (res) {
-				        console.log('位置名称：' + res.name);
-				        console.log('详细地址：' + res.address);
-				        console.log('纬度：' + res.latitude);
-				        console.log('经度：' + res.longitude);
+					success: function(res) {
+						console.log('位置名称：' + res.name);
+						console.log('详细地址：' + res.address);
+						console.log('纬度：' + res.latitude);
+						console.log('经度：' + res.longitude);
 						self.submitData.detail = res.address;
 						self.submitData.longitude = res.longitude;
-						self.submitData.latitude  = res.latitude;
-				    },
+						self.submitData.latitude = res.latitude;
+					},
 					fail() {
 						uni.authorize({
-						    scope: 'scope.userLocation',
-						    success() {
-						      uni.chooseLocation({
-						          success: function (res) {
-						              console.log('位置名称：' + res.name);
-						              console.log('详细地址：' + res.address);
-						              console.log('纬度：' + res.latitude);
-						              console.log('经度：' + res.longitude);
+							scope: 'scope.userLocation',
+							success() {
+								uni.chooseLocation({
+									success: function(res) {
+										console.log('位置名称：' + res.name);
+										console.log('详细地址：' + res.address);
+										console.log('纬度：' + res.latitude);
+										console.log('经度：' + res.longitude);
 										self.submitData.detail = res.address;
 										self.submitData.longitude = res.longitude;
-										self.submitData.latitude  = res.latitude;
-			
-						          },
+										self.submitData.latitude = res.latitude;
+
+									},
 								})
-						    }
+							}
 						})
 					}
 				});
 			},
-			
-			
-			
+
+
+
 			choose(e) {
 				const self = this;
-				if(e.target.value){
+				if (e.target.value) {
 					self.submitData.isdefault = 1
-				}else{
+				} else {
 					self.submitData.isdefault = 0
 				}
 				console.log('switch2 发生 change 事件，携带值为', e.target.value)
@@ -277,16 +283,16 @@
 				const callback = (data) => {
 					uni.setStorageSync('canClick', true);
 					if (data && data.solely_code == 100000) {
-						self.$Utils.showToast('修改成功','success');
+						self.$Utils.showToast('修改成功', 'success');
 						setTimeout(function() {
 							uni.navigateBack({
-								delta:1
+								delta: 1
 							})
 						}, 1000);
 					} else {
-						self.$Utils.showToast(data.msg,'error')
+						self.$Utils.showToast(data.msg, 'error')
 					};
-					
+
 				};
 				self.$apis.addressUpdate(postData, callback);
 			},
@@ -304,16 +310,16 @@
 				const callback = (data) => {
 					uni.setStorageSync('canClick', true);
 					if (data && data.solely_code == 100000) {
-						self.$Utils.showToast('添加成功','success');
+						self.$Utils.showToast('添加成功', 'success');
 						setTimeout(function() {
 							uni.navigateBack({
-								delta:1
+								delta: 1
 							})
 						}, 1000);
 					} else {
-						self.$Utils.showToast(data.msg,'success')
+						self.$Utils.showToast(data.msg, 'success')
 					}
-					
+
 				};
 				self.$apis.addressAdd(postData, callback);
 			},
@@ -321,11 +327,11 @@
 
 			submit() {
 				const self = this;
-				
+
 				var newObject = self.$Utils.cloneForm(self.submitData);
 				delete newObject.default;
 				const pass = self.$Utils.checkComplete(newObject);
-				
+
 				console.log('self.data.sForm', self.submitData)
 				console.log('pass', pass)
 				if (pass) {
@@ -342,10 +348,10 @@
 						self.addressAdd();
 					}
 
-			
+
 				} else {
 					uni.setStorageSync('canClick', true);
-					self.$Utils.showToast('请补全信息','success');
+					self.$Utils.showToast('请补全信息', 'success');
 				};
 			},
 
@@ -355,5 +361,8 @@
 
 <style>
 	@import "../../assets/style/editInfor.css";
-	.myRowBetween .item{padding:30rpx 4%}
+
+	.myRowBetween .item {
+		padding: 30rpx 4%
+	}
 </style>

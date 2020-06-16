@@ -8,7 +8,7 @@
 				<view class="tit">答题</view>
 			</view>
 			
-		<view class="pageBox" :style="{top:statusBar + 'px'}">	
+		<view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">	
 			<view class="d-flex j-center a-center" style="margin-top: 80rpx;">
 				<view class="answerTime position-relative text-center">
 					<view class="position-absoluteXY"><image src="../../static/images/anti-img.png" mode=""></image></view>
@@ -58,7 +58,7 @@
 					<view class="btnBj" v-if="chooseIndex==index&&chooseIndex!=rightIndex"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
 					<view class="btnBj" v-if="chooseIndex!=index&&index!=rightIndex"><image src="../../static/images/anti-icon.png" mode=""></image></view>
 					<view class="btnBj" v-if="index==rightIndex"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
-					<view class="btnTit color2">{{item.option}}</view>
+					<view class="btnTit color2" style="z-index: 999;">{{item.option}}</view>
 					<view class="seltIconR rightIcon" v-if="index==rightIndex"><image src="../../static/images/anti-icon3.png" mode=""></image></view>
 				</button>
 			</view>
@@ -71,14 +71,14 @@
 						<view class="btnBj" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
 						<view class="btnBj" v-if="!hasResult||(hasResult&&Utils.inArray(index,chooseArray)<0&&Utils.inArray(index,rightArray)<0)"><image src="../../static/images/anti-icon.png" mode=""></image></view>
 						<view class="btnBj" v-if="hasResult&&Utils.inArray(index,rightArray)>=0"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
-						<view class="btnTit color2" :class="Utils.inArray(index,chooseArray)>=0?'colorRed':''">{{item.option}}</view>
+						<view class="btnTit color2" style="z-index: 999;" :class="Utils.inArray(index,chooseArray)>=0?'colorRed':''">{{item.option}}</view>
 						<view class="seltIconR rightIcon" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)>=0"><image src="../../static/images/anti-icon3.png" mode=""></image></view>
 					</button>
 				</view>
 				<view class="submitbtn mt-5 pt-3" v-if="!hasResult">
 					<button class="btn" type="button" @click="dxConfirm">
 						<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-						<view class="btnTit">确定</view>
+						<view class="btnTit" style="z-index: 999;">确定</view>
 					</button>
 				</view>
 			</view>
@@ -111,7 +111,7 @@
 				<view class="submitbtn mt-5" v-if="!hasResult">
 					<button class="btn mb-3"  type="button" @click="tkConfirm" >
 						<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-						<view class="btnTit">确定</view>
+						<view class="btnTit" style="z-index: 999;">确定</view>
 					</button>
 				</view>
 			</view>
@@ -127,7 +127,7 @@
 				<view class="submitbtn pt-5 mt-3" v-if="!hasResult">
 					<button class="btn mb-3" type="button" @click="xzConfirm()" >
 						<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-						<view class="btnTit">确定</view>
+						<view class="btnTit" style="z-index: 999;">确定</view>
 					</button>
 				</view>
 			</view>
@@ -160,6 +160,7 @@
 					<view class="btnTit">下一题</view>
 				</button>
 			</view> -->
+			<view style="height: 260rpx;width: 100%;"></view>
 		</view>
 	</view>
 </template>

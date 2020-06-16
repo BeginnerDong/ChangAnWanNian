@@ -2,21 +2,21 @@
 	<view>
 		<pageBj></pageBj>
 		
-			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
-				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
-				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
-				<view class="tit">积分流水</view>
-			</view>
-			<view class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
+			<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
+			<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
+			<view class="tit">积分流水</view>
+		</view>
+		<scroll-view scroll-y="true" class="pageBox" @scrolltolower="Bottom"  :style="{top:statusBar + 'px'}">
 			<view class="myExtendTop text-center d-flex a-center flex-column  px-3">
 				<view class="money font-weight">{{userInfoData.score}}</view>
 				<view class="fs13 pdt10 d-flex j-center a-center mt-3"><image class="mr-1" style="width: 34rpx;height: 34rpx;" src="../../static/images/racel-icon1.png" mode=""></image>积分(个)</view>
 			</view>
-			
-			<view class="f5Bj-H20">
+		
+			<view class="f5Bj-H20"> 
 				<image src="../../static/images/home-icon4.png" mode=""></image>
 			</view>
-			
+		
 			<view class="">
 				<view class="myRowBetween mx-3" >
 					<view class="item d-flex j-sb a-center border-bottom" v-for="(item,index) in mainData" :key="index">
@@ -29,7 +29,8 @@
 				</view>
 				
 			</view>
-		</view>
+			<view style="height: 260rpx;width: 100%;"></view>
+		</scroll-view >
 	</view>
 </template>
 
@@ -60,16 +61,18 @@
 			self.$Utils.loadAll(['getMainData','getUserInfoData'], self);
 		},
 		
-		onReachBottom() {
-			console.log('onReachBottom')
-			const self = this;
-			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
-				self.paginate.currentPage++;
-				self.getMainData()
-			};
-		},
+		
 		
 		methods: {
+			
+			Bottom() {
+				console.log('onReachBottom')
+				const self = this;
+				if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+					self.paginate.currentPage++;
+					self.getMainData()
+				};
+			},
 			
 			getUserInfoData() {
 				const self = this;

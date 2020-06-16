@@ -8,7 +8,7 @@
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">确认订单</view>
 			</view>
-		<view class="pageBox" :style="{top:statusBar + 'px'}">
+		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="bg-white boxShaow overflow-h mb-3 mx-3 rounded10 overflow-h">
 				<view style="width: 100%;height: 19rpx;"><image src="../../static/images/zhoumo-img4.png" mode=""></image></view>
 				<view class="px-3 py-3">
@@ -114,7 +114,7 @@
 				</view>
 			</view>
 			
-		</view>
+		</scroll-view>
 	</view>
 </template>
 

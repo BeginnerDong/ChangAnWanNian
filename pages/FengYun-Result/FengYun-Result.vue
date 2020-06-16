@@ -8,7 +8,7 @@
 				<view class="tit">结果</view>
 			</view>
 			
-		<view class="pageBox" :style="{top:statusBar + 'px'}">
+		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="d-flex j-center a-center" style="margin-top: 150rpx;">
 				<view class="Dossier position-relative d-flex j-center a-center">
 					<view class="position-absoluteXY"><image src="../../static/images/the-results-ofl-icon6.png" mode=""></image></view>
@@ -37,7 +37,7 @@
 				</button>
 			</view>
 			
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -62,6 +62,20 @@
 			self.score = uni.getStorageSync('score');
 			self.time = uni.getStorageSync('time');
 			self.$Utils.loadAll(['getUserInfoData'], self);
+		},
+		
+		onUnload() {
+			uni.removeStorageSync('subjectData');
+			uni.removeStorageSync('setId');
+			uni.removeStorageSync('sheetId');
+			uni.removeStorageSync('score');
+		},
+		
+		onHide() {
+			uni.removeStorageSync('subjectData');
+			uni.removeStorageSync('setId');
+			uni.removeStorageSync('sheetId');
+			uni.removeStorageSync('score');
 		},
 		
 		methods: {

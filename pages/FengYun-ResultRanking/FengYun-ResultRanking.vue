@@ -8,7 +8,7 @@
 				<view class="tit">结果</view>
 			</view>
 			
-		<view class="pageBox" :style="{top:statusBar + 'px'}">	
+		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">	
 			<view class="mx-3 rankingBox">
 				<view class="item d-flex a-center j-sb py-3" v-for="(item,index) in mainData" :key="index">
 					<view class="ll d-flex a-center">
@@ -28,7 +28,7 @@
 			
 			
 			
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -47,7 +47,7 @@
 				wx_info:{},
 				rankingData:5,
 				mainData:[],
-				status:app.globalData.statusBar
+				statusBar:app.globalData.statusBar
 			}
 		},
 		

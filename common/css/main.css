@@ -54,15 +54,15 @@ uni-button:after{border: 0;}
 
 
 /* 提交按钮 */
-.submitbtn .btn{width: 80%; height: 80rpx; line-height: 80rpx; text-align: center; color: #d0b487;background-color: initial;  border-radius:40rpx; font-size:30rpx; margin: 0rpx auto; display:block;position: relative;}
-.submitbtn .btn .btnBj{width: 100%;height: 100%;position: absolute;left: 0;top: 0;right: 0;bottom: 0;z-index: 1;}
-.submitbtn .btn .btnTit{position: relative; z-index: 2;}
+.submitbtn .btn{width: 85%; height: 80rpx; line-height: 80rpx; text-align: center; color: #d0b487;background-color: initial;  border-radius:40rpx; font-size:30rpx; margin: 0rpx auto; display:block;position: relative;}
+.submitbtn .btn .btnBj{height: 100%}
+.submitbtn .btn .btnTit{position: absolute;top:0;left: 0;right: 0; z-index: 50;}
 .submitbtn button:after{border: 0;}
 .submitbtn .Wbtn{width: 100%; height: 80rpx; line-height: 80rpx; text-align: center; color: #d0b487;background-color: initial;  border-radius: 40rpx; font-size:30rpx; margin: 0rpx auto; display:block;}
 
 /* 页面铺满背景图 */
 .pageBj{width: 100%;height: 100%;position: fixed;left: 0;top: 0;right: 0;bottom:0rpx;z-index: 0;}
-.pageBox{position: fixed; z-index: 1;margin-top: 100rpx;height: 100%;overflow: scroll;padding-bottom: 160px;width: 100%;}
+.pageBox{position: fixed; z-index: 1;margin-top: 100rpx;height: 100%;width: 100%;}
 /* .page-head{font-size: 16px;text-align: center;position: fixed;left: 0;top: 0;right: 0;padding-top: var(--status-bar-height);} */
 .page-head{font-size: 16px;text-align: center;position: fixed;left: 0;top: 0;right: 0;height: 43px;}
 .page-head .headBj{position: absolute;left: 0;top: 0;right: 0;bottom: 0;z-index: 1;}
@@ -70,7 +70,7 @@ uni-button:after{border: 0;}
 
 /* 顶部返回箭头按钮 */
 .backBtn{width:90rpx;height: 80rpx;position: absolute;left: 0;z-index: 5;}
-.backBtn image{width: 18rpx;height: 31rpx;position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin: auto;}
+ .backBtn image{width: 18rpx;height: 31rpx;position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin: auto;}
 
 /* @media only screen and (min-device-width : 375px) and (max-device-width : 821px) {
 	.backBtn{width:90rpx;height: 80rpx;position: absolute;left: 0; z-index: 5;}

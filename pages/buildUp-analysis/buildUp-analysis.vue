@@ -7,7 +7,7 @@
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">题目解析</view>
 			</view>
-		<view class="pageBox" :style="{top:statusBar + 'px'}">	
+		<scroll-view scroll-y="true" @scrolltolower="Bottom" class="pageBox" :style="{top:statusBar + 'px'}">	
 			<view class="answerList" v-for="(item,index) in mainData" :key="index">
 				<view class="mx-3">
 					<view>{{index+1}}:{{item.title}}</view>
@@ -29,8 +29,8 @@
 				<view class="f5Bj-H20 mb-3"><image src="../../static/images/home-icon4.png" mode=""></image></view>
 			</view>
 			
-			
-		</view>
+			<view style="height: 260rpx;width: 100%;"></view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -55,7 +55,7 @@
 		
 		onLoad(options) {
 			const self = this;
-			self.type==options.type;
+			self.type=options.type;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
 			self.$Utils.loadAll(['getMainData'], self)
 			/* if(options.type==1){
@@ -67,16 +67,18 @@
 			//self.$Utils.loadAll(['getMainData'], self)
 		},
 		
-		onReachBottom() {
-			console.log('onReachBottom')
-			const self = this;
-			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')&&self.type==1) {
-				self.paginate.currentPage++;
-				self.getMainData()
-			};
-		},
+	
 		
 		methods: {
+			
+			Bottom() {
+				console.log('onReachBottom')
+				const self = this;
+				if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+					self.paginate.currentPage++;
+					self.getMainData()
+				};
+			},
 			
 			getMainData() {
 				var self = this;
@@ -89,7 +91,7 @@
 					behavior:1,
 				};
 				if(self.type==3){
-					postData.searchItem.sheet_id = uni.getStorageSync('sheet_id')
+					postData.searchItem.sheet_id = uni.getStorageSync('sheetId')
 				};
 				postData.getAfter = {
 					subject:{

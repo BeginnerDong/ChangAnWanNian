@@ -8,7 +8,7 @@
 				<view class="tit">风云际会</view>
 			</view>
 			
-		<view class="pageBox" :style="{top:statusBar + 'px'}">	
+		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">	
 			<view class="d-flex j-center a-center" style="margin-top: 150rpx;">
 				<view class="Dossier position-relative d-flex j-center a-center">
 					<view class="position-absoluteXY"><image src="../../static/images/the-results-ofl-icon6.png" mode=""></image></view>
@@ -18,7 +18,7 @@
 							<view class="font-40 font-weight"><open-data type="userNickName"></open-data></view>
 							<view class="d-flex a-center mt-3 font-30">
 								<view class="lableIcon mr-1"><image src="../../static/images/racel-icon1.png" mode=""></image></view>
-								<view class="">积分：{{userInfoData.yb_score?userInfoData.yb_score:'0.00'}}</view>
+								<view class="">积分：{{yb?yb:'0.00'}}</view>
 							</view>
 						</view>
 					</view>
@@ -56,7 +56,7 @@
 				</button>
 			</view>
 			
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -75,7 +75,8 @@
 				set_id:'',
 				isShare:false,
 				idArray:[],
-				statusBar:app.globalData.statusBar
+				statusBar:app.globalData.statusBar,
+				yb:0
 			}
 		},
 		
@@ -102,6 +103,10 @@
 			
 		},
 		
+		onShow() {
+			const self = this;
+			
+		},
 		
 		
 		onShareAppMessage(ops) {
@@ -514,6 +519,7 @@
 				var callback = function(res) {
 					if (res.info.data.length > 0 && res.info.data[0]) {
 						self.userInfoData = res.info.data[0]
+						self.yb = parseFloat(parseFloat(self.userInfoData.yb_score) +parseFloat(self.userInfoData.yb_today)).toFixed(2)
 						if(self.shareSetId){
 							self.isShare = true;
 							

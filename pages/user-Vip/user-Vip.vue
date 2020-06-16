@@ -1,45 +1,56 @@
 <template>
 	<view>
 		<pageBj></pageBj>
-		
-			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
-				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
-				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
-				<view class="tit">会员卡</view>
+
+		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
+			<view class="backBtn" @click="Router.back(1)">
+				<image src="../../static/images/back-icon.png" mode=""></image>
 			</view>
-			<view class="pageBox" :style="{top:statusBar + 'px'}">
+			<view class="headBj">
+				<image src="../../static/images/head-img.png" mode=""></image>
+			</view>
+			<view class="tit">会员卡</view>
+		</view>
+		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="px-3 mt-5">
 				<view class="vipCard text-center position-relative">
-					<view class="position-absoluteXY"><image src="../../static/images/vip-img.png" mode=""></image></view>
+					<view class="position-absoluteXY">
+						<image src="../../static/images/vip-img.png" mode=""></image>
+					</view>
 					<view class="position-relative" style="z-index: 2;">
 						<view class="text-white font-weight" style="font-size: 52rpx; padding: 110rpx 0 100rpx 0;">月卡</view>
 						<view class="d-flex j-center">
 							<view class="price font-30 font-weight d-flex a-center">
-								<view style="width: 36rpx;height: 36rpx;"><image src="../../static/images/about-img2.png" mode=""></image></view>
+								<view style="width: 36rpx;height: 36rpx;">
+									<image src="../../static/images/about-img2.png" mode=""></image>
+								</view>
 								<view class="ml-1 font-36">{{price}}</view>
 							</view>
 						</view>
 					</view>
-					
+
 				</view>
-				
+
 				<view class="font-weight font-30 mt-2">会员权益：</view>
 				<view class="xqInfor pt-1">
 					<view class="cont font-26">
-						<view class="content ql-editor" style="padding:0;"
-						v-html="mainData.content">
+						<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
 						</view>
 					</view>
 				</view>
 			</view>
-			
-			<view class="submitbtn pdtb15"  style="margin-top: 80rpx;">
-				<button class="btn" type="button" open-type="getUserInfo"  @getuserinfo="Utils.stopMultiClick(submit)">
-					<view class="btnBj"><image src="../../static/images/buttonl-icon.png" mode=""></image></view>
+
+			<view class="submitbtn pdtb15" style="margin-top: 80rpx;">
+				<button class="btn" type="button" open-type="getUserInfo" @getuserinfo="Utils.stopMultiClick(submit)">
+					<view class="btnBj">
+						<image src="../../static/images/buttonl-icon.png" mode=""></image>
+					</view>
 					<view class="btnTit">购买</view>
 				</button>
 			</view>
-		</view>
+			
+			<view style="height: 260rpx;width: 100%;"></view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -52,14 +63,14 @@
 		},
 		data() {
 			return {
-				Router:this.$Router,
-				Utils:this.$Utils,
-				mainData:{},
-				price:0,
-				statusBar:app.globalData.statusBar
+				Router: this.$Router,
+				Utils: this.$Utils,
+				mainData: {},
+				price: 0,
+				statusBar: app.globalData.statusBar
 			}
 		},
-		
+
 		onLoad() {
 			const self = this;
 			uni.showLoading();
@@ -71,80 +82,78 @@
 			})
 			self.$Utils.loadAll(['getMainData'], self);
 		},
-		
+
 		methods: {
-			
-			submit(){
+
+			submit() {
 				const self = this;
 				uni.setStorageSync('canClick', false);
 				uni.showModal({
-					title:'提示',
-					content:'确定购买会员？',
-					showCancel:true,
-					confirmText:'继续',
+					title: '提示',
+					content: '确定购买会员？',
+					showCancel: true,
+					confirmText: '继续',
 					success(res) {
-						if(res.confirm){
+						if (res.confirm) {
 							const callback = (user, res) => {
 								self.addOrder()
 							};
 							self.$Utils.getAuthSetting(callback);
-						}else{
+						} else {
 							console.log('取消')
 						}
 					}
 				})
 			},
-			
+
 			addOrder() {
 				const self = this;
-				self.price =  parseFloat(self.price);
-				const postData = {};	
+				self.price = parseFloat(self.price);
+				const postData = {};
 				postData.tokenFuncName = 'getProjectToken',
-				
-				postData.data = {
-					price:self.price.toFixed(2),
-					level:1,
-					type:3
-				};
+
+					postData.data = {
+						price: self.price.toFixed(2),
+						level: 1,
+						type: 3
+					};
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
 						self.orderId = res.info.id;
 						self.pay()
-					}else{
+					} else {
 						self.$Utils.showToast(res.msg, 'none')
 					}
 				};
 				self.$apis.addVirtualOrder(postData, callback);
 			},
-			
-			
+
+
 			pay() {
 				const self = this;
 				var nowTime = (new Date()).getTime() / 1000;
-				uni.setStorageSync('canClick', false);	
-				self.price =  parseFloat(self.price);
-				const postData = {};	
+				uni.setStorageSync('canClick', false);
+				self.price = parseFloat(self.price);
+				const postData = {};
 				postData.score = {
-					price:self.price.toFixed(2),
+					price: self.price.toFixed(2),
 				};
 				postData.tokenFuncName = 'getProjectToken';
 				postData.refreshToken = true;
 				postData.searchItem = {
 					id: self.orderId
 				};
-				postData.payAfter = [
-					{
-						tableName: 'UserInfo',
-						FuncName: 'update',
-						searchItem:{
-							user_no:uni.getStorageSync('user_info').user_no
-						},
-						data: {
-							member:1,
-							member_time:nowTime+86400*30
-						},
+				postData.payAfter = [{
+					tableName: 'UserInfo',
+					FuncName: 'update',
+					searchItem: {
+						user_no: uni.getStorageSync('user_info').user_no
 					},
-				];
+					data: {
+						member: 1,
+						member_time: nowTime + 86400 * 30
+					},
+				}, ];
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
 						if (res.info) {
@@ -163,7 +172,7 @@
 								};
 							};
 							self.$Utils.realPay(res.info, payCallback);
-						} else {						
+						} else {
 							self.$Utils.showToast('支付成功', 'none');
 							setTimeout(function() {
 								uni.navigateBack({
@@ -178,22 +187,22 @@
 				};
 				self.$apis.pay(postData, callback);
 			},
-			
+
 			getMainData() {
 				const self = this;
 				const postData = {};
 				postData.searchItem = {
-					thirdapp_id:2
+					thirdapp_id: 2
 				};
 				postData.getBefore = {
-					article:{
-						tableName:'Label',
-						middleKey:'menu_id',
-						key:'id',
-						searchItem:{
+					article: {
+						tableName: 'Label',
+						middleKey: 'menu_id',
+						key: 'id',
+						searchItem: {
 							title: ['in', ['会员权益']],
 						},
-						condition:'in'
+						condition: 'in'
 					}
 				};
 				const callback = (res) => {
@@ -215,7 +224,14 @@
 <style>
 	@import "../../assets/style/navbar.css";
 	@import "../../assets/style/detail.css";
-	page{padding-bottom: 40rpx;}
-	
-	.vipCard{width: 521rpx;height: 688rpx;margin: 0 auto;}
+
+	page {
+		padding-bottom: 40rpx;
+	}
+
+	.vipCard {
+		width: 521rpx;
+		height: 688rpx;
+		margin: 0 auto;
+	}
 </style>

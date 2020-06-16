@@ -1,17 +1,18 @@
 <template>
 	<view>
 		<pageBj></pageBj>
-		
-			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
-				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
-				<view class="tit">关于我们</view>
+
+		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
+			<view class="headBj">
+				<image src="../../static/images/head-img.png" mode=""></image>
 			</view>
-		<view class="pageBox" :style="{top:statusBar + 'px'}">
+			<view class="tit">关于我们</view>
+		</view>
+		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
 			<view class="mx-3">
 				<view class="xqInfor">
 					<view class="cont font-26">
-						<view class="content ql-editor" style="padding:0;"
-						v-html="mainData.content">
+						<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
 						</view>
 					</view>
 				</view>
@@ -25,21 +26,22 @@
 					</view>
 					<view class="text">首页</view>
 				</view>
-				<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/aboutUs/aboutUs'}})" >
+				<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/aboutUs/aboutUs'}})">
 					<view class="nav_img">
 						<image src="../../static/images/nabar2-a.png" />
 					</view>
 					<view class="text this-text">关于我们</view>
 				</view>
-				<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/user/user'}})" >
+				<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/user/user'}})">
 					<view class="nav_img">
 						<image src="../../static/images/nabar3.png" />
 					</view>
 					<view class="text">我的</view>
 				</view>
 			</view>
+			<view style="height: 260rpx;width: 100%;"></view>
 			<!--底部tab键 end-->
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -52,34 +54,34 @@
 		},
 		data() {
 			return {
-				Router:this.$Router,
-				mainData:{},
+				Router: this.$Router,
+				mainData: {},
 				statusBar: app.globalData.statusBar,
 			}
 		},
-		
+
 		onLoad() {
 			const self = this;
 			self.$Utils.loadAll(['getMainData'], self);
 		},
-		
+
 		methods: {
-			
+
 			getMainData() {
 				const self = this;
 				const postData = {};
 				postData.searchItem = {
-					thirdapp_id:2
+					thirdapp_id: 2
 				};
 				postData.getBefore = {
-					article:{
-						tableName:'Label',
-						middleKey:'menu_id',
-						key:'id',
-						searchItem:{
+					article: {
+						tableName: 'Label',
+						middleKey: 'menu_id',
+						key: 'id',
+						searchItem: {
 							title: ['in', ['关于我们']],
 						},
-						condition:'in'
+						condition: 'in'
 					}
 				};
 				const callback = (res) => {
@@ -100,7 +102,8 @@
 <style>
 	@import "../../assets/style/navbar.css";
 	@import "../../assets/style/detail.css";
-	page{padding-bottom: 60rpx;}
-	
-	
+
+	page {
+		padding-bottom: 60rpx;
+	}
 </style>
