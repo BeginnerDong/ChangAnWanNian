@@ -1,7 +1,8 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
 
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -12,7 +13,7 @@
 			</view>
 			<view class="tit">元宝充值</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="myHead text-center d-flex a-center flex-column">
 				<view class="mny font-weight">{{yb}}</view>
 				<view class="d-flex a-center font-26 mt-2">
@@ -66,7 +67,8 @@
 					<view class="btnTit">立即充值</view>
 				</button>
 			</view>
-		</scroll-view>
+		</view>
+		</view>
 	</view>
 </template>
 
@@ -228,9 +230,6 @@
 
 <style>
 	/* @import "../../assets/style/xieyiAlert.css"; */
-	page {
-		padding-bottom: 60rpx;
-	}
 
 	.myHead {
 		height: 300rpx;

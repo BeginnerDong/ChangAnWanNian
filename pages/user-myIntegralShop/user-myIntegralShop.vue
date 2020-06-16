@@ -1,7 +1,7 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-
+			<view class="Box">
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
 				<image src="../../static/images/back-icon.png" mode=""></image>
@@ -11,7 +11,7 @@
 			</view>
 			<view class="tit">积分商城</view>
 		</view>
-		<scroll-view scroll-y="true" @scrolltolower="Bottom"  class="pageBox" :style="{top:statusBar + 'px'}">
+		<view @scrolltolower="Bottom"  class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="integral mx-3">
 				<view class="item rounded10 overflow-h position-relative mb-3 px-3 py-4" v-for="(item,index) in mainData" :key="index">
 					<view class="position-absoluteXY">
@@ -51,8 +51,8 @@
 				</view>
 			</view>
 
-			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view>
+		</view>
+		</view>
 	</view>
 </template>
 

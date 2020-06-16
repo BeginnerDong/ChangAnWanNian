@@ -1,7 +1,8 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
 
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -12,7 +13,7 @@
 			</view>
 			<view class="tit">确认订单</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="bg-white boxShaow overflow-h mb-3 mx-3 rounded10 overflow-h">
 				<view style="width: 100%;height: 19rpx;">
 					<image src="../../static/images/zhoumo-img4.png" mode=""></image>
@@ -142,7 +143,8 @@
 
 			</view>
 
-		</scroll-view>
+		</view>
+		</view>
 	</view>
 </template>
 
@@ -511,7 +513,6 @@
 
 	page {
 		background: #F5F5F5;
-		padding-bottom: 140rpx;
 		box-sizing: border-box;
 	}
 

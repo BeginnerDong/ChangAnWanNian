@@ -1,13 +1,13 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-		
+		<view class="Box">
 			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">题目解析</view>
 			</view>
-		<scroll-view scroll-y="true" @scrolltolower="Bottom" class="pageBox" :style="{top:statusBar + 'px'}">	
+		<view @scrolltolower="Bottom" class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">	
 			<view class="answerList" v-for="(item,index) in mainData" :key="index">
 				<view class="mx-3">
 					<view>{{index+1}}:{{item.title}}</view>
@@ -30,7 +30,8 @@
 			</view>
 			
 			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view>
+		</view>
+		</view>
 	</view>
 </template>
 
@@ -120,7 +121,6 @@
 </script>
 
 <style>
-	page{padding-bottom: 100rpx;}
 	.answerList:last-child .f5Bj-H20{display: none;}
 	.answerBj{background-color: #f5e8d6;}
 	.jiexiTit{position: relative;padding-left: 20rpx;}

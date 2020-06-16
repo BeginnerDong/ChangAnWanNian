@@ -1,7 +1,8 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
 
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -12,7 +13,7 @@
 			</view>
 			<view class="tit">探索穿越</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="px-3">
 				<view class="font-30 font-weight mt-1">唐长安城地图</view>
 				<view class="map mt-2">
@@ -52,8 +53,9 @@
 				</view>
 				
 			</view>
-			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view>
+		</view>
+		
+		</view>
 	</view>
 </template>
 
@@ -135,9 +137,6 @@
 <style>
 	@import "../../assets/style/proRow.css";
 
-	page {
-		padding-bottom: 40rpx;
-	}
 
 	.swiper-box {
 		height: 280rpx;

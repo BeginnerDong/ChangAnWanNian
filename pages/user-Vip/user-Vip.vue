@@ -9,7 +9,7 @@
 				</view>
 				<view class="tit">会员卡</view>
 			</view>
-			<view class="pagebox":style="{marginTop:statusBar*2 + 'px'}">
+			<view class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
 				<view class="px-3 mt-5">
 					<view class="vipCard text-center position-relative">
 						<view class="position-absoluteXY">
@@ -34,15 +34,11 @@
 						<view class="cont font-26">
 							<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
 							</view>
-							<view>hbaisdhwiuhwubcwbv</view>
-							<view>hbaisdhwiuhwubcwbv</view>
-							<view>hbaisdhwiuhwubcwbv</view>
-							<view>hbaisdhwiuhwubcwbv</view>
 						</view>
 					</view>
 				</view>
 			
-				<view class="submitbtn pdtb15" style="margin-top: 80rpx;">
+				<view class="submitbtn pdtb15" style="margin: 80rpx;">
 					<button class="btn" type="button" open-type="getUserInfo" @getuserinfo="Utils.stopMultiClick(submit)">
 						<view class="btnBj">
 							<image src="../../static/images/buttonl-icon.png" mode=""></image>
@@ -50,8 +46,6 @@
 						<view class="btnTit">购买</view>
 					</button>
 				</view>
-				
-				<view style="height: 260rpx;width: 100%;"></view>
 			</view>
 		</view>
 		
@@ -229,17 +223,9 @@
 	@import "../../assets/style/navbar.css";
 	@import "../../assets/style/detail.css";
 
-	page {
-		height: 100%;
-	}
-
 	.vipCard {
 		width: 521rpx;
 		height: 688rpx;
 		margin: 0 auto;
 	}
-	
-	.Box{height: 100%;display: flex; flex-direction: column;}
-	.page-head{position: absolute;}
-	.pagebox{position: relative;width: 100%;flex: 1;overflow-y: auto;}
 </style>

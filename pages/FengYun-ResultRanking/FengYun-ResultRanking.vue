@@ -1,14 +1,14 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-		
+		<view class="Box">
 			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">结果</view>
 			</view>
 			
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">	
+		<view class="pageBox pb-4" :style="{top:statusBar + 'px'}">	
 			<view class="mx-3 rankingBox">
 				<view class="item d-flex a-center j-sb py-3" v-for="(item,index) in mainData" :key="index">
 					<view class="ll d-flex a-center">
@@ -28,7 +28,9 @@
 			
 			
 			
-		</scroll-view>
+		</view>
+		
+		</view>
 	</view>
 </template>
 
@@ -95,7 +97,6 @@
 </script>
 
 <style>
-	page{padding-bottom: 100rpx;}
 	.rankingBox .item .num{width: 60rpx;height: 80rpx;margin-right: 20rpx;padding-top: 28rpx;line-height: 44rpx; font-size: 30rpx;text-align: center;background: url(../../static/images/the-results-ofl-icon3.png) no-repeat 0 0/100% 100%;}
 	.rankingBox .item:first-child .num{background-image: url(../../static/images/the-results-ofl-icon.png);color: #e1b53e;}
 	.rankingBox .item:nth-of-type(2) .num{background-image: url(../../static/images/the-results-ofl-icon1.png);color: #578aa3;}

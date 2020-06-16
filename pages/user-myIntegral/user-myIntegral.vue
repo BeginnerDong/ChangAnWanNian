@@ -1,13 +1,13 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-		
+		<view class='Box'>
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 			<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 			<view class="tit">积分流水</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox" @scrolltolower="Bottom"  :style="{top:statusBar + 'px'}">
+		<view class="pageBox" @scrolltolower="Bottom"  :style="{marginTop:statusBar+44 + 'px'}">
 			<view class="myExtendTop text-center d-flex a-center flex-column  px-3">
 				<view class="money font-weight">{{userInfoData.score}}</view>
 				<view class="fs13 pdt10 d-flex j-center a-center mt-3"><image class="mr-1" style="width: 34rpx;height: 34rpx;" src="../../static/images/racel-icon1.png" mode=""></image>积分(个)</view>
@@ -17,7 +17,7 @@
 				<image src="../../static/images/home-icon4.png" mode=""></image>
 			</view>
 		
-			<view class="">
+			<view style="padding-bottom: 20px;">
 				<view class="myRowBetween mx-3" >
 					<view class="item d-flex j-sb a-center border-bottom" v-for="(item,index) in mainData" :key="index">
 						<view class="ll">
@@ -29,8 +29,10 @@
 				</view>
 				
 			</view>
-			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view >
+			
+		</view >
+			
+		</view >
 	</view>
 </template>
 

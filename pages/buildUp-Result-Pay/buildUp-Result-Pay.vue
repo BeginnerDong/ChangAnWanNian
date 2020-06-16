@@ -1,14 +1,14 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-		
+		<view class="Box">
 			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">购买</view>
 			</view>
 			
-		<view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">	
+		<view class="pageBox pb-4" :style="{marginTop:statusBar+44 + 'px'}">	
 			<view class="px-5 mx-3 text-center" style="margin-top: 180rpx;">
 				<view class="" style="height: 100rpx;" v-if="type==1">
 					<view>查看历史答题解析需要购买</view>
@@ -47,6 +47,8 @@
 					<view class="btnTit">{{price>0?'支付':'下一步'}}</view>
 				</button>
 			</view>
+		</view>
+	
 		</view>
 	</view>
 </template>

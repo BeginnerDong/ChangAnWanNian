@@ -1,12 +1,14 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
+		<view class="Box">
+		
 		<!-- <view  :style="{marginTop:statusBar + 'px'}"></view> -->
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
 			<view class="headBj"></view>
 			<view class="tit">首页</view>
 		</view>
-		<scroll-view  scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
 			<view>
 				<view class="banner-box px-3">
 					<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="#d2d2d2"
@@ -72,8 +74,8 @@
 				</view>
 
 			</view>
-			<view style="height: 260rpx;width: 100%;"></view>
-			</scroll-view>
+			</view>
+			
 			
 			<!--底部tab键-->
 			<view class="navbar">
@@ -98,6 +100,7 @@
 			</view>
 			<!--底部tab键 end-->
 		
+			</view>
 	</view>
 </template>
 
@@ -268,9 +271,7 @@
 	@import "../../assets/style/navbar.css";
 	@import "../../assets/style/proRow.css";
 
-	page {
-		padding-bottom: 140rpx;
-	}
+	.pageBox{margin-bottom: 110rpx;}
 
 	.swiper-box {
 		height: 280rpx;

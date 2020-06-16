@@ -1,9 +1,9 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 
 		<pageBj></pageBj>
 
-
+		<view class="Box">
 		<view class="page-head d-flex a-center j-center"  :style="{marginTop:statusBar+'px'}">
 			<view class="backBtn" @click="Router.back(1)">
 				<image src="../../static/images/back-icon.png" mode=""></image>
@@ -13,7 +13,7 @@
 			</view>
 			<view class="tit">周末讲堂</view>
 		</view>
-		<scroll-view  @scrolltolower="Bottom" scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view  @scrolltolower="Bottom" class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="productList d-flex j-sb flex-wrap mx-3">
 				<view class="item mb-3" v-for="(item,index) in mainData" :key="index" :data-id="item.id" @click="Router.navigateTo({route:{path:'/pages/week-lecture-Detail/week-lecture-Detail?id='+$event.currentTarget.dataset.id}})">
 					<view class="pic rounded10">
@@ -27,9 +27,8 @@
 			<view class="nodata" v-if="mainData.length==0">
 				<image src="../../static/images/nodata.png" mode=""></image>
 			</view>
-			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view>
-
+		</view>
+			</view>
 	</view>
 </template>
 
@@ -111,7 +110,6 @@
 	@import "../../assets/style/productList.css";
 
 	page {
-		padding-bottom: 60rpx;
 		background-color: #F5F5F5;
 	}
 

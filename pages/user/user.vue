@@ -1,16 +1,16 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 
 		<pageBj></pageBj>
 
-
+		<view class="Box">
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="headBj">
 				<image src="../../static/images/head-img.png" mode=""></image>
 			</view>
 			<view class="tit">我的</view>
 		</view>
-		<view class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="userHead">
 				<view class="infor mx-3">
 					<view class="d-flex a-center mt-3">
@@ -164,6 +164,7 @@
 			</view>
 			<!--底部tab键 end-->
 		</view>
+		</view>
 	</view>
 </template>
 
@@ -235,7 +236,6 @@
 	@import "../../assets/style/navbar.css";
 
 	page {
-		padding-bottom: 140rpx;
 		background: #F5F5F5;
 	}
 

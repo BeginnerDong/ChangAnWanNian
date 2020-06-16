@@ -1,7 +1,7 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-
+		<view class="Box">
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
 			<view class="backBtn" @click="Router.back(1)">
 				<image src="../../static/images/back-icon.png" mode=""></image>
@@ -12,7 +12,7 @@
 			<view class="tit">结果</view>
 		</view>
 
-		<view  class="pageBox" :style="{top:statusBar + 'px'}">
+		<view  class="pageBox pb-4" :style="{marginTop:statusBar+44 + 'px'}">
 			<view class="d-flex j-center a-center" style="margin-top: 150rpx;">
 				<view class="Dossier position-relative d-flex j-center a-center">
 					<view class="position-absoluteXY">
@@ -84,6 +84,8 @@
 				</view>
 			</view>
 
+		</view>
+		
 		</view>
 	</view>
 </template>

@@ -1,14 +1,16 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-
+		
+		<view class="Box">
+		
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
 			<view class="headBj">
 				<image src="../../static/images/head-img.png" mode=""></image>
 			</view>
 			<view class="tit">关于我们</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
 			<view class="mx-3">
 				<view class="xqInfor">
 					<view class="cont font-26">
@@ -41,7 +43,9 @@
 			</view>
 			<view style="height: 260rpx;width: 100%;"></view>
 			<!--底部tab键 end-->
-		</scroll-view>
+		</view>
+		
+		</view>
 	</view>
 </template>
 
@@ -103,7 +107,5 @@
 	@import "../../assets/style/navbar.css";
 	@import "../../assets/style/detail.css";
 
-	page {
-		padding-bottom: 60rpx;
-	}
+	.pageBox{margin-bottom: 110rpx;}
 </style>

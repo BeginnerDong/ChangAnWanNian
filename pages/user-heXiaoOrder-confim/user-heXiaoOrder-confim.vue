@@ -1,7 +1,8 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
 
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -12,7 +13,7 @@
 			</view>
 			<view class="tit">核销订单</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="proRow mx-3">
 				<view class="item mb-3 bg-white">
 					<view class="priList">
@@ -60,7 +61,8 @@
 				</button>
 			</view>
 
-		</scroll-view>
+		</view>
+		</view>
 	</view>
 </template>
 

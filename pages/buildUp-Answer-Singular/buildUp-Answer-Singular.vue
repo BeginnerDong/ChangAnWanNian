@@ -1,166 +1,166 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-		
+		<view class="Box">
 			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">答题</view>
 			</view>
 			
-		<view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">	
-			<view class="d-flex j-center a-center" style="margin-top: 80rpx;">
-				<view class="answerTime position-relative text-center">
-					<view class="position-absoluteXY"><image src="../../static/images/anti-img.png" mode=""></image></view>
-					<view class="infor pt-2">
-						<view class="font-24 color6">
-							<span class="color2 font-weight mr-1" style="font-size: 50rpx;">{{Utils.numToChinese(currentIndex+1)}}</span>
-							<span v-if="currentSubject.type==1||currentSubject.type==5">单选</span>
-							<span v-if="currentSubject.type==2">多选</span>
-							<span v-if="currentSubject.type==3">填空</span>
-							<span v-if="currentSubject.type==4">选词</span>
-						</view>
-						<view class="font-26 mt" v-if="time>0">倒计时：
-						<span class="red font-28">{{time}}秒</span>
-						</view>
-					</view>
-				</view>
-			</view>
-			
-			<view class="answerTit px-4 py-5 font-34 mt-2">
-				<view>{{currentSubject.title?currentSubject.title:''}}</view>
-				<view style="width: 100%;height: 200px;" v-for="(item,index) in currentSubject.mainImg" @click="previewImage(index)">
-					<image style="width: 100%;height: 100%;" :src="item.url"></image>
-				</view>
-				<view class="d-flex j-end" v-if="currentSubject.battle==0">
-					<view class="zanBtn mr-1" @click="Utils.stopMultiClick(clickGood)">
-						<image  :src="logData&&logData.status&&logData.status==1?'../../static/images/explorel-icon2.png':'../../static/images/explorel-icon1.png'" mode=""></image>
-					</view>
-				</view>
-				<view class="pt-2 pb-1 font-30" v-if="currentSubject.type&&currentSubject.type==4" style="border-bottom: 1px solid #999; vertical-align: middle;">
-					<view class="d-inline-block" style="position: relative;width: 100%;">{{text}}
-						<image v-if="hasResult&&!right" class="d-inline-block errorIcon mt ml-2" 
-						style="vertical-align: baseline;" src="../../static/images/anti-icon4.png" mode="">
-						</image>
-						<image v-if="hasResult&&right" class="d-inline-block rightIcon mt ml-2" style="vertical-align: baseline;" 
-						src="../../static/images/anti-icon3.png" mode=""></image>
-						<image v-if="!hasResult&&text.length>0" @click="deleteText" class="d-inline-block" style="width: 50rpx;height:50rpx;position: absolute;right: 0;"
-						src="../../static/images/anti-icon10.png" mode=""></image>
-					</view>
-				</view>
-			</view>
-			
-			<view class="submitbtn pt-5" v-if="currentSubject.type&&currentSubject.type==1">
-				<button class="btn mb-3"  v-for="(item,index) in currentSubject.Option" :key="index" :data-index="index" 
-				@click="!hasResult?answer($event.currentTarget.dataset.index):''"
-				type="button">
-					<view class="seltIconL errorIcon" v-if="chooseIndex==index&&chooseIndex!=rightIndex"><image src="../../static/images/anti-icon4.png" mode=""></image></view>
-					<view class="btnBj" v-if="chooseIndex==index&&chooseIndex!=rightIndex"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
-					<view class="btnBj" v-if="chooseIndex!=index&&index!=rightIndex"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-					<view class="btnBj" v-if="index==rightIndex"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
-					<view class="btnTit color2" style="z-index: 999;">{{item.option}}</view>
-					<view class="seltIconR rightIcon" v-if="index==rightIndex"><image src="../../static/images/anti-icon3.png" mode=""></image></view>
-				</button>
-			</view>
-			
-			<view  v-if="currentSubject.type&&currentSubject.type==2">
-				<view class="submitbtn pt-5">
-					<button class="btn mb-3" :data-index="index" 
-				@click="!hasResult?dxChoose($event.currentTarget.dataset.index):''" v-for="(item,index) in currentSubject.Option" :key="index" type="button">
-						<view class="seltIconL errorIcon" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0"><image src="../../static/images/anti-icon4.png" mode=""></image></view>
-						<view class="btnBj" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
-						<view class="btnBj" v-if="!hasResult||(hasResult&&Utils.inArray(index,chooseArray)<0&&Utils.inArray(index,rightArray)<0)"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-						<view class="btnBj" v-if="hasResult&&Utils.inArray(index,rightArray)>=0"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
-						<view class="btnTit color2" style="z-index: 999;" :class="Utils.inArray(index,chooseArray)>=0?'colorRed':''">{{item.option}}</view>
-						<view class="seltIconR rightIcon" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)>=0"><image src="../../static/images/anti-icon3.png" mode=""></image></view>
-					</button>
-				</view>
-				<view class="submitbtn mt-5 pt-3" v-if="!hasResult">
-					<button class="btn" type="button" @click="dxConfirm">
-						<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-						<view class="btnTit" style="z-index: 999;">确定</view>
-					</button>
-				</view>
-			</view>
-			
-			
-			<view v-if="currentSubject.type&&currentSubject.type==3">
-				<view class="mx-4 d-flex a-center j-center pt-5">
-					<view class="fillInBox position-relative" v-if="!hasResult">
-						<view class="position-absoluteXY"><image src="../../static/images/anti-icon5.png" mode=""></image></view>
-						<view class="infor">
-							<textarea v-model="text" placeholder="填写答案(多个空用回车分隔)" placeholder-class="placeholder" />
-						</view>
-					</view>
-					<view class="fillInBox position-relative" style="height: 300rpx;padding-bottom: 88rpx;" v-if="hasResult">
-						<view class="position-absoluteXY" v-if="!right"><image src="../../static/images/anti-icon6.png" mode=""></image></view>
-						<view class="position-absoluteXY" v-if="right"><image src="../../static/images/anti-icon7.png" mode=""></image></view>
-						<view class="infor">
-							<scroll-view scroll-y="true" style="height: 100%;">
-								<view>{{text}}</view>
-							</scroll-view>
-						</view>
-						<view class="seltIconL errorIcon" v-if="!right" style="top: auto;bottom: 34rpx;left: 50%;transform: translate(-50%,0);">
-							<image src="../../static/images/anti-icon4.png" mode=""></image>
-						</view>
-						<view class="seltIconL rightIcon" v-if="right" style="top: auto;bottom: 34rpx;left: 50%;transform: translate(-50%,0);">
-							<image src="../../static/images/anti-icon3.png" mode=""></image>
-						</view>
-					</view>
-				</view>
-				<view class="submitbtn mt-5" v-if="!hasResult">
-					<button class="btn mb-3"  type="button" @click="tkConfirm" >
-						<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-						<view class="btnTit" style="z-index: 999;">确定</view>
-					</button>
-				</view>
-			</view>
-			
-			<view v-if="currentSubject.type&&currentSubject.type==4">
-				<view class="textSplit mb-4 position-relative pt-5">
-					<view class="position-absoluteXY"><image src="../../static/images/anti-img5.png" mode=""></image></view>
-					<view class="cont font-40 d-flex a-start flex-wrap text-center font-weight">
-						<view class="item" :data-index="index" @click="!hasResult?xzChoose($event.currentTarget.dataset.index):''" 
-						v-for="(item,index) in textData" :key="index">{{item}}</view>
-					</view>
-				</view>
-				<view class="submitbtn pt-5 mt-3" v-if="!hasResult">
-					<button class="btn mb-3" type="button" @click="xzConfirm()" >
-						<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-						<view class="btnTit" style="z-index: 999;">确定</view>
-					</button>
-				</view>
-			</view>
-			
-			<view v-if="currentSubject.type&&currentSubject.type==5">
-				<view class="mx-4 pt-5">
-					<view class="d-flex a-center j-sb flex-wrap seltImgBox">
-						<view class="item mb-2" v-for="(item,index) in currentSubject.Option" :key="index">
-							<view class="cont d-flex flex-column a-center" :data-index="index" 
-				@click="!hasResult?answer($event.currentTarget.dataset.index):''">
-								<view class="img"><image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image></view>
-								<view class="seltIcon mt-2" v-if="chooseIndex==index&&chooseIndex!=rightIndex">
-									<image src="../../static/images/anti-icon9.png" mode=""></image>
-								</view>
-								<view class="seltIcon mt-2" v-if="index==rightIndex">
-									<image src="../../static/images/anti-icon8.png" mode=""></image>
-								</view>
-								<!-- <view class="seltIcon mt-2">
-									<image src="../../static/images/the-orderl-icon5.png" mode=""></image>
-								</view> -->
+			<view class="pageBox pb-4" :style="{top:statusBar + 'px'}">	
+				<view class="d-flex j-center a-center" style="margin-top: 80rpx;">
+					<view class="answerTime position-relative text-center">
+						<view class="position-absoluteXY"><image src="../../static/images/anti-img.png" mode=""></image></view>
+						<view class="infor pt-2">
+							<view class="font-24 color6">
+								<span class="color2 font-weight mr-1" style="font-size: 50rpx;">{{Utils.numToChinese(currentIndex+1)}}</span>
+								<span v-if="currentSubject.type==1||currentSubject.type==5">单选</span>
+								<span v-if="currentSubject.type==2">多选</span>
+								<span v-if="currentSubject.type==3">填空</span>
+								<span v-if="currentSubject.type==4">选词</span>
+							</view>
+							<view class="font-26 mt" v-if="time>0">倒计时：
+							<span class="red font-28">{{time}}秒</span>
 							</view>
 						</view>
 					</view>
 				</view>
+				
+				<view class="answerTit px-4 py-5 font-34 mt-2">
+					<view>{{currentSubject.title?currentSubject.title:''}}</view>
+					<view style="width: 100%;height: 200px;" v-for="(item,index) in currentSubject.mainImg" @click="previewImage(index)">
+						<image style="width: 100%;height: 100%;" :src="item.url"></image>
+					</view>
+					<view class="d-flex j-end" v-if="currentSubject.battle==0">
+						<view class="zanBtn mr-1" @click="Utils.stopMultiClick(clickGood)">
+							<image  :src="logData&&logData.status&&logData.status==1?'../../static/images/explorel-icon2.png':'../../static/images/explorel-icon1.png'" mode=""></image>
+						</view>
+					</view>
+					<view class="pt-2 pb-1 font-30" v-if="currentSubject.type&&currentSubject.type==4" style="border-bottom: 1px solid #999; vertical-align: middle;">
+						<view class="d-inline-block" style="position: relative;width: 100%;">{{text}}
+							<image v-if="hasResult&&!right" class="d-inline-block errorIcon mt ml-2" 
+							style="vertical-align: baseline;" src="../../static/images/anti-icon4.png" mode="">
+							</image>
+							<image v-if="hasResult&&right" class="d-inline-block rightIcon mt ml-2" style="vertical-align: baseline;" 
+							src="../../static/images/anti-icon3.png" mode=""></image>
+							<image v-if="!hasResult&&text.length>0" @click="deleteText" class="d-inline-block" style="width: 50rpx;height:50rpx;position: absolute;right: 0;"
+							src="../../static/images/anti-icon10.png" mode=""></image>
+						</view>
+					</view>
+				</view>
+				
+				<view class="submitbtn pt-5" v-if="currentSubject.type&&currentSubject.type==1">
+					<button class="btn mb-3"  v-for="(item,index) in currentSubject.Option" :key="index" :data-index="index" 
+					@click="!hasResult?answer($event.currentTarget.dataset.index):''"
+					type="button">
+						<view class="seltIconL errorIcon" v-if="chooseIndex==index&&chooseIndex!=rightIndex"><image src="../../static/images/anti-icon4.png" mode=""></image></view>
+						<view class="btnBj" v-if="chooseIndex==index&&chooseIndex!=rightIndex"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
+						<view class="btnBj" v-if="chooseIndex!=index&&index!=rightIndex"><image src="../../static/images/anti-icon.png" mode=""></image></view>
+						<view class="btnBj" v-if="index==rightIndex"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
+						<view class="btnTit color2" style="z-index: 999;">{{item.option}}</view>
+						<view class="seltIconR rightIcon" v-if="index==rightIndex"><image src="../../static/images/anti-icon3.png" mode=""></image></view>
+					</button>
+				</view>
+				
+				<view  v-if="currentSubject.type&&currentSubject.type==2">
+					<view class="submitbtn pt-5">
+						<button class="btn mb-3" :data-index="index" 
+					@click="!hasResult?dxChoose($event.currentTarget.dataset.index):''" v-for="(item,index) in currentSubject.Option" :key="index" type="button">
+							<view class="seltIconL errorIcon" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0"><image src="../../static/images/anti-icon4.png" mode=""></image></view>
+							<view class="btnBj" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
+							<view class="btnBj" v-if="!hasResult||(hasResult&&Utils.inArray(index,chooseArray)<0&&Utils.inArray(index,rightArray)<0)"><image src="../../static/images/anti-icon.png" mode=""></image></view>
+							<view class="btnBj" v-if="hasResult&&Utils.inArray(index,rightArray)>=0"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
+							<view class="btnTit color2" style="z-index: 999;" :class="Utils.inArray(index,chooseArray)>=0?'colorRed':''">{{item.option}}</view>
+							<view class="seltIconR rightIcon" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)>=0"><image src="../../static/images/anti-icon3.png" mode=""></image></view>
+						</button>
+					</view>
+					<view class="submitbtn mt-5 pt-3" v-if="!hasResult">
+						<button class="btn" type="button" @click="dxConfirm">
+							<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
+							<view class="btnTit" style="z-index: 999;">确定</view>
+						</button>
+					</view>
+				</view>
+				
+				
+				<view v-if="currentSubject.type&&currentSubject.type==3">
+					<view class="mx-4 d-flex a-center j-center pt-5">
+						<view class="fillInBox position-relative" v-if="!hasResult">
+							<view class="position-absoluteXY"><image src="../../static/images/anti-icon5.png" mode=""></image></view>
+							<view class="infor">
+								<textarea v-model="text" placeholder="填写答案(多个空用回车分隔)" placeholder-class="placeholder" />
+							</view>
+						</view>
+						<view class="fillInBox position-relative" style="height: 300rpx;padding-bottom: 88rpx;" v-if="hasResult">
+							<view class="position-absoluteXY" v-if="!right"><image src="../../static/images/anti-icon6.png" mode=""></image></view>
+							<view class="position-absoluteXY" v-if="right"><image src="../../static/images/anti-icon7.png" mode=""></image></view>
+							<view class="infor">
+								<scroll-view scroll-y="true" style="height: 100%;">
+									<view>{{text}}</view>
+								</scroll-view>
+							</view>
+							<view class="seltIconL errorIcon" v-if="!right" style="top: auto;bottom: 34rpx;left: 50%;transform: translate(-50%,0);">
+								<image src="../../static/images/anti-icon4.png" mode=""></image>
+							</view>
+							<view class="seltIconL rightIcon" v-if="right" style="top: auto;bottom: 34rpx;left: 50%;transform: translate(-50%,0);">
+								<image src="../../static/images/anti-icon3.png" mode=""></image>
+							</view>
+						</view>
+					</view>
+					<view class="submitbtn mt-5" v-if="!hasResult">
+						<button class="btn mb-3"  type="button" @click="tkConfirm" >
+							<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
+							<view class="btnTit" style="z-index: 999;">确定</view>
+						</button>
+					</view>
+				</view>
+				
+				<view v-if="currentSubject.type&&currentSubject.type==4">
+					<view class="textSplit mb-4 position-relative pt-5">
+						<view class="position-absoluteXY"><image src="../../static/images/anti-img5.png" mode=""></image></view>
+						<view class="cont font-40 d-flex a-start flex-wrap text-center font-weight">
+							<view class="item" :data-index="index" @click="!hasResult?xzChoose($event.currentTarget.dataset.index):''" 
+							v-for="(item,index) in textData" :key="index">{{item}}</view>
+						</view>
+					</view>
+					<view class="submitbtn pt-5 mt-3" v-if="!hasResult">
+						<button class="btn mb-3" type="button" @click="xzConfirm()" >
+							<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
+							<view class="btnTit" style="z-index: 999;">确定</view>
+						</button>
+					</view>
+				</view>
+				
+				<view v-if="currentSubject.type&&currentSubject.type==5">
+					<view class="mx-4 pt-5">
+						<view class="d-flex a-center j-sb flex-wrap seltImgBox">
+							<view class="item mb-2" v-for="(item,index) in currentSubject.Option" :key="index">
+								<view class="cont d-flex flex-column a-center" :data-index="index" 
+					@click="!hasResult?answer($event.currentTarget.dataset.index):''">
+									<view class="img"><image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image></view>
+									<view class="seltIcon mt-2" v-if="chooseIndex==index&&chooseIndex!=rightIndex">
+										<image src="../../static/images/anti-icon9.png" mode=""></image>
+									</view>
+									<view class="seltIcon mt-2" v-if="index==rightIndex">
+										<image src="../../static/images/anti-icon8.png" mode=""></image>
+									</view>
+									<!-- <view class="seltIcon mt-2">
+										<image src="../../static/images/the-orderl-icon5.png" mode=""></image>
+									</view> -->
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				
+				<!-- <view class="submitbtn mt-5 pt-3">
+					<button class="btn" type="button" @click="Router.navigateTo({route:{path:'/pages/buildUp-Answer-multiSelt/buildUp-Answer-multiSelt'}})">
+						<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
+						<view class="btnTit">下一题</view>
+					</button>
+				</view> -->
 			</view>
-			
-			<!-- <view class="submitbtn mt-5 pt-3">
-				<button class="btn" type="button" @click="Router.navigateTo({route:{path:'/pages/buildUp-Answer-multiSelt/buildUp-Answer-multiSelt'}})">
-					<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-					<view class="btnTit">下一题</view>
-				</button>
-			</view> -->
-			<view style="height: 260rpx;width: 100%;"></view>
 		</view>
 	</view>
 </template>

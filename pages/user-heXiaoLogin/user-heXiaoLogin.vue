@@ -1,7 +1,7 @@
 <template>
-	<view v-if="showAll">
+	<view v-if="showAll"  style="height: 100%;">
 		<pageBj></pageBj>
-
+		<view class="Box">
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
 				<image src="../../static/images/back-icon.png" mode=""></image>
@@ -12,7 +12,7 @@
 			<view class="tit">登录</view>
 		</view>
 
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="loginCont">
 				<view class="item d-flex a-center px-2">
 					<view class="icon">
@@ -50,7 +50,8 @@
 					<view class="btnTit">登录</view>
 				</button>
 			</view>
-		</scroll-view>
+		</view>
+		</view>
 	</view>
 </template>
 
@@ -121,10 +122,6 @@
 </script>
 
 <style>
-	page {
-		padding-bottom: 40rpx;
-	}
-
 	.loginCont {
 		margin: 0 auto;
 		z-index: 2;

@@ -1,8 +1,9 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 
 		<pageBj></pageBj>
 
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -13,7 +14,7 @@
 			</view>
 			<view class="tit">添加地址</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="myRowBetween mx-3 bg-white rounded10">
 				<view class="item d-flex j-sb a-center">
 					<view class="ll">姓名</view>
@@ -56,7 +57,8 @@
 					<view class="btnTit">新增</view>
 				</button>
 			</view>
-		</scroll-view>
+		</view>
+		</view>
 	</view>
 </template>
 

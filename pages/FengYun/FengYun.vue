@@ -1,14 +1,14 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
-		
+		<view class="Box">
 			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">风云际会</view>
 			</view>
 			
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">	
+		<view class="pageBox pb-4" :style="{marginTop:statusBar+44 + 'px'}">	
 			<view class="d-flex j-center a-center" style="margin-top: 150rpx;">
 				<view class="Dossier position-relative d-flex j-center a-center">
 					<view class="position-absoluteXY"><image src="../../static/images/the-results-ofl-icon6.png" mode=""></image></view>
@@ -56,7 +56,9 @@
 				</button>
 			</view>
 			
-		</scroll-view>
+		</view>
+	
+		</view>
 	</view>
 </template>
 

@@ -1,7 +1,8 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
 
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -12,7 +13,7 @@
 			</view>
 			<view class="tit">课程订单</view>
 		</view>
-		<scroll-view scroll-y="true" @scrolltolower="Bottom" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view @scrolltolower="Bottom" class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="topNavFix f5bj">
 				<view class="orderNav bg-white d-flex j-sb a-center shadow color6">
 					<view class="tt" :class="curr==1?'on':''" @click="changeCurr('1')">全部</view>
@@ -75,8 +76,8 @@
 				</view>
 				<view class="closeBtn" @click="hxEwmShow">×</view>
 			</view>
-			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view>
+		</view>
+		</view>
 	</view>
 </template>
 

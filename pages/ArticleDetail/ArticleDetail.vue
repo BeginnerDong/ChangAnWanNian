@@ -1,6 +1,8 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
+
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -11,7 +13,7 @@
 			</view>
 			<view class="tit">详情</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4" :style="{marginTop:statusBar+44 + 'px'}">
 			<view class="" v-if="mainData.title">
 				<view class="font-weight font-34 mx-3 ">{{mainData.title}}</view>
 				<view class="d-flex j-end a-center mt-1" @click="Utils.stopMultiClick(clickGood)">
@@ -31,8 +33,9 @@
 				</view>
 			</view>
 			<view v-else style="text-align: center;line-height: 100px;font-weight: 700;font-size: 18px;">暂 无 数 据！</view>
-			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view>
+		</view>
+		
+		</view>
 	</view>
 </template>
 
@@ -179,9 +182,6 @@
 	@import "../../assets/style/navbar.css";
 	@import "../../assets/style/detail.css";
 
-	page {
-		padding-bottom: 40rpx;
-	}
 
 	.zanBtn {
 		width: 140rpx;

@@ -1,7 +1,8 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
 
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -12,7 +13,7 @@
 			</view>
 			<view class="tit">收货地址</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox"  @scrolltolower="Bottom"  :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4"  @scrolltolower="Bottom"  :style="{marginTop:44+statusBar + 'px'}">
 			<view class="myaddress-lis bg-white rounded10 overflow-h mx-3 mb-3" v-for="(item,index) in mainData" :key="index">
 				<view class="name" @click="choose(index)">{{item.name}}
 					<view class="numb">{{item.phone}}</view>
@@ -38,8 +39,8 @@
 			<view class="addAdrsBtn d-flex j-center a-center font-30" @click="Router.navigateTo({route:{path:'/pages/user_addressAdd/user_addressAdd'}})">
 				<image class="mr-2" style="width: 30rpx;height: 30rpx;" src="../../static/images/addressl-icon2.png" mode=""></image>新增地址
 			</view>
-			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view>
+		</view>
+		</view>
 	</view>
 </template>
 

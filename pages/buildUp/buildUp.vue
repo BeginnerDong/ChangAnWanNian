@@ -1,6 +1,8 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
+
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -12,7 +14,7 @@
 			<view class="tit">日积月累</view>
 		</view>
 
-		<view  class="pageBox" :style="{top:statusBar + 'px'}">
+		<view  class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
 			<view class="d-flex j-center a-center" style="margin-top: 220rpx;">
 
 				<view class="Dossier position-relative d-flex j-center a-center">
@@ -47,6 +49,8 @@
 					<view class="btnTit">开始答题</view>
 				</button>
 			</view>
+		</view>
+		
 		</view>
 
 		<!-- 达到上限弹框 -->

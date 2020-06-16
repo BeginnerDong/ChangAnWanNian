@@ -1,6 +1,8 @@
 <template>
-	<view>
+	<view style="height: 100%;">
 		<pageBj></pageBj>
+
+		<view class="Box">
 
 		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
 			<view class="backBtn" @click="Router.back(1)">
@@ -11,7 +13,7 @@
 			</view>
 			<view class="tit">宫殿</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox" :style="{top:statusBar + 'px'}">
+		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="palaceBox position-relative text-center">
 				<view class="position-absoluteXY">
 					<image class="w" src="../../static/images/palaceBox-img1.png" mode="widthFix"></image>
@@ -73,8 +75,9 @@
 
 				</view>
 			</view>
-			<view style="height: 260rpx;width: 100%;"></view>
-		</scroll-view>
+		</view>
+	
+	</view>
 	</view>
 </template>
 
@@ -108,9 +111,6 @@
 </script>
 
 <style>
-	page {
-		padding-bottom: 40rpx;
-	}
 
 	.palaceBox {
 		padding: 146rpx 38rpx 0 144rpx;
