@@ -7,7 +7,7 @@
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">题目解析</view>
 			</view>
-		<view @scrolltolower="Bottom" class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">	
+		<scroll-view @scrolltolower="Bottom" class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">	
 			<view class="answerList" v-for="(item,index) in mainData" :key="index">
 				<view class="mx-3">
 					<view>{{index+1}}:{{item.title}}</view>
@@ -30,7 +30,7 @@
 			</view>
 			
 			<view style="height: 260rpx;width: 100%;"></view>
-		</view>
+		</scroll-view>
 		</view>
 	</view>
 </template>

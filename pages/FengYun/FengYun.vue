@@ -3,7 +3,7 @@
 		<pageBj></pageBj>
 		<view class="Box">
 			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
-				<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
+				<view class="backBtn" @click="back()"><image src="../../static/images/back-icon.png" mode=""></image></view>
 				<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
 				<view class="tit">风云际会</view>
 			</view>
@@ -147,6 +147,17 @@
 		},
 		
 		methods: {
+			
+			back(){
+				const self = this;
+				if(self.isShare){
+					self.$Router.redirectTo({route:{path:'/pages/buildUp-Answer-Singular/buildUp-Answer-Singular'}})
+				}else{
+					uni.navigateBack({
+						delta:1
+					})
+				}
+			},
 			
 			getSheetData() {
 				var self = this;
@@ -369,6 +380,7 @@
 							showCancel:true,
 							confirmText:'前往',
 							success(res) {
+								uni.hideLoading();
 								if(res.confirm){
 									self.$Router.redirectTo({route:{path:'/pages/uesr-lngotRecharge/uesr-lngotRecharge'}})
 								}else{

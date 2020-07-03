@@ -8,7 +8,7 @@
 				<view class="tit">结果</view>
 			</view>
 			
-		<view class="pageBox pb-4" :style="{top:statusBar + 'px'}">	
+		<view class="pageBox pb-4" :style="{marginTop:statusBar + 44 + 'px'}">	
 			<view class="mx-3 rankingBox">
 				<view class="item d-flex a-center j-sb py-3" v-for="(item,index) in mainData" :key="index">
 					<view class="ll d-flex a-center">
@@ -67,7 +67,8 @@
 				postData.searchItem = {
 					set_id :uni.getStorageSync('setId'),
 					//set_id:,
-					user_type:0
+					user_type:0,
+					deadline:['>',(new Date()).getTime() / 1000],
 				};
 				postData.order = {
 					score:'desc'

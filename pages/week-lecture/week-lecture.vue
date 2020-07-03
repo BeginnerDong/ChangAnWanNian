@@ -13,7 +13,7 @@
 			</view>
 			<view class="tit">周末讲堂</view>
 		</view>
-		<view  @scrolltolower="Bottom" class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
+		<scroll-view scroll-y="true"  @scrolltolower="Bottom" class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="productList d-flex j-sb flex-wrap mx-3">
 				<view class="item mb-3" v-for="(item,index) in mainData" :key="index" :data-id="item.id" @click="Router.navigateTo({route:{path:'/pages/week-lecture-Detail/week-lecture-Detail?id='+$event.currentTarget.dataset.id}})">
 					<view class="pic rounded10">
@@ -27,7 +27,7 @@
 			<view class="nodata" v-if="mainData.length==0">
 				<image src="../../static/images/nodata.png" mode=""></image>
 			</view>
-		</view>
+		</scroll-view>
 			</view>
 	</view>
 </template>

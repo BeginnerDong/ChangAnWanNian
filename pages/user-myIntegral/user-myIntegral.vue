@@ -2,37 +2,43 @@
 	<view style="height: 100%;">
 		<pageBj></pageBj>
 		<view class='Box'>
-		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
-			<view class="backBtn" @click="Router.back(1)"><image src="../../static/images/back-icon.png" mode=""></image></view>
-			<view class="headBj"><image src="../../static/images/head-img.png" mode=""></image></view>
-			<view class="tit">积分流水</view>
-		</view>
-		<view class="pageBox" @scrolltolower="Bottom"  :style="{marginTop:statusBar+44 + 'px'}">
-			<view class="myExtendTop text-center d-flex a-center flex-column  px-3">
-				<view class="money font-weight">{{userInfoData.score}}</view>
-				<view class="fs13 pdt10 d-flex j-center a-center mt-3"><image class="mr-1" style="width: 34rpx;height: 34rpx;" src="../../static/images/racel-icon1.png" mode=""></image>积分(个)</view>
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
+				<view class="backBtn" @click="Router.back(1)">
+					<image src="../../static/images/back-icon.png" mode=""></image>
+				</view>
+				<view class="headBj">
+					<image src="../../static/images/head-img.png" mode=""></image>
+				</view>
+				<view class="tit">积分流水</view>
 			</view>
-		
-			<view class="f5Bj-H20"> 
-				<image src="../../static/images/home-icon4.png" mode=""></image>
-			</view>
-		
-			<view style="padding-bottom: 20px;">
-				<view class="myRowBetween mx-3" >
-					<view class="item d-flex j-sb a-center border-bottom" v-for="(item,index) in mainData" :key="index">
-						<view class="ll">
-							<view class="">{{item.trade_info}}</view>
-							<view class="font-26 color6 mt-1">{{item.create_time}}</view>
-						</view>
-						<view class="rr red">{{item.count}}</view>
+			<scroll-view @scrolltolower="Bottom()" scroll-y="true" class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
+				<view class="myExtendTop text-center d-flex a-center flex-column  px-3">
+					<view class="money font-weight">{{userInfoData.score}}</view>
+					<view class="fs13 pdt10 d-flex j-center a-center mt-3">
+						<image class="mr-1" style="width: 34rpx;height: 34rpx;" src="../../static/images/racel-icon1.png" mode=""></image>积分(个)
 					</view>
 				</view>
-				
-			</view>
-			
-		</view >
-			
-		</view >
+
+				<view class="f5Bj-H20">
+					<image src="../../static/images/home-icon4.png" mode=""></image>
+				</view>
+
+				<view style="padding-bottom: 20px;">
+					<view class="myRowBetween mx-3">
+						<view class="item d-flex j-sb a-center border-bottom" v-for="(item,index) in mainData" :key="index">
+							<view class="ll">
+								<view class="">{{item.trade_info}}</view>
+								<view class="font-26 color6 mt-1">{{item.create_time}}</view>
+							</view>
+							<view class="rr red">{{item.count}}</view>
+						</view>
+					</view>
+
+				</view>
+
+			</scroll-view>
+
+		</view>
 	</view>
 </template>
 
@@ -45,28 +51,28 @@
 		},
 		data() {
 			return {
-				Router:this.$Router,
-				
-				userInfoData:{},
-				searchItem:{
-					thirdapp_id:2,
-					type:3,
+				Router: this.$Router,
+
+				userInfoData: {},
+				searchItem: {
+					thirdapp_id: 2,
+					type: 3,
 				},
-				mainData:[],
-				statusBar:app.globalData.statusBar
+				mainData: [],
+				statusBar: app.globalData.statusBar
 			}
 		},
-		
+
 		onLoad() {
 			const self = this;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
-			self.$Utils.loadAll(['getMainData','getUserInfoData'], self);
+			self.$Utils.loadAll(['getMainData', 'getUserInfoData'], self);
 		},
-		
-		
-		
+
+
+
 		methods: {
-			
+
 			Bottom() {
 				console.log('onReachBottom')
 				const self = this;
@@ -75,7 +81,7 @@
 					self.getMainData()
 				};
 			},
-			
+
 			getUserInfoData() {
 				const self = this;
 				const postData = {};
@@ -88,10 +94,10 @@
 				};
 				self.$apis.userInfoGet(postData, callback);
 			},
-			
+
 			getMainData(isNew) {
 				const self = this;
-				if(isNew){
+				if (isNew) {
 					self.mainData = [];
 					self.paginate = {
 						count: 0,
@@ -109,7 +115,7 @@
 						self.mainData.push.apply(self.mainData, res.info.data);
 					}
 					self.$Utils.finishFunc('getMainData');
-						
+
 				};
 				self.$apis.flowLogGet(postData, callback);
 			},
@@ -119,8 +125,22 @@
 
 <style>
 	@import "../../assets/style/editInfor.css";
-	.myExtendTop{padding-top:60rpx;height: 280rpx;}
-	.myExtendTop .money{font-size:80rpx; line-height:80rpx;}
-	.myRowBetween .item{border-bottom: 1px solid #E1E1E1;}
-	.myRowBetween .item .rr{font-size: 30rpx;}
+
+	.myExtendTop {
+		padding-top: 60rpx;
+		height: 280rpx;
+	}
+
+	.myExtendTop .money {
+		font-size: 80rpx;
+		line-height: 80rpx;
+	}
+
+	.myRowBetween .item {
+		border-bottom: 1px solid #E1E1E1;
+	}
+
+	.myRowBetween .item .rr {
+		font-size: 30rpx;
+	}
 </style>

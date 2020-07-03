@@ -1,50 +1,50 @@
 <template>
 	<view style="height: 100%;">
 		<pageBj></pageBj>
-		
+
 		<view class="Box">
-		
-		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
-			<view class="headBj">
-				<image src="../../static/images/head-img.png" mode=""></image>
+
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
+				<view class="headBj">
+					<image src="../../static/images/head-img.png" mode=""></image>
+				</view>
+				<view class="tit">关于我们</view>
 			</view>
-			<view class="tit">关于我们</view>
-		</view>
-		<view class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
-			<view class="mx-3">
-				<view class="xqInfor">
-					<view class="cont font-26">
-						<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
+			<view class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
+				<view class="mx-3">
+					<view class="xqInfor">
+						<view class="cont font-26">
+							<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
+							</view>
 						</view>
 					</view>
 				</view>
+
+				<!--底部tab键-->
+				<view class="navbar">
+					<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/index/index'}})">
+						<view class="nav_img">
+							<image src="../../static/images/nabar1.png" />
+						</view>
+						<view class="text">首页</view>
+					</view>
+					<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/aboutUs/aboutUs'}})">
+						<view class="nav_img">
+							<image src="../../static/images/nabar2-a.png" />
+						</view>
+						<view class="text this-text">关于我们</view>
+					</view>
+					<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/user/user'}})">
+						<view class="nav_img">
+							<image src="../../static/images/nabar3.png" />
+						</view>
+						<view class="text">我的</view>
+					</view>
+				</view>
+				<view style="height: 260rpx;width: 100%;"></view>
+				<!--底部tab键 end-->
 			</view>
-			
-			<!--底部tab键-->
-			<view class="navbar">
-				<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/index/index'}})">
-					<view class="nav_img">
-						<image src="../../static/images/nabar1.png" />
-					</view>
-					<view class="text">首页</view>
-				</view>
-				<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/aboutUs/aboutUs'}})">
-					<view class="nav_img">
-						<image src="../../static/images/nabar2-a.png" />
-					</view>
-					<view class="text this-text">关于我们</view>
-				</view>
-				<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/user/user'}})">
-					<view class="nav_img">
-						<image src="../../static/images/nabar3.png" />
-					</view>
-					<view class="text">我的</view>
-				</view>
-			</view>
-			<view style="height: 260rpx;width: 100%;"></view>
-			<!--底部tab键 end-->
-		</view>
-		
+
 		</view>
 	</view>
 </template>
@@ -107,5 +107,7 @@
 	@import "../../assets/style/navbar.css";
 	@import "../../assets/style/detail.css";
 
-	.pageBox{margin-bottom: 110rpx;}
+	.pageBox {
+		margin-bottom: 110rpx;
+	}
 </style>

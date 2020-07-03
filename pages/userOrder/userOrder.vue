@@ -4,90 +4,90 @@
 
 		<view class="Box">
 
-		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
-			<view class="backBtn" @click="Router.back(1)">
-				<image src="../../static/images/back-icon.png" mode=""></image>
-			</view>
-			<view class="headBj">
-				<image src="../../static/images/head-img.png" mode=""></image>
-			</view>
-			<view class="tit">我的订单</view>
-		</view>
-		<view @scrolltolower="Bottom"  class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
-			<view class="topNavFix f5bj">
-				<view class="orderNav bg-white d-flex j-sb a-center shadow color6">
-					<view class="tt" :class="curr==1?'on':''" @click="changeCurr('1')">全部</view>
-					<view class="tt" :class="curr==2?'on':''" @click="changeCurr('2')">待支付</view>
-					<view class="tt" :class="curr==3?'on':''" @click="changeCurr('3')">待配送</view>
-					<view class="tt" :class="curr==4?'on':''" @click="changeCurr('4')">待收货</view>
-					<view class="tt" :class="curr==5?'on':''" @click="changeCurr('5')">已完成</view>
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
+				<view class="backBtn" @click="Router.back(1)">
+					<image src="../../static/images/back-icon.png" mode=""></image>
 				</view>
+				<view class="headBj">
+					<image src="../../static/images/head-img.png" mode=""></image>
+				</view>
+				<view class="tit">我的订单</view>
 			</view>
-			<view class="topNavH"></view>
+			<scroll-view scroll-y="true" @scrolltolower="Bottom" class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
+				<view class="topNavFix f5bj">
+					<view class="orderNav bg-white d-flex j-sb a-center shadow color6">
+						<view class="tt" :class="curr==1?'on':''" @click="changeCurr('1')">全部</view>
+						<view class="tt" :class="curr==2?'on':''" @click="changeCurr('2')">待支付</view>
+						<view class="tt" :class="curr==3?'on':''" @click="changeCurr('3')">待配送</view>
+						<view class="tt" :class="curr==4?'on':''" @click="changeCurr('4')">待收货</view>
+						<view class="tt" :class="curr==5?'on':''" @click="changeCurr('5')">已完成</view>
+					</view>
+				</view>
+				<view class="topNavH"></view>
 
-			<view class="mx-3 mt-3">
-				<view class="proRow ">
-					<view class="item mb-3 bg-white" v-for="(item,index) in mainData" :key="index">
-						<view class="priList">
-							<view class="font-24 d-flex j-sb a-center mb-2">
-								<view class="color9">交易时间：{{item.create_time}}</view>
-								<view class="red" v-if="item.pay_status==0">待支付</view>
-								<view class="red" v-if="item.pay_status==1&&item.transport_status==0">待配送</view>
-								<view class="red" v-if="item.pay_status==1&&item.transport_status==1">待收货</view>
-								<view class="red" v-if="item.pay_status==1&&item.transport_status==2">已完成</view>
-							</view>
-							<view class="d-flex a-center j-sb">
-								<view class="pic">
-									<image :src="item.orderItem&&item.orderItem[0]&&item.orderItem[0].snap_product&&
-							item.orderItem[0].snap_product.mainImg&&item.orderItem[0].snap_product.mainImg[0]?item.orderItem[0].snap_product.mainImg[0].url:''"
-									 mode=""></image>
+				<view class="mx-3 mt-3">
+					<view class="proRow ">
+						<view class="item mb-3 bg-white" v-for="(item,index) in mainData" :key="index">
+							<view class="priList">
+								<view class="font-24 d-flex j-sb a-center mb-2">
+									<view class="color9">交易时间：{{item.create_time}}</view>
+									<view class="red" v-if="item.pay_status==0">待支付</view>
+									<view class="red" v-if="item.pay_status==1&&item.transport_status==0">待配送</view>
+									<view class="red" v-if="item.pay_status==1&&item.transport_status==1">待收货</view>
+									<view class="red" v-if="item.pay_status==1&&item.transport_status==2">已完成</view>
 								</view>
-								<view class="infor">
-									<view class="tit avoidOverflow2">{{item.title}}</view>
-									<view class="B-price d-flex a-center j-sb">
-										<view class="price font-30 font-weight mt-2 d-flex a-center">
-											<view class="priceIcon">
-												<image src="../../static/images/about-img2.png" mode=""></image>
+								<view class="d-flex a-center j-sb">
+									<view class="pic">
+										<image :src="item.orderItem&&item.orderItem[0]&&item.orderItem[0].snap_product&&
+							item.orderItem[0].snap_product.mainImg&&item.orderItem[0].snap_product.mainImg[0]?item.orderItem[0].snap_product.mainImg[0].url:''"
+										 mode=""></image>
+									</view>
+									<view class="infor">
+										<view class="tit avoidOverflow2">{{item.title}}</view>
+										<view class="B-price d-flex a-center j-sb">
+											<view class="price font-30 font-weight mt-2 d-flex a-center">
+												<view class="priceIcon">
+													<image src="../../static/images/about-img2.png" mode=""></image>
+												</view>
+												<view>{{item.price}}</view>
 											</view>
-											<view>{{item.price}}</view>
+											<view class="font-26">×{{item.count}}</view>
 										</view>
-										<view class="font-26">×{{item.count}}</view>
 									</view>
 								</view>
 							</view>
-						</view>
-						<view class="underBtn d-flex j-end a-center pb-3"v-if="item.pay_status==0">
-							<view class="Bbtn position-relative"  @click="pay(index)" >
-								<view class="position-absoluteXY">
-									<image src="../../static/images/about-icon.png" mode=""></image>
+							<view class="underBtn d-flex j-end a-center pb-3" v-if="item.pay_status==0">
+								<view class="Bbtn position-relative" @click="pay(index)">
+									<view class="position-absoluteXY">
+										<image src="../../static/images/about-icon.png" mode=""></image>
+									</view>
+									<view class="text">去支付</view>
 								</view>
-								<view class="text">去支付</view>
+								<view class="Bbtn position-relative" @click="deleteThis(index)">
+									<view class="position-absoluteXY">
+										<image src="../../static/images/about-icon.png" mode=""></image>
+									</view>
+									<view class="text">取消订单</view>
+								</view>
 							</view>
-							<view class="Bbtn position-relative" @click="deleteThis(index)"> 
-								<view class="position-absoluteXY">
-									<image src="../../static/images/about-icon.png" mode=""></image>
+							<view class="underBtn d-flex j-end a-center pb-3" @click="orderUpdate(index)" v-if="item.transport_status==1">
+								<view class="Bbtn position-relative">
+									<view class="position-absoluteXY">
+										<image src="../../static/images/about-icon.png" mode=""></image>
+									</view>
+									<view class="text">确认收货</view>
 								</view>
-								<view class="text">取消订单</view>
-							</view>
-						</view>
-						<view class="underBtn d-flex j-end a-center pb-3" @click="orderUpdate(index)" v-if="item.transport_status==1">
-							<view class="Bbtn position-relative">
-								<view class="position-absoluteXY">
-									<image src="../../static/images/about-icon.png" mode=""></image>
-								</view>
-								<view class="text">确认收货</view>
 							</view>
 						</view>
 					</view>
 				</view>
-			</view>
 
 
-			<!-- 无数据 -->
-			<view class="nodata" v-if="mainData.length==0">
-				<image src="../../static/images/nodata.png" mode=""></image>
-			</view>
-		</view>
+				<!-- 无数据 -->
+				<view class="nodata" v-if="mainData.length==0">
+					<image src="../../static/images/nodata.png" mode=""></image>
+				</view>
+			</scroll-view>
 		</view>
 	</view>
 </template>
@@ -124,10 +124,10 @@
 			self.$Utils.loadAll(['getMainData'], self);
 		},
 
-		
+
 
 		methods: {
-			
+
 			Bottom() {
 				console.log('onReachBottom')
 				const self = this;
@@ -221,7 +221,7 @@
 				};
 				self.$apis.orderUpdate(postData, callback);
 			},
-			
+
 			deleteThis(index) {
 				const self = this;
 				uni.setStorageSync('canClick', false);
@@ -246,7 +246,7 @@
 				};
 				self.$apis.orderUpdate(postData, callback);
 			},
-			
+
 
 			getMainData(isNew) {
 				const self = this;

@@ -2,81 +2,81 @@
 	<view style="height: 100%;">
 		<pageBj></pageBj>
 		<view class="Box">
-		
-		<!-- <view  :style="{marginTop:statusBar + 'px'}"></view> -->
-		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
-			<view class="headBj"></view>
-			<view class="tit">首页</view>
-		</view>
-		<view class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
-			<view>
-				<view class="banner-box px-3">
-					<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="#d2d2d2"
-					 indicator-active-color="#dec193">
-						<block v-for="(item,index) in sliderData.mainImg" :key="index">
-							<swiper-item class="swiper-item">
-								<image :src="item.url" class="slide-image" />
-							</swiper-item>
-						</block>
-					</swiper>
-				</view>
-			</view>
 
-			<view class="indHome d-flex a-center pt-4 font-24">
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/PassThrough/PassThrough'}})">
-					<image src="../../static/images/home-icon.png"></image>
-					<view class="tit">探索穿越</view>
-				</view>
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/buildUp/buildUp'}})">
-					<image src="../../static/images/home-icon1.png"></image>
-					<view class="tit">日积月累</view>
-				</view>
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/FengYun/FengYun'}})">
-					<image src="../../static/images/home-icon2.1.png"></image>
-					<view class="tit">风云际会</view>
-				</view>
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/week-lecture/week-lecture'}})">
-					<image src="../../static/images/home-icon2.png"></image>
-					<view class="tit">周末讲堂</view>
-				</view>
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/Online-ProList/Online-ProList'}})">
-					<image src="../../static/images/home-icon3.png"></image>
-					<view class="tit">电商文创</view>
-				</view>
+			<!-- <view  :style="{marginTop:statusBar + 'px'}"></view> -->
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar+'px'}">
+				<view class="headBj"></view>
+				<view class="tit">首页</view>
 			</view>
-			<view class="f5Bj-H20">
-				<image src="../../static/images/home-icon4.png" mode=""></image>
-			</view>
-
-			<view class="px-3 mt-3">
-				<view class="font-30 font-weight d-flex a-start title-xian mb-3">
-					<view class="xain"></view>
-					<view>热门文章</view>
-				</view>
-				<view class="proRow prolist">
-					<view class="item d-flex j-sb  rounded10 mb-4" v-for="(item,index) in mainData" :key="index" :data-id="item.id"
-					 @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?id='+$event.currentTarget.dataset.id}})">
-						<view class="pic">
-							<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image>
-						</view>
-						<view class="infor">
-							<view class="tit avoidOverflow2 font-28">{{item.title}}</view>
-							<view class="B-price">
-								<view class="font-24 color9">{{item.create_time}}</view>
-							</view>
-						</view>
+			<scroll-view scroll-y="true" @scrolltolower="Bottom" class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
+				<view>
+					<view class="banner-box px-3">
+						<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="#d2d2d2"
+						 indicator-active-color="#dec193">
+							<block v-for="(item,index) in sliderData.mainImg" :key="index">
+								<swiper-item class="swiper-item">
+									<image :src="item.url" class="slide-image" />
+								</swiper-item>
+							</block>
+						</swiper>
 					</view>
 				</view>
 
-				<!-- 无数据 -->
-				<view class="nodata" v-if="mainData.length==0">
-					<image src="../../static/images/nodata.png" mode=""></image>
+				<view class="indHome d-flex a-center pt-4 font-24">
+					<view class="item" @click="Router.navigateTo({route:{path:'/pages/PassThrough/PassThrough'}})">
+						<image src="../../static/images/home-icon.png"></image>
+						<view class="tit">探索穿越</view>
+					</view>
+					<view class="item" @click="Router.navigateTo({route:{path:'/pages/buildUp/buildUp'}})">
+						<image src="../../static/images/home-icon1.png"></image>
+						<view class="tit">日积月累</view>
+					</view>
+					<view class="item" @click="Router.navigateTo({route:{path:'/pages/FengYun/FengYun'}})">
+						<image src="../../static/images/home-icon2.1.png"></image>
+						<view class="tit">风云际会</view>
+					</view>
+					<view class="item" @click="Router.navigateTo({route:{path:'/pages/week-lecture/week-lecture'}})">
+						<image src="../../static/images/home-icon2.png"></image>
+						<view class="tit">周末讲堂</view>
+					</view>
+					<view class="item" @click="Router.navigateTo({route:{path:'/pages/Online-ProList/Online-ProList'}})">
+						<image src="../../static/images/home-icon3.png"></image>
+						<view class="tit">电商文创</view>
+					</view>
+				</view>
+				<view class="f5Bj-H20">
+					<image src="../../static/images/home-icon4.png" mode=""></image>
 				</view>
 
-			</view>
-			</view>
-			
-			
+				<view class="px-3 mt-3">
+					<view class="font-30 font-weight d-flex a-start title-xian mb-3">
+						<view class="xain"></view>
+						<view>热门文章</view>
+					</view>
+					<view class="proRow prolist">
+						<view class="item d-flex j-sb  rounded10 mb-4" v-for="(item,index) in mainData" :key="index" :data-id="item.id"
+						 @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?id='+$event.currentTarget.dataset.id}})">
+							<view class="pic">
+								<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image>
+							</view>
+							<view class="infor">
+								<view class="tit avoidOverflow2 font-28">{{item.title}}</view>
+								<view class="B-price">
+									<view class="font-24 color9">{{item.create_time}}</view>
+								</view>
+							</view>
+						</view>
+					</view>
+
+					<!-- 无数据 -->
+					<view class="nodata" v-if="mainData.length==0">
+						<image src="../../static/images/nodata.png" mode=""></image>
+					</view>
+
+				</view>
+			</scroll-view>
+
+
 			<!--底部tab键-->
 			<view class="navbar">
 				<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/index/index'}})">
@@ -99,8 +99,8 @@
 				</view>
 			</view>
 			<!--底部tab键 end-->
-		
-			</view>
+
+		</view>
 	</view>
 </template>
 
@@ -126,21 +126,59 @@
 			const self = this;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
 			self.$Utils.loadAll(['getUserInfoData', 'getSliderData', 'getMainData'], self);
-
-			console.log('状态栏高度：', self.statusBar, '----计算得到定义的状态栏高度：', self.customBar)
-			console.log(self.custom, '菜单按钮')
 		},
 
-		onReachBottom() {
-			console.log('onReachBottom')
+		onShareAppMessage(ops) {
+			console.log(ops)
 			const self = this;
-			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
-				self.paginate.currentPage++;
-				self.getMainData()
-			};
+			if (ops.from === 'button') {
+				
+				return {
+					title:'崇德含光文化平台',
+					path: '/pages/index/index', //点击分享的图片进到哪一个页面
+					//imageUrl:self.mainData&&self.mainData.mainImg&&self.mainData.mainImg[0]&&self.mainData.mainImg[0].url?self.mainData.mainImg[0].url:'',
+					success: function(res) {
+						// 转发成功
+						
+						console.log("转发成功:" + JSON.stringify(res));
+					},
+					fail: function(res) {
+						// 转发失败
+						console.log("转发失败:" + JSON.stringify(res));
+					}
+				}
+			}else{
+				return {
+					title:'崇德含光文化平台',
+					path: '/pages/index/index', //点击分享的图片进到哪一个页面
+					//imageUrl:self.mainData&&self.mainData.mainImg&&self.mainData.mainImg[0]&&self.mainData.mainImg[0].url?self.mainData.mainImg[0].url:'',
+					success: function(res) {
+						// 转发成功
+						
+						console.log("转发成功:" + JSON.stringify(res));
+					},
+					fail: function(res) {
+						// 转发失败
+						console.log("转发失败:" + JSON.stringify(res));
+					}
+				}
+			}
+		},
+
+		onPageScroll: function(e) { //nvue暂不支持滚动监听，可用bindingx代替
+			console.log("滚动距离为：" + e.scrollTop);
 		},
 
 		methods: {
+			
+			Bottom() {
+				console.log('onReachBottom')
+				const self = this;
+				if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+					self.paginate.currentPage++;
+					self.getMainData()
+				};
+			},
 
 			getMainData(isNew) {
 				const self = this;
@@ -271,7 +309,9 @@
 	@import "../../assets/style/navbar.css";
 	@import "../../assets/style/proRow.css";
 
-	.pageBox{margin-bottom: 110rpx;}
+	.pageBox {
+		padding-bottom: 110rpx;
+	}
 
 	.swiper-box {
 		height: 280rpx;

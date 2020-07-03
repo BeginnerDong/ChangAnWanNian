@@ -160,6 +160,7 @@
 				postData.searchItem = {
 					free: 2,
 					type: 1,
+					user_no: uni.getStorageSync('user_info').user_no
 				};
 				var callback = function(res) {
 					if (res.info.data.length > 0 && res.info.data[0]) {

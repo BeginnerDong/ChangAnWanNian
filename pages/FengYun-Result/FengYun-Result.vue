@@ -73,12 +73,7 @@
 			uni.removeStorageSync('score');
 		},
 		
-		onHide() {
-			uni.removeStorageSync('subjectData');
-			uni.removeStorageSync('setId');
-			uni.removeStorageSync('sheetId');
-			uni.removeStorageSync('score');
-		},
+		
 		
 		methods: {
 			

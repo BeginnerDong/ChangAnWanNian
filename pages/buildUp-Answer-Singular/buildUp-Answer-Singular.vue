@@ -8,7 +8,7 @@
 				<view class="tit">答题</view>
 			</view>
 			
-			<view class="pageBox pb-4" :style="{top:statusBar + 'px'}">	
+			<view class="pageBox pb-4" :style="{marginTop:statusBar+ 44 + 'px'}">	
 				<view class="d-flex j-center a-center" style="margin-top: 80rpx;">
 					<view class="answerTime position-relative text-center">
 						<view class="position-absoluteXY"><image src="../../static/images/anti-img.png" mode=""></image></view>

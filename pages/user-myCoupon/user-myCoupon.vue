@@ -11,7 +11,7 @@
 			</view>
 			<view class="tit">优惠券</view>
 		</view>
-		<view  @scrolltolower="Bottom" class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
+		<scroll-view scroll-y="true"  @scrolltolower="Bottom" class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class=" tooling_indNav color6 mx-3">
 				<view class="list rounded50 d-flex text-center j-sb bg-white shadow-sm">
 					<view class="tt" :class="curr==1?'on':''" @click="currChange('1')">未使用</view>
@@ -43,7 +43,7 @@
 				</view>
 			</view>
 
-		</view>
+		</scroll-view>
 		</view>
 	</view>
 </template>

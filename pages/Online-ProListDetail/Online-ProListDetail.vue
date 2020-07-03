@@ -12,7 +12,7 @@
 			<view class="headBj">
 				<image src="../../static/images/head-img.png" mode=""></image>
 			</view>
-			<view class="tit">电商文创</view>
+			<view class="tit">详情</view>
 		</view>
 		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="banner-box">

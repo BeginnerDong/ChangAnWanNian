@@ -13,7 +13,7 @@
 			</view>
 			<view class="tit">课程订单</view>
 		</view>
-		<view @scrolltolower="Bottom" class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
+		<scroll-view scroll-y="true" @scrolltolower="Bottom" class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="topNavFix f5bj">
 				<view class="orderNav bg-white d-flex j-sb a-center shadow color6">
 					<view class="tt" :class="curr==1?'on':''" @click="changeCurr('1')">全部</view>
@@ -76,7 +76,7 @@
 				</view>
 				<view class="closeBtn" @click="hxEwmShow">×</view>
 			</view>
-		</view>
+		</scroll-view>
 		</view>
 	</view>
 </template>

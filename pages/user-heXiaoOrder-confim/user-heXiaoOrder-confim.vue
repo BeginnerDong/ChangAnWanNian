@@ -104,7 +104,18 @@
 					id: self.id,
 					user_type: 0
 				};
-
+				postData.getAfter = {
+					orderItem: {
+						tableName: 'OrderItem',
+						middleKey: 'order_no',
+						key: 'order_no',
+						searchItem: {
+							status: 1,
+							user_type: 0
+						},
+						condition: '='
+					},
+				};
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData = res.info.data[0];

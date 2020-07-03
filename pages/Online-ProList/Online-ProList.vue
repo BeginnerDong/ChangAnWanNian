@@ -14,7 +14,7 @@
 			</view>
 			<view class="tit">电商文创</view>
 		</view>
-		<view class="pageBox pb-4"  @scrolltolower="Bottom"   :style="{marginTop:statusBar+44 + 'px'}">
+		<scroll-view scroll-y="true" class="pageBox pb-4"  @scrolltolower="Bottom"   :style="{marginTop:statusBar+44 + 'px'}">
 			<view class="productList d-flex j-sb flex-wrap mx-3">
 				<view class="item rounded10 mb-3" v-for="(item,index) in mainData" :key="index" :data-id="item.id" @click="Router.navigateTo({route:{path:'/pages/Online-ProListDetail/Online-ProListDetail?id='+$event.currentTarget.dataset.id}})">
 					<view class="pic">
@@ -36,7 +36,7 @@
 			<view class="nodata" v-if="mainData.length==0">
 				<image src="../../static/images/nodata.png" mode=""></image>
 			</view>
-		</view>
+		</scroll-view>
 
 	</view>
 	</view>

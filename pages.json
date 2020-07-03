@@ -4,7 +4,7 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",//设置页面标题文字
-				"onReachBottomDistance":100
+				"onReachBottomDistance":300
 			}
 		},
 		{
@@ -321,7 +321,8 @@
 		"navigationStyle":"custom",
 		"navigationBarTextStyle": "black",//导航栏文字
 		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#FFFFFF"
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"disableScroll": true
 	},
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
