@@ -137,6 +137,12 @@
 							</view>
 							<view>核销员入口</view>
 						</view>
+						<view class="item" @click="Router.navigateTo({route:{path:'/pages/user-mLogin/user-mLogin'}})">
+							<view class="icon">
+								<image src="../../static/images/about-icon8.png"></image>
+							</view>
+							<view>管理入口</view>
+						</view>
 					</view>
 				</view>
 			</view>

@@ -25,21 +25,17 @@
 						<image src="../../static/images/the-loginl-icon2.png" mode=""></image>
 					</view>
 				</view>
-				<view class="item d-flex a-center j-sb mt-5">
-					<view class="d-flex a-center position-relative px-2" style="width: 66%;">
-						<view class="icon">
-							<image src="../../static/images/the-loginl-icon1.png" mode=""></image>
-						</view>
-						<view class="input">
-							<input type="password" v-model="submitData.password" placeholder="请输入密码" placeholder-class="placeholder">
-						</view>
-						<view class="xian">
-							<image src="../../static/images/the-loginl-icon2.png" mode=""></image>
-						</view>
+				<view class="item d-flex a-center px-2 mt-5">
+					<view class="icon">
+						<image src="../../static/images/the-loginl-icon1.png" mode=""></image>
 					</view>
-					<view class="border yzm main-text-color font-24 text-center rounded10">获取验证码</view>
+					<view class="input">
+						<input type="password" v-model="submitData.password" placeholder="请输入密码" placeholder-class="placeholder">
+					</view>
+					<view class="xian">
+						<image src="../../static/images/the-loginl-icon2.png" mode=""></image>
+					</view>
 				</view>
-
 			</view>
 
 			<view class="submitbtn pdtb15" style="margin-top:100rpx;">
@@ -77,9 +73,9 @@
 		onLoad() {
 			const self = this;
 			uni.hideLoading();
-			if (uni.getStorageSync('merchant_token')) {
+			if (uni.getStorageSync('manager_token')) {
 				uni.redirectTo({
-					url: '/pages/user-heXiaoOrder/user-heXiaoOrder'
+					url: '/pages/user-mSubject/user-mSubject'
 				})
 			} else {
 				self.showAll = true
@@ -98,20 +94,18 @@
 					const callback = (res) => {
 						if (res.solely_code == 100000) {
 							console.log(res);
-							uni.setStorageSync('merchant_token', res.token);
-							uni.setStorageSync('merchant_info', res.info);
+							uni.setStorageSync('manager_token', res.token);
+							uni.setStorageSync('manager_info', res.info);
 							setTimeout(function() {
-								self.Router.redirectTo({
-									route: {
-										path: '/pages/user-heXiaoOrder/user-heXiaoOrder'
-									}
+								uni.redirectTo({
+									url: '/pages/user-mSubject/user-mSubject'
 								})
 							}, 1000);
 						} else {
 							self.$Utils.showToast(res.msg, 'none')
 						}
 					}
-					self.$apis.shopLogin(postData, callback);
+					self.$apis.login(postData, callback);
 				} else {
 					self.$Utils.showToast('请补全登录信息', 'none')
 				};

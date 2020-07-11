@@ -8,7 +8,7 @@
 				<view class="headBj"></view>
 				<view class="tit">首页</view>
 			</view>
-			<scroll-view scroll-y="true" @scrolltolower="Bottom" class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
+			<scroll-view scroll-y="true"  class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
 				<view>
 					<view class="banner-box px-3">
 						<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="#d2d2d2"
@@ -180,19 +180,15 @@
 				};
 			},
 
-			getMainData(isNew) {
+			getMainData() {
 				const self = this;
-				if (isNew) {
-					self.mainData = [];
-					self.paginate = {
-						count: 0,
-						currentPage: 1,
-						is_page: true,
-						pagesize: 10
-					}
-				};
 				const postData = {};
-				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.paginate = {
+					count: 0,
+					currentPage: 1,
+					is_page: true,
+					pagesize: 4
+				};
 				postData.searchItem = {
 					thirdapp_id: 2,
 				}

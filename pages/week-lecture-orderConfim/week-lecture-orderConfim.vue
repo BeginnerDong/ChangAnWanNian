@@ -371,16 +371,19 @@
 				uni.setStorageSync('canClick', false);
 
 
-				if (self.addressData.name == '' || self.addressData.phone == '') {
+				/* if (self.addressData.name == '' || self.addressData.phone == '') {
 					uni.setStorageSync('canClick', true);
 					self.$Utils.showToast('请补全下单信息', 'none')
 					return
+				}; */
+				if(self.addressData.phone != ''){
+					if (self.addressData.phone.trim().length != 11 || !/^1[3|4|5|6|7|8|9]\d{9}$/.test(self.addressData.phone)) {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast('请输入正确的手机号', 'none', 1000)
+						return;
+					}
 				};
-				if (self.addressData.phone.trim().length != 11 || !/^1[3|4|5|6|7|8|9]\d{9}$/.test(self.addressData.phone)) {
-					uni.setStorageSync('canClick', true);
-					self.$Utils.showToast('请输入正确的手机号', 'none', 1000)
-					return;
-				}
+				
 				var data = {
 
 				}

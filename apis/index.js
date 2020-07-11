@@ -150,6 +150,19 @@ export default {
 		http.HTTP(allParams);
 	},
 	
+	subjectGet(param, callback) {
+		var allParams = {
+			url: 'Common/Subject/get',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
 	setGet(param, callback) {
 		var allParams = {
 			url: 'Common/Set/get',

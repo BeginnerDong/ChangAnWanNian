@@ -104,25 +104,19 @@
 			self.id = options.id;
 
 			console.log('options', options)
-			self.$Utils.loadAll(['getMainData', 'getUserInfoData'], self);
+			self.$Utils.loadAll(['getMainData'], self);
 		},
 
 		onShow() {
 			const self = this;
 			self.orderList = [];
 			uni.removeStorageSync('payPro');
-			//self.getUserInfoData()
+			self.getUserInfoData()
 		},
 
 		methods: {
 
-			submit() {
-				const self = this;
-				if (!self.isMember) {
-					self.$Utils.showToast('非会员无权限', 'none', 1000)
-					return
-				}
-			},
+			
 
 			vedioPlay() {
 				const self = this;
@@ -132,7 +126,24 @@
 					self.play = false
 				} else {
 					if (!self.isMember) {
-						self.$Utils.showToast('非会员无权限', 'none', 1000)
+						uni.showModal({
+							title: '提示',
+							content: '非会员暂无权限，是否立即购买会员？',
+							showCancel: true,
+							confirmText: '确定',
+							success(res) {
+								if (res.confirm) {
+									self.Router.navigateTo({
+										route: {
+											path: '/pages/user-Vip/user-Vip'
+										}
+									})
+								} else {
+									console.log('取消')
+								}
+							}
+						});
+						//self.$Utils.showToast('非会员无权限', 'none', 1000)
 						return
 					}
 					videoContextPrev.play();
@@ -145,7 +156,23 @@
 				uni.setStorageSync('canClick', false);
 				if (!self.isMember) {
 					uni.setStorageSync('canClick', true);
-					self.$Utils.showToast('非会员无权限', 'none', 1000)
+					uni.showModal({
+						title: '提示',
+						content: '非会员暂无权限，是否立即购买会员？',
+						showCancel: true,
+						confirmText: '确定',
+						success(res) {
+							if (res.confirm) {
+								self.Router.navigateTo({
+									route: {
+										path: '/pages/user-Vip/user-Vip'
+									}
+								})
+							} else {
+								console.log('取消')
+							}
+						}
+					});
 					return
 				};
 				//uni.setStorageSync('canClick', false);	

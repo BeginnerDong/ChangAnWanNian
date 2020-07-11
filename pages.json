@@ -176,6 +176,20 @@
 			}
 		},
 		{
+			"path": "pages/user-mLogin/user-mLogin",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"onReachBottomDistance":100
+			}
+		},
+		{
+			"path": "pages/user-mSubject/user-mSubject",
+			"style": {
+				"navigationBarTitleText": "预览题目",
+				"onReachBottomDistance":100
+			}
+		},
+		{
 			"path": "pages/user-heXiaoOrder/user-heXiaoOrder",
 			"style": {
 				"navigationBarTitleText": "核销订单",

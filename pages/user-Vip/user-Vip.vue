@@ -86,7 +86,7 @@
 			submit() {
 				const self = this;
 				uni.setStorageSync('canClick', false);
-				uni.showModal({
+				/* uni.showModal({
 					title: '提示',
 					content: '确定购买会员？',
 					showCancel: true,
@@ -101,7 +101,12 @@
 							console.log('取消')
 						}
 					}
-				})
+				}) */
+				
+				const callback = (user, res) => {
+					self.addOrder()
+				};
+				self.$Utils.getAuthSetting(callback);
 			},
 
 			addOrder() {
@@ -133,7 +138,7 @@
 				uni.setStorageSync('canClick', false);
 				self.price = parseFloat(self.price);
 				const postData = {};
-				postData.score = {
+				postData.wxPay = {
 					price: self.price.toFixed(2),
 				};
 				postData.tokenFuncName = 'getProjectToken';
