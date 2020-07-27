@@ -21,23 +21,27 @@
 					<view class="position-absoluteXY">
 						<image src="../../static/images/the-results-ofl-icon6.png" mode=""></image>
 					</view>
-					<view class="infor d-flex a-center">
-						<view class="photo" style="overflow: hidden;">
-							<open-data type="userAvatarUrl"></open-data>
-						</view>
-						<view class="rr ml-2">
-							<view class="font-40 font-weight">
+					<view class="infor">
+						<view class="d-flex a-center j-center">
+							<view class="photo" style="overflow: hidden;">
+								<open-data type="userAvatarUrl"></open-data>
+							</view>
+							<view class="font-40 font-weight pl-3">
 								<open-data type="userNickName"></open-data>
 							</view>
-							<view class="d-flex a-center mt-3 font-26">
-								<view class="lableIcon mr-1">
-									<image src="../../static/images/the-results-icon7.png" mode=""></image>
-								</view>
-								<view class="">
-									等级：{{userInfoData.levelName&&userInfoData.levelName.length>0?userInfoData.levelName[0].title:'无'}}
+						</view>
+						<view class="rr ml-2">
+							<view class="mt-3 font-26">
+								<view class="d-flex a-center">
+									<view class="lableIcon mr-1">
+										<image src="../../static/images/the-results-icon7.png" mode=""></image>
+									</view>
+									<view class="">
+										等级：{{userInfoData.levelName&&userInfoData.levelName.length>0?userInfoData.levelName[0].title:'无'}}
+									</view>
 								</view>
 								<view class="d-flex a-center mt-3 font-30">
-									<view class="lableIcon mr-1"><image src="../../static/images/racel-icon1.png" mode=""></image></view>
+									<view class="lableIcon mr-1"><image src="../../static/images/racel-icon1.png" class="jbIcon"></image></view>
 									<view class="">积分：{{userInfoData.answer_score?userInfoData.answer_score:'0.00'}}</view>
 								</view>
 							</view>

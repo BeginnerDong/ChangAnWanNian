@@ -2,9 +2,10 @@
 /* 开始答题 */
 .Dossier{width: 614rpx;height: 338rpx;}
 .Dossier .infor{position: relative;z-index: 2;}
-.Dossier .photo{width: 140rpx;height: 140rpx;border-radius: 50%;background-color: #eee;}
-.Dossier .rr{max-width: 220rpx;}
+.Dossier .photo{width: 100rpx;height: 100rpx;border-radius: 50%;background-color: #eee;}
+/* .Dossier .rr{max-width: 220rpx;} */
 .lableIcon{width: 38rpx;height: 32rpx;}
+.jbIcon{width: 32rpx;height: 32rpx;}
 
 /* 答题问题 */
 .answerTime{width: 500rpx;height: 220rpx;}
