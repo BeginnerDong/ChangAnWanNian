@@ -137,7 +137,7 @@ export default {
 		http.HTTP(allParams);
 	},
 	
-	subjectGet(param, callback) {
+	getSubject(param, callback) {
 		var allParams = {
 			url: 'Project/Solely/getSubject',
 			type: 'post',

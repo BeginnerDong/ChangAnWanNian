@@ -90,6 +90,7 @@
 				uni.removeStorageSync('setId');
 				uni.removeStorageSync('sheetId');
 				uni.removeStorageSync('score');
+				uni.removeStorageSync('sheetType');
 				if(options.id){
 					self.shareSetId = options.id
 					uni.setStorageSync('setId',self.shareSetId);
@@ -151,12 +152,29 @@
 			back(){
 				const self = this;
 				if(self.isShare){
-					self.$Router.redirectTo({route:{path:'/pages/buildUp-Answer-Singular/buildUp-Answer-Singular'}})
+					self.$Router.redirectTo({route:{path:'/pages/index/index'}})
 				}else{
 					uni.navigateBack({
 						delta:1
 					})
 				}
+			},
+			
+			deleteSheet() {
+				var self = this;
+				self.sheetData = {};
+				var postData = {};
+				postData.noLoading = true;
+				postData.tokenFuncName = 'getProjectToken';
+				postData.data = {
+					status:-1
+				};
+				postData.searchItem = {
+					id:self.sheetData.id
+				};
+				var callback = function(res) {
+				};
+				self.$apis.sheetUpdate(postData, callback);
 			},
 			
 			getSheetData() {
@@ -210,15 +228,17 @@
 							content:'您有未完成的对战，是否立即前往继续答题？',
 							showCancel:true,
 							confirmText:'继续',
+							cancelText:'忽略',
 							success(res) {
 								if(res.confirm){
 									uni.setStorageSync('subjectData',self.sheetData.subject);
 									uni.setStorageSync('sheetId',self.sheetData.id);
 									uni.setStorageSync('setId',self.sheetData.set[0].id);
+									uni.setStorageSync('sheetType', 2);
 									self.$Router.navigateTo({route:{path:'/pages/buildUp-Answer-Singular/buildUp-Answer-Singular'}})
 								}else{
-									console.log('取消')
-									
+									self.deleteSheet();
+									self.getUserInfoData()
 								}
 							}
 						})
@@ -268,6 +288,7 @@
 						if(self.isShare){
 							self.shareSheetAdd()
 						}else{
+							uni.setStorageSync('sheetType', 2);
 							self.$Router.navigateTo({route:{path:'/pages/buildUp-Answer-Singular/buildUp-Answer-Singular'}})
 						}
 					}
@@ -363,6 +384,7 @@
 				var callback = function(res) {
 					if (res && res.solely_code == 100000) {
 						uni.setStorageSync('sheetId',res.info.id);
+						uni.setStorageSync('sheetType', 2);
 						self.$Router.navigateTo({route:{path:'/pages/buildUp-Answer-Singular/buildUp-Answer-Singular'}})
 					}
 				};
@@ -441,7 +463,7 @@
 										self.$Utils.showToast(res.msg,'none');
 									}
 								};
-								self.$apis.subjectGet(c_postData, c_callback);
+								self.$apis.getSubject(c_postData, c_callback);
 							}
 						};
 						self.$apis.flowLogAdd(postData, callback);
@@ -465,7 +487,7 @@
 							self.$Utils.showToast(res.msg,'none');
 						}
 					};
-					self.$apis.subjectGet(postData, callback);
+					self.$apis.getSubject(postData, callback);
 				}
 			},
 			

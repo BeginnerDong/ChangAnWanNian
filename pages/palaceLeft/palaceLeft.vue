@@ -24,7 +24,7 @@
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=安定'}})">安定</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=修德'}})">修德</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=普宁'}})">普宁</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=修祥'}})">修祥</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=休祥'}})">休祥</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=辅兴'}})">辅兴</view>
 					</view>
 					<view class="box2 d-flex a-center flex-wrap">
@@ -113,7 +113,7 @@
 <style>
 
 	.palaceBox {
-		padding: 146rpx 38rpx 0 144rpx;
+		padding: 155rpx 30rpx 0 150rpx;
 		width: 100%;
 		height: 1692rpx;
 	}
@@ -124,7 +124,7 @@
 	}
 
 	.palaceBox .child {
-		width: 176rpx;
+		width: 167rpx;
 		height: 94rpx;
 		border: 1px solid #000000;
 		display: flex;
@@ -145,7 +145,7 @@
 	}
 
 	.palaceBox .box2 {
-		padding-top: 16rpx;
+		padding-top: 26rpx;
 	}
 
 	.palaceBox .box2 .child {
@@ -153,16 +153,17 @@
 		margin-bottom: 30rpx;
 	}
 
-	/* .palaceBox .box3{ padding-top:10rpx;} */
+	.palaceBox .box3{ padding-top:25rpx;}
 	.palaceBox .box3 .child {
 		height: 88rpx;
-		margin-bottom: 16rpx;
+		margin-bottom: 30rpx;
 	}
 
 	.palaceBox .split {
 		width: 176rpx;
 		margin-right: 20rpx;
 		height: 180rpx;
+		margin-bottom: 33rpx;
 	}
 
 	.palaceBox .split .child {

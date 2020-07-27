@@ -22,7 +22,7 @@
 			</view>
 
 			<view class="px-3 ">
-				<view class="font-weight pt-3">充值金额</view>
+				<view class="font-weight pt-3">充值金额<text>({{rate}}折)</text></view>
 				<!-- <view class="input-money py-2" ><input type="number" value="100" placeholder="请输入金额" /></view>
 				 -->
 				<view class="specsList d-flex a-center text-center  pt-3">
@@ -66,7 +66,8 @@
 				curr: 0,
 				balance: 0,
 				price: 0,
-				statusBar: app.globalData.statusBar
+				statusBar: app.globalData.statusBar,
+				rate:0
 			}
 		},
 
@@ -77,6 +78,7 @@
 				self.balance = uni.getStorageSync('user_info').info.balance;
 				self.specsList = uni.getStorageSync('user_info').thirdApp.charge_price.split(',');
 				self.price = parseFloat(self.specsList[self.curr]);
+				self.rate = parseFloat(uni.getStorageSync('user_info').thirdApp.charge_rate) / 10;
 				uni.hideLoading();
 			};
 			self.$Token.getProjectToken(callback, {

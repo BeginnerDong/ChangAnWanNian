@@ -126,7 +126,7 @@
 					};
 
 				};
-				self.Router.navigateTo({
+				self.Router.redirectTo({
 					route: {
 						path: '/pages/buildUp-Result-Pay/buildUp-Result-Pay?type=' + type
 					}

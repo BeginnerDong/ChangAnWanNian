@@ -33,7 +33,13 @@
 								<view class="lableIcon mr-1">
 									<image src="../../static/images/the-results-icon7.png" mode=""></image>
 								</view>
-								<view class="">等级：{{userInfoData.levelName&&userInfoData.levelName.length>0?userInfoData.levelName[0].title:'无'}}</view>
+								<view class="">
+									等级：{{userInfoData.levelName&&userInfoData.levelName.length>0?userInfoData.levelName[0].title:'无'}}
+								</view>
+								<view class="d-flex a-center mt-3 font-30">
+									<view class="lableIcon mr-1"><image src="../../static/images/racel-icon1.png" mode=""></image></view>
+									<view class="">积分：{{userInfoData.answer_score?userInfoData.answer_score:'0.00'}}</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -49,6 +55,12 @@
 					<view class="btnTit">开始答题</view>
 				</button>
 			</view>
+			
+			<view class="" @click="UpperContentShow" style="color: #d0b487;width: 100%;text-align: center;text-decoration: underline;margin-top: 50rpx;">
+				 用户积分等级规则介绍
+			</view>
+			
+			
 		</view>
 		
 		</view>
@@ -67,6 +79,13 @@
 					</view>
 					<view class="btnTit">去看看</view>
 				</button>
+			</view>
+		</view>
+		
+		<view class="exchangeShow1 rounded20 bg-white" v-show="is_showContent">
+			<view class="closebtn" @click="UpperContentShow">×</view>
+			<view class="text-center  font-30" style="line-height: 50rpx;height: 100%;overflow: auto;">
+				用户积分等级规则：崇德含光文化平台鼓励用户点滴、持续地积累传统文化知识，在日积月累版块中答题正确即可获得题目相应积分，且此积分会持续累加，当积分达到一定分值时即可获得更高用户等级（等级设定为唐代九品官职，比如九品分为从九品下、从九品上、正九品下、正九品上等四个级别，以此类推）。日积月累积分和用户等级只与用户的答题状况以及传统文化知识积累水准有关，与用户的消费情况等无关，因此可以看作是用户的学术积分。
 			</view>
 		</view>
 	</view>
@@ -90,6 +109,7 @@
 				is_UpperLimit: false,
 				is_show: false,
 				statusBar: app.globalData.statusBar,
+				is_showContent:false
 			}
 		},
 
@@ -101,6 +121,7 @@
 				uni.removeStorageSync('setId');
 				uni.removeStorageSync('sheetId');
 				uni.removeStorageSync('score');
+				uni.removeStorageSync('sheetType');
 				self.$Utils.loadAll(['getUserInfoData', 'getFirstFreeData', 'getTodayFreeData'], self);
 			};
 			self.$Token.getProjectToken(callback, {
@@ -114,6 +135,12 @@
 		},
 
 		methods: {
+			
+			UpperContentShow(){
+				const self = this;
+				self.is_show = !self.is_show;
+				self.is_showContent = !self.is_showContent
+			},
 
 			getUserInfoData() {
 				var self = this;
@@ -246,6 +273,24 @@
 				};
 				self.$apis.sheetGet(postData, callback);
 			},
+			
+			//忽略未完成记录
+			deleteSheet() {
+				var self = this;
+				self.sheetData = {};
+				var postData = {};
+				postData.noLoading = true;
+				postData.tokenFuncName = 'getProjectToken';
+				postData.data = {
+					status:-1
+				};
+				postData.searchItem = {
+					id:self.sheetData.id
+				};
+				var callback = function(res) {
+				};
+				self.$apis.sheetUpdate(postData, callback);
+			},
 
 
 
@@ -258,18 +303,35 @@
 							content: '您有未完成的付费题目，是否立即前往继续答题？',
 							showCancel: true,
 							confirmText: '继续',
+							cancelText:'忽略',
 							success(res) {
 								if (res.confirm) {
 									uni.setStorageSync('subjectData', self.sheetData.subject);
 									uni.setStorageSync('sheetId', self.sheetData.id);
-									self.$Router.navigateTo({
+									uni.setStorageSync('sheetType', 1);
+									self.$Router.redirectTo({
 										route: {
 											path: '/pages/buildUp-Answer-Singular/buildUp-Answer-Singular?curr=' + self.sheetData.log.length +
 												'&score=' + self.score
 										}
 									})
 								} else {
-									console.log('取消')
+									self.deleteSheet();
+									if (!self.canFirstFree && !self.canTodayFree) {
+										if (self.userInfoData.log.length >= uni.getStorageSync('user_info').thirdApp.answer_limit) {
+											self.is_UpperLimit = true;
+											self.is_show = true
+											return
+										};
+										self.Router.navigateTo({
+											route: {
+												path: '/pages/buildUp-Result-Pay/buildUp-Result-Pay?type=2'
+											}
+										})
+										return
+									} else {
+										self.getSubjectData()
+									}
 								}
 							}
 						})
@@ -326,7 +388,7 @@
 					}
 
 				};
-				self.$apis.subjectGet(postData, callback);
+				self.$apis.getSubject(postData, callback);
 			},
 
 			setAdd() {
@@ -365,8 +427,9 @@
 				var callback = function(res) {
 					if (res && res.solely_code == 100000) {
 						uni.setStorageSync('sheetId', res.info.id);
+						uni.setStorageSync('sheetType', 1);
 						uni.hideLoading();
-						self.$Router.navigateTo({
+						self.$Router.redirectTo({
 							route: {
 								path: '/pages/buildUp-Answer-Singular/buildUp-Answer-Singular'
 							}
@@ -388,6 +451,17 @@
 		width: 80%;
 		height: 550rpx;
 		padding: 100rpx 50rpx 50rpx 50rpx;
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 50;
+	}
+	
+	.exchangeShow1 {
+		width: 80%;
+		height: 550rpx;
+		padding: 70rpx 50rpx 20rpx 50rpx;
 		position: fixed;
 		left: 50%;
 		top: 50%;

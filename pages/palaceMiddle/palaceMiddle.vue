@@ -60,7 +60,7 @@
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=开明'}})">开明</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=大业'}})">大业</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=昌明'}})">昌明</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=光兴'}})">光兴</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=光行'}})">光行</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=保宁'}})">保宁</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=昌乐'}})">昌乐</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=安乐'}})">安乐</view>
@@ -93,7 +93,7 @@
 				showView: false,
 				score: '',
 				wx_info: {},
-				nameData: ["安兴", "光福", "永乐", "怀贞", "崇业", "靖善", "靖安", "宣义", "永达", "兰陵", "安善", "丰安", "道德", "开明", "大兴", "昌明", "光兴",
+				nameData: ["安兴", "光福", "永乐", "怀贞", "崇业", "靖善", "靖安", "宣义", "永达", "兰陵", "安善", "丰安", "道德", "开明", "大兴", "昌明", "光行",
 					"保宁", "昌乐", "安乐", "延祚", "安义", "安德"
 				],
 				statusBar: app.globalData.statusBar

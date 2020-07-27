@@ -15,7 +15,7 @@
 		</view>
 		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 			<view class="px-3">
-				<view class="font-30 font-weight mt-1">唐长安城地图</view>
+				<view class="font-30 font-weight mt-1">唐长安城地图（图片左中右侧可分别点击查看）</view>
 				<view class="map mt-2">
 					<view class="mapInfor d-flex a-center">
 						<!-- 宫殿左边 -->

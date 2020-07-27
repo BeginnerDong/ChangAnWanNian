@@ -11,11 +11,11 @@
 			<scroll-view scroll-y="true"  class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
 				<view>
 					<view class="banner-box px-3">
-						<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="#d2d2d2"
+						<swiper class="swiper-box" indicator-dots="true" autoplay="true" interval="5000" duration="1000" indicator-color="#d2d2d2"
 						 indicator-active-color="#dec193">
-							<block v-for="(item,index) in sliderData.mainImg" :key="index">
-								<swiper-item class="swiper-item">
-									<image :src="item.url" class="slide-image" />
+							<block v-for="(item,index) in sliderData" :key="index">
+								<swiper-item class="swiper-item" :data-url="item.url" @click="Router.navigateTo({route:{path:$event.currentTarget.dataset.url}})">
+									<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" class="slide-image" />
 								</swiper-item>
 							</block>
 						</swiper>
@@ -203,6 +203,9 @@
 						condition: 'in'
 					}
 				};
+				postData.order = {
+					listorder:'desc'
+				};
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData.push.apply(self.mainData, res.info.data)
@@ -242,9 +245,23 @@
 					thirdapp_id: 2,
 					title: "首页轮播"
 				};
+				postData.getAfter = {
+					child:{
+						tableName:'Label',
+						middleKey:'id',
+						key:'parentid',
+						searchItem:{
+							status:1
+						},
+						condition:'=',
+						order:{
+							listorder:'desc'
+						}
+					}
+				};
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
-						self.sliderData = res.info.data[0]
+						self.sliderData = res.info.data[0].child
 					}
 					self.$Utils.finishFunc('getSliderData');
 				};
@@ -310,7 +327,7 @@
 	}
 
 	.swiper-box {
-		height: 280rpx;
+		height: 420rpx;
 		box-sizing: border-box;
 		border-radius: 10rpx;
 		overflow: hidden;

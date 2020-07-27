@@ -14,7 +14,12 @@
 			<view class="tit">宫殿</view>
 		</view>
 		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
+			<view style="position: absolute;width: 350rpx;height: 200rpx;top:280rpx;opacity: 0;z-index:99"
+			@click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=大明宫'}})"></view>
+			
 			<view class="palaceBox position-relative text-center">
+				<view style="position: absolute;width: 300rpx;height: 200rpx;bottom:0;opacity: 0;right:115rpx;z-index:99"
+				@click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=曲江池'}})"></view>
 				<view class="position-absoluteXY">
 					<image class="w" src="../../static/images/palaceBox-img3.png" mode="widthFix"></image>
 				</view>
@@ -39,7 +44,8 @@
 						<view class="child" style="height: 72rpx;" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=永嘉'}})">永嘉</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=崇仁'}})">崇仁</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=胜业'}})">胜业</view>
-						<view class="child" style="margin-top: -72rpx;height: 216rpx;opacity: 0; margin-bottom: 0;" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=兴庆宫'}})">兴庆宫</view>
+						<view class="child" style="margin-top: -72rpx;height: 216rpx;opacity: 0; margin-bottom: 0;" 
+						@click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=兴庆宫'}})">兴庆宫</view>
 					</view>
 					<view class="box3 d-flex a-center flex-wrap">
 						<view class="split">
@@ -68,13 +74,13 @@
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=升道'}})">升道</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=昭国'}})">昭国</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=修行'}})">修行</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=立政'}})">立政</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=立政'}})">广德</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=晋昌'}})">晋昌</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=修政'}})">修政</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=敦化'}})">敦化</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=敦化'}})">立政</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=通善'}})">通善</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=青龙'}})">青龙</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages//'}})"></view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=青龙'}})">敦化</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=通济'}})">通济</view>
 						<view class="child" style="width: 120rpx;" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=曲池'}})">曲池</view>
 					</view>
@@ -118,7 +124,7 @@
 <style>
 
 	.palaceBox {
-		padding: 626rpx 172rpx 0 58rpx;
+		padding: 640rpx 172rpx 0 49rpx;
 		width: 100%;
 		height: 2300rpx;
 	}
@@ -184,11 +190,11 @@
 	}
 
 	.palaceBox .box2 .child {
-		height: 128rpx;
+		height: 130rpx;
 		margin-bottom: 30rpx;
 	}
 
-	/* .palaceBox .box3{ padding-top:10rpx;} */
+	.palaceBox .box3{ margin-top: 24rpx;}
 	.palaceBox .box3 .child {
 		height: 92rpx;
 		margin-bottom: 16rpx;

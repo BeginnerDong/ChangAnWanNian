@@ -29,13 +29,16 @@
 				<view class="" style="height: 100rpx;" v-if="type==3&&isFree">
 					<view>本轮增送查看解析机会</view>
 				</view>
-				<view class="font-44 font-weight py-5 my-2">长安万年平台</view>
+				<view class="" style="height: 100rpx;" v-if="type==3&&isMember">
+					<view>会员免费查看本轮解析</view>
+				</view>
+				<view class="font-44 font-weight py-5 my-2">崇德含光文化平台</view>
 				<view class="w-100"  style="font-size: 70rpx; border-bottom: 2px solid #cacaca;">￥{{price}}</view>
-				<view class="w-100 d-flex a-center j-sb py-3">
+				<view class="w-100 d-flex a-center j-sb py-3" v-if="price>0">
 					<view class="color6">微信支付</view>
 					<view class="seltIcon" @click="change(1)"><image :src="payType==1?'../../static/images/the-orderl-icon4.png':'../../static/images/the-orderl-icon5.png'" mode=""></image></view>
 				</view>
-				<view class="w-100 d-flex a-center j-sb py-3">
+				<view class="w-100 d-flex a-center j-sb py-3" v-if="price>0">
 					<view class="color6">余额支付</view>
 					<view class="seltIcon" @click="change(2)"><image :src="payType==2?'../../static/images/the-orderl-icon4.png':'../../static/images/the-orderl-icon5.png'" mode=""></image></view>
 				</view>
@@ -127,7 +130,7 @@
 						}
 					}
 				};
-				self.$apis.subjectGet(postData, callback);
+				self.$apis.getSubject(postData, callback);
 			},
 			
 			change(type){
@@ -150,7 +153,7 @@
 						self.addOrder()
 					}
 				}else if(self.type==3){
-					if(self.isFree){
+					if(self.isFree||self.isMember){
 						self.$Router.redirectTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=3'}})
 					}else{
 						self.addOrder()
@@ -160,7 +163,9 @@
 			
 			getSubjectData() {
 				var self = this;
-				uni.showLoading();
+				uni.showLoading({
+					title:'获取题目中...'
+				})
 				var postData = {};
 				postData.tokenFuncName = 'getProjectToken';
 				postData.noLoading = true;
@@ -183,7 +188,7 @@
 						self.$Utils.showToast(res.msg,'none');
 					}
 				};
-				self.$apis.subjectGet(postData, callback);
+				self.$apis.getSubject(postData, callback);
 			},
 			
 			setAdd() {
@@ -221,6 +226,7 @@
 					if (res && res.solely_code == 100000) {
 						uni.setStorageSync('sheetId',res.info.id);
 						uni.hideLoading();
+						uni.setStorageSync('sheetType', 1);
 						self.$Router.redirectTo({route:{path:'/pages/buildUp-Answer-Singular/buildUp-Answer-Singular'}})
 					}
 				};
@@ -320,6 +326,14 @@
 			getSheetData() {
 				var self = this;
 				var postData = {};
+				var dayStart = new Date(new Date().setHours(0, 0, 0, 0)).getTime() / 1000;
+				var nowTime = (new Date()).getTime() / 1000;
+				//如果是会员，打断
+				if(uni.getStorageSync('user_info').info.member_time>nowTime){
+					self.num = uni.getStorageSync('user_info').thirdApp.answer_num;
+					self.isMember = true;
+					return
+				};
 				postData.tokenFuncName = 'getProjectToken';
 				postData.searchItem = {
 					id:uni.getStorageSync('sheetId')
@@ -358,6 +372,7 @@
 				if(uni.getStorageSync('user_info').info.member_time>nowTime){
 					self.num = uni.getStorageSync('user_info').thirdApp.answer_num;
 					self.isMember = true;
+					self.$Utils.finishFunc('getTodayFreeData');
 					return
 				};
 				var postData = {};

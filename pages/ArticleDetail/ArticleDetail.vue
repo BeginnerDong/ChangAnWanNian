@@ -29,10 +29,14 @@
 					<view class="cont font-26">
 						<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
 						</view>
+						<view style="position: relative;">
+							<video style="width: 100%;z-index:0;position: relative;height: 450rpx;" controls="true" :src="item.url" id="myVideo"
+							 v-for="(item,index) in mainData.videoImg"></video>
+						</view>
 					</view>
 				</view>
 			</view>
-			<view v-else style="text-align: center;line-height: 100px;font-weight: 700;font-size: 18px;">暂 无 数 据！</view>
+			<view v-if="show&&!mainData.title" style="text-align: center;line-height: 100px;font-weight: 700;font-size: 18px;">暂 无 数 据！</view>
 		</view>
 		
 		</view>
@@ -56,6 +60,7 @@
 				mainData: {},
 				Utils: this.$Utils,
 				statusBar: app.globalData.statusBar,
+				show:false
 			}
 		},
 
@@ -101,6 +106,7 @@
 				};
 				postData.tokenFuncName = 'getProjectToken';
 				const callback = (res) => {
+					
 					if (res.solely_code == 100000) {
 						self.mainData.log.push({
 							status: 1,
@@ -112,6 +118,7 @@
 						self.$Utils.showToast('点赞失败', 'none', 1000)
 					};
 					uni.setStorageSync('canClick', true);
+					self.show = true
 				};
 				self.$apis.logAdd(postData, callback);
 			},

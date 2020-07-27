@@ -27,7 +27,7 @@
 						</view>
 					</view>
 					
-					<view class="d-flex j-center py-3" @click="Router.navigateTo({route:{path:'/pages/user_address/user_address'}})">
+					<view class="d-flex j-center py-3" v-else @click="Router.navigateTo({route:{path:'/pages/user_address/user_address'}})">
 						<view class="font-28 main-text-color d-flex a-center ">
 							<view style="width: 32rpx;height:32rpx;margin-right: 20rpx;"><image src="../../static/images/addressl-icon2.png" mode=""></image></view>
 							<view class="font-30">添加收货地址</view>
@@ -36,7 +36,7 @@
 				</view>
 			</view>
 			<view class="proRow mt-3 mx-3">
-				<view class="item mb-3" v-for="item in mainData">
+				<view class="item mb-3" v-for="item in mainData" :key="item.id">
 					<view class="d-flex j-sb mb-3">
 						<view class="pic"><image :src="item.product&&item.product.mainImg&&item.product.mainImg[0]?item.product.mainImg[0].url:''" mode=""></image></view>
 						<view class="infor">
@@ -62,7 +62,8 @@
 							</view>
 						</view>
 					</view>
-					<view class="d-flex j-sb a-center pt-3 border-top">
+					
+					<view class="d-flex j-sb a-center py-3 border-top">
 						<view>优惠券</view>
 						<view class="d-flex j-end a-center color6 font-26" v-if="couponData.length==0" @click="couponShow">
 							暂无优惠券使用<image class="arrowR ml-1" src="../../static/images/the-orderl-icon.png" mode=""></image>
@@ -72,6 +73,13 @@
 						</view>
 						<view class="d-flex j-end a-center color6 font-26" v-if="couponData.length>0&&chooseCoupon.length>0" @click="couponShow">
 							优惠券抵扣-{{pay.coupon[0].price}}<image class="arrowR ml-1" src="../../static/images/the-orderl-icon.png" mode=""></image>
+						</view>
+					</view>
+					
+					<view class="d-flex j-sb a-center pt-3 border-top">
+						<view>备注</view>
+						<view class="d-flex  a-center color6 font-26">
+							<input placeholder="请填写备注(选填)" style="text-align: right;" v-model="passage1"/>
 						</view>
 					</view>
 				</view>
@@ -150,7 +158,8 @@
 				mainData:[],
 				Utils:this.$Utils,
 				chooseCoupon:[],
-				statusBar:app.globalData.statusBar
+				statusBar:app.globalData.statusBar,
+				passage1:''
 			}
 		},
 		
@@ -311,7 +320,7 @@
 					return
 				};
 				var data = {
-					
+					passage1:self.passage1
 				}
 				var orderList = [
 					{product_id:self.mainData[0].product_id,count:self.mainData[0].count,type:1,data:data,snap_address:self.addressData}
@@ -329,6 +338,9 @@
 				postData.type = 1;
 				postData.snap_address = self.addressData;
 				postData.tokenFuncName = 'getProjectToken';
+				postData.data = {
+					passage1:self.passage1
+				};
 				const callback = (res) => {
 					uni.setStorageSync('canClick', true);
 					if (res && res.solely_code == 100000) {

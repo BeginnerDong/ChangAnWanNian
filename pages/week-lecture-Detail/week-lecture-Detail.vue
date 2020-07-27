@@ -39,17 +39,16 @@
 				<view class="py-3 xqInfor">
 					<view class="font-30 font-weight pb-3">详情介绍</view>
 					<view class="cont fs14 text-center">
-						<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
-						</view>
 						<view style="position: relative;">
 							<video style="width: 100%;z-index:0;position: relative;height: 450rpx;" controls="true" :src="item.url" id="myVideo"
 							 v-for="(item,index) in mainData.videoImg"></video>
-							<view v-show="!play" style="margin-top:20rpx;position: absolute;width: 100%;z-index: 1;top:0;left:0;height:450rpx;background-color: #000000;opacity: 0.5;"
+							<view v-show="!play" style="position: absolute;width: 100%;z-index: 1;top:0;left:0;height:450rpx;background-color: #000000;opacity: 0.5;"
 							 @click="vedioPlay">
-
+						
 							</view>
 						</view>
-
+						<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
+						</view>
 					</view>
 				</view>
 			</view>
@@ -67,11 +66,12 @@
 				</view>
 			</view>
 			<view class="bottom-btnCont d-flex rounded50 overflow-h  font-30">
-				<view class="w-50 text-center payBtn d-flex j-center a-center" style="width: 512rpx;" @click="Utils.stopMultiClick(goBuy)">
+				<view class="w-50 text-center payBtn d-flex j-center a-center" style="width: 512rpx;" 
+				@click="Router.navigateTo({route:{path:'/pages/user-Vip/user-Vip'}})">
 					<view class="payBtnBj">
 						<image src="../../static/images/electricityl-icon1.png" mode=""></image>
 					</view>
-					<view class="position-relative main-text-color">立即购买</view>
+					<view class="position-relative main-text-color">立即加入会员</view>
 				</view>
 			</view>
 		</view>

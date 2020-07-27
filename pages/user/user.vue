@@ -44,8 +44,8 @@
 						<image src="../../static/images/about-img3.jpg" mode=""></image>
 					</view>
 					<view class="position-relative" style="z-index: 2;color: #cb9b3e;">
-						<view class="font-36 font-weight">购买会员，享受优惠</view>
-						<view class="main-text-color font-24 mt-1">精彩答题等你来答</view>
+						<view class="font-36 font-weight">购买会员月卡，畅享优惠福利</view>
+						<view class="main-text-color font-24 mt-1">免费畅享平台诸多功能，惊喜多多，福利多多~</view>
 					</view>
 				</view>
 

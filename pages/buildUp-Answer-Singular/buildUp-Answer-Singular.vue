@@ -28,8 +28,11 @@
 				</view>
 				
 				<view class="answerTit px-4 py-5 font-34 mt-2">
-					<view>{{currentSubject.title?currentSubject.title:''}}</view>
-					<view style="width: 100%;height: 200px;" v-for="(item,index) in currentSubject.mainImg" @click="previewImage(index)">
+					<view>
+						<view class="content ql-editor" style="padding:0;" v-html="currentSubject.title">
+						</view>
+					</view>
+					<view style="width: 100%;height: 200px;" v-for="(item,index) in currentSubject.mainImg" :key="index" @click="previewImage(index)">
 						<image style="width: 100%;height: 100%;" :src="item.url"></image>
 					</view>
 					<view class="d-flex j-end" v-if="currentSubject.battle==0">
@@ -54,7 +57,8 @@
 					<button class="btn mb-3"  v-for="(item,index) in currentSubject.Option" :key="index" :data-index="index" 
 					@click="!hasResult?answer($event.currentTarget.dataset.index):''"
 					type="button">
-						<view class="seltIconL errorIcon" v-if="chooseIndex==index&&chooseIndex!=rightIndex"><image src="../../static/images/anti-icon4.png" mode=""></image></view>
+						<view class="seltIconL errorIcon" v-if="chooseIndex==index&&chooseIndex!=rightIndex">
+							<image src="../../static/images/anti-icon4.png" mode=""></image></view>
 						<view class="btnBj" v-if="chooseIndex==index&&chooseIndex!=rightIndex"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
 						<view class="btnBj" v-if="chooseIndex!=index&&index!=rightIndex"><image src="../../static/images/anti-icon.png" mode=""></image></view>
 						<view class="btnBj" v-if="index==rightIndex"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
@@ -89,7 +93,7 @@
 						<view class="fillInBox position-relative" v-if="!hasResult">
 							<view class="position-absoluteXY"><image src="../../static/images/anti-icon5.png" mode=""></image></view>
 							<view class="infor">
-								<textarea v-model="text" placeholder="填写答案(多个空用回车分隔)" placeholder-class="placeholder" />
+								<textarea v-model="text" placeholder="填写答案(相连的空格连续填写,不相连的空格用回车分隔)" placeholder-class="placeholder" />
 							</view>
 						</view>
 						<view class="fillInBox position-relative" style="height: 300rpx;padding-bottom: 88rpx;" v-if="hasResult">
@@ -376,6 +380,7 @@
 			logAdd() {
 				var self = this;
 				var postData = {};
+				postData.noLoading = true;
 				var time = 0;
 				var score = self.right?self.currentSubject.score:0;
 				time += self.currentSubject.time - self.time;
@@ -391,9 +396,9 @@
 					answer:self.right?1:0,
 					score:score,
 					sheet_id:uni.getStorageSync('sheetId'),
-					behavior:1
+					behavior:uni.getStorageSync('sheetType')
 				};	
-				if(self.currentSubject.battle==0){
+				if(uni.getStorageSync('sheetType')==1&&self.right){
 					postData.saveAfter = [{
 						  tableName:'FlowLog',
 						  FuncName:'add',
@@ -407,10 +412,10 @@
 						  }
 					}];
 				};
-				if(self.currentSubject.battle==1){
+				if(uni.getStorageSync('sheetType')==2){
 					postData.data.time = self.currentSubject.time - self.time
-					postData.data.behavior = 2
-					//postData.saveAfter[0].data.type = 5
+					//postData.data.behavior = 2
+					postData.saveAfter[0].data.type = 5
 				};
 				var callback = function(res) {
 					if (res && res.solely_code == 100000&&res.info.id) {
@@ -424,9 +429,9 @@
 							self.right = false;
 							self.text = '';
 							if(self.currentIndex==self.subjectArray.length-1){
-								if(self.currentSubject.battle==0){
+								if(uni.getStorageSync('sheetType')==1){
 									self.$Router.redirectTo({route:{path:'/pages/buildUp-Result/buildUp-Result'}});
-								}else if(self.currentSubject.battle==1){
+								}else if(uni.getStorageSync('sheetType')==2){
 									self.$Router.redirectTo({route:{path:'/pages/FengYun-Result/FengYun-Result'}});
 								}
 								return
