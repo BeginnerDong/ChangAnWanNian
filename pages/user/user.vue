@@ -25,16 +25,27 @@
 								<view class="font-24 color9 ml-2">等级：{{userInfoData.levelName&&userInfoData.levelName.length>0?userInfoData.levelName[0].title:'无'}}</view>
 							</view>
 
-							<view class="d-flex a-center mt-1" v-show="isMember">
-								<view class="priceIcon">
-									<image src="../../static/images/about-img1.png" mode=""></image>
-								</view>
-								<view class="font-24 color9">会员到期时间：{{Utils.timeto(userInfoData.member_time*1000,'ymd')}}</view>
-							</view>
+							
 						</view>
 					</view>
 				</view>
 			</view>
+			
+			
+			<view class="myVIP position-relative" v-show="isMember">
+				<image src="../../static/images/my-icon.png" class="myBg"></image>
+				<view class="position-absoluteXY p-3">
+					<view class="font-32 font-weight vipColor1 pl-4 pt-5">崇德含光会员月卡</view>
+					<view class="d-flex a-center mt-3 pl-4">
+						<view class="priceIcon">
+							<image src="../../static/images/about-img1.png" mode=""></image>
+						</view>
+						<view class="font-24 vipColor1">会员到期时间：{{Utils.timeto(userInfoData.member_time*1000,'ymd')}}</view>
+					</view>
+				</view>
+				<image src="../../static/images/my-icon1.png" class="myIcon"></image>
+			</view>
+			
 
 			<view class="mx-3">
 
@@ -244,6 +255,11 @@
 	page {
 		background: #F5F5F5;
 	}
+	
+	.myVIP{height: 264rpx;width: 714rpx;margin: auto;}
+	.vipColor1{color: #76593a;}
+	.vipColor2{color: #917042;}
+	.myIcon{width: 140rpx;height: 140rpx;position: absolute;right: 20px;top: 50%;margin-top: -70rpx;}
 
 	.userHead {
 		width: 100%;
