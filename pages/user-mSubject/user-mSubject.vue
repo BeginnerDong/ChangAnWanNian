@@ -145,6 +145,13 @@
 						<view class="btnTit">重新搜索</view>
 					</button>
 				</view>
+				
+				<view class="answerTit px-4 py-5 font-34 mt-2">
+					<view>解析</view>
+					
+					<view class="content ql-editor" style="padding:0;" v-html="currentSubject.content">
+					</view>
+				</view>
 			</view>
 			<view class="pageBox pb-4" :style="{marginTop:statusBar+ 44 + 'px'}" v-if="!hasSearch">
 				<view class="loginCont">

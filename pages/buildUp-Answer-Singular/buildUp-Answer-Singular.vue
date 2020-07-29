@@ -398,6 +398,7 @@
 					sheet_id:uni.getStorageSync('sheetId'),
 					behavior:uni.getStorageSync('sheetType')
 				};	
+			
 				if(uni.getStorageSync('sheetType')==1&&self.right){
 					postData.saveAfter = [{
 						  tableName:'FlowLog',
@@ -412,10 +413,22 @@
 						  }
 					}];
 				};
-				if(uni.getStorageSync('sheetType')==2){
+				if(uni.getStorageSync('sheetType')==2&&self.right){
 					postData.data.time = self.currentSubject.time - self.time
 					//postData.data.behavior = 2
-					postData.saveAfter[0].data.type = 5
+				
+					postData.saveAfter = [{
+						  tableName:'FlowLog',
+						  FuncName:'add',
+						  data:{
+							 type:5,
+							 count:score,
+							 trade_info:'答题积分',
+							 account:1,
+							 thirdapp_id:2,
+							 user_no:uni.getStorageSync('user_info').user_no
+						  }
+					}];
 				};
 				var callback = function(res) {
 					if (res && res.solely_code == 100000&&res.info.id) {

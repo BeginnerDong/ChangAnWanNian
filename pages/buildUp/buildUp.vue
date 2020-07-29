@@ -36,13 +36,13 @@
 									<view class="lableIcon mr-1">
 										<image src="../../static/images/the-results-icon7.png" mode=""></image>
 									</view>
-									<view class="">
+									 <view class="">
 										等级：{{userInfoData.levelName&&userInfoData.levelName.length>0?userInfoData.levelName[0].title:'无'}}
 									</view>
 								</view>
-								<view class="d-flex a-center mt-3 font-30">
+								<view class="d-flex a-center mt-3">
 									<view class="lableIcon mr-1"><image src="../../static/images/racel-icon1.png" class="jbIcon"></image></view>
-									<view class="">积分：{{userInfoData.answer_score?userInfoData.answer_score:'0.00'}}</view>
+									<view class="">学术积分：{{userInfoData.answer_score?userInfoData.answer_score:'0.00'}}</view>
 								</view>
 							</view>
 						</view>

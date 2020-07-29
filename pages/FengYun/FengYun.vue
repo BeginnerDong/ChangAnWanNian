@@ -360,6 +360,28 @@
 							})
 							return
 						}
+						for (var i = 0; i < self.setData.sheet.length; i++) {
+							if(self.setData.sheet[i].user_no == uni.getStorageSync('user_info').user_no){
+								var meSheet = self.setData.sheet[i]
+							}
+						};
+						if(meSheet.finish == 1){
+							uni.showModal({
+								title:'提示',
+								content:'您已完成该局对战，是否查看结果',
+								
+								confirmText:'查看',
+								cancelText:'返回首页',
+								success(res) {
+									if(res.confirm){
+										self.$Router.redirectTo({route:{path:'/pages/FengYun-ResultRanking/FengYun-ResultRanking'}})
+									}else{
+										self.$Router.redirectTo({route:{path:'/pages/index/index'}})
+									}
+								}
+							})
+							return
+						}
 						uni.setStorageSync('setId',self.setData.id);
 						uni.setStorageSync('subjectData',self.setData.subject);
 					}else{
@@ -576,7 +598,7 @@
 							})
 						}
 					};
-					self.$Utils.finishFunc('getUserInfoData');
+					//self.$Utils.finishFunc('getUserInfoData');
 				};
 				self.$apis.userInfoGet(postData, callback);
 			},

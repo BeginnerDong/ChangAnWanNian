@@ -27,8 +27,12 @@
 			</view>
 			
 			
-			
+			<view class="" @click="Router.reLaunch({route:{path:'/pages/index/index'}})" style="color: #d0b487;width: 100%;
+			text-align: center;text-decoration: underline;margin-top: 50rpx;">
+				 进入崇德含光文化平台
+			</view>
 		</view>
+		
 		
 		</view>
 	</view>
