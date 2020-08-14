@@ -182,7 +182,7 @@
 							};
 							self.setAdd();
 						}else{
-							self.$Utils.showToast(res.msg,'none');
+							self.$Utils.showToast('恭喜您已通关现有题目，题库会不定期更新，推荐您前往"风云际会"，使用单人模式（直接选择"进入对战"，不要选择对手）继续您的答题','none');
 						}
 					}else{
 						self.$Utils.showToast(res.msg,'none');
@@ -277,6 +277,24 @@
 				postData.searchItem = {
 					id: self.orderId
 				};
+				if(self.payType==1){
+					if(self.pay.wxPay&&self.pay.wxPay.price>0){
+						postData.payAfter.push(
+							{
+								tableName: 'FlowLog',
+								FuncName: 'add',
+								data: {
+									type:3,
+									thirdapp_id:2,
+									user_no:uni.getStorageSync('user_info').user_no,
+									account:1,
+									count:self.pay.wxPay.price,
+									trade_info:'消费返积分'
+								},
+							},
+						) 
+					};
+				}
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
 						if (res.info) {
@@ -315,7 +333,7 @@
 					if(self.subjectData){
 						self.getSubjectData()
 					}else{
-						self.$Utils.showToast('题目数量不足', 'none');
+						self.$Utils.showToast('恭喜您已通关现有题目，题库会不定期更新，推荐您前往"风云际会"，使用单人模式（直接选择"进入对战"，不要选择对手）继续您的答题', 'none');
 					};
 				}else if(self.type==3){
 					self.$Router.redirectTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=3'}})
@@ -399,11 +417,17 @@
 				var self = this;
 				var postData = {};
 				postData.tokenFuncName = 'getProjectToken';
+				postData.paginate = {
+					count: 0,
+					currentPage:1,
+					pagesize:50,
+					is_page:true,
+				};
 				postData.searchItem = {
 					type:1,
 					relation_table:'Subject',
 					behavior:1,
-				}
+				};
 				postData.getAfter = {
 					subject:{
 						tableName:'Subject',

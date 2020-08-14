@@ -12,13 +12,39 @@
 			<view class="d-flex j-center a-center" style="margin-top: 150rpx;">
 				<view class="Dossier position-relative d-flex j-center a-center">
 					<view class="position-absoluteXY"><image src="../../static/images/the-results-ofl-icon6.png" mode=""></image></view>
-					<view class="infor d-flex a-center">
+					<!-- <view class="infor d-flex a-center">
 						<view class="photo" style="overflow: hidden;"><open-data type="userAvatarUrl"></open-data></view>
 						<view class="rr ml-2">
 							<view class="font-40 font-weight"><open-data type="userNickName"></open-data></view>
 							<view class="d-flex a-center mt-3 font-26">
 								<view class="lableIcon mr-1"><image src="../../static/images/racel-icon1.png" mode=""></image></view>
 								<view class="">积分：{{userInfoData.battle_score?userInfoData.battle_score:''}}</view>
+							</view>
+						</view>
+					</view> -->
+					<view class="infor">
+						<view class="d-flex a-center j-center">
+							<view class="photo" style="overflow: hidden;">
+								<open-data type="userAvatarUrl"></open-data>
+							</view>
+							<view class="font-40 font-weight pl-3">
+								<open-data type="userNickName"></open-data>
+							</view>
+						</view>
+						<view class="rr ml-2">
+							<view class="mt-3 font-26">
+								<view class="d-flex a-center">
+									<view class="lableIcon mr-1">
+										<image src="../../static/images/the-results-icon7.png" mode=""></image>
+									</view>
+									 <view class="">
+										等级：{{userInfoData.levelName&&userInfoData.levelName.length>0?userInfoData.levelName[0].title:'无'}}
+									</view>
+								</view>
+								<view class="d-flex a-center mt-3">
+									<view class="lableIcon mr-1"><image src="../../static/images/racel-icon1.png" class="jbIcon"></image></view>
+									<view class="">对战积分：{{userInfoData.battle_score?userInfoData.battle_score:'0.00'}}</view>
+								</view>
 							</view>
 						</view>
 					</view>

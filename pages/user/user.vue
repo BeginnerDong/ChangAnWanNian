@@ -33,7 +33,7 @@
 			
 			
 			<view class="myVIP position-relative" v-show="isMember">
-				<image src="../../static/images/my-icon.png" class="myBg"></image>
+				<image src="../../static/images/my-icon.jpg" class="myBg"></image>
 				<view class="position-absoluteXY p-3">
 					<view class="font-32 font-weight vipColor1 pl-4 pt-5">崇德含光会员月卡</view>
 					<view class="d-flex a-center mt-3 pl-4">
@@ -142,13 +142,13 @@
 							</view>
 							<view>优惠券</view>
 						</view>
-						<view class="item" @click="Router.navigateTo({route:{path:'/pages/user-heXiaoLogin/user-heXiaoLogin'}})">
+						<view class="item" v-show="isMember" @click="Router.navigateTo({route:{path:'/pages/user-heXiaoLogin/user-heXiaoLogin'}})">
 							<view class="icon">
 								<image src="../../static/images/about-icon7.png"></image>
 							</view>
 							<view>核销员入口</view>
 						</view>
-						<view class="item" @click="Router.navigateTo({route:{path:'/pages/user-mLogin/user-mLogin'}})">
+						<view class="item"  v-show="isMember" @click="Router.navigateTo({route:{path:'/pages/user-mLogin/user-mLogin'}})">
 							<view class="icon">
 								<image src="../../static/images/about-icon8.png"></image>
 							</view>

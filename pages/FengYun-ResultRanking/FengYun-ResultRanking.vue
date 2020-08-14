@@ -10,19 +10,25 @@
 			
 		<view class="pageBox pb-4" :style="{marginTop:statusBar + 44 + 'px'}">	
 			<view class="mx-3 rankingBox">
-				<view class="item d-flex a-center j-sb py-3" v-for="(item,index) in mainData" :key="index">
-					<view class="ll d-flex a-center">
-						<view class="num color9 font-weight">{{index+1}}</view>
-						<view class="d-flex a-center">
-							<view class="photo"><image :src="item.user&&item.user[0]?item.user[0].headImgUrl:''" mode=""></image></view>
-							<view>
-								<view class="font-26 color6 mb-1">{{item.user&&item.user[0]?item.user[0].nickname:''}}</view>
-								<view class="">对战积分：{{item.user&&item.user[0]&&item.user[0].info?item.user[0].info.battle_score:''}}</view>
+				<view  v-for="(item,index) in mainData" :key="index" style="border-bottom: 1px solid #d0b487;padding-bottom: 10rpx;">
+					<view class="item d-flex a-center j-sb py-3">
+						<view class="ll d-flex a-center">
+							<view class="num color9 font-weight">{{index+1}}</view>
+							<view class="d-flex a-center">
+								<view class="photo"><image :src="item.user&&item.user[0]?item.user[0].headImgUrl:''" mode=""></image></view>
+								<view>
+									<view class="font-26 color6 mb-1">{{item.user&&item.user[0]?item.user[0].nickname:''}}</view>
+									<view class="">对战积分：{{item.user&&item.user[0]&&item.user[0].info?item.user[0].info.battle_score:''}}</view>
+									
+								</view>
 							</view>
 						</view>
+						<view class="rr red text-right">本局积分：{{item.score}}</view>
+						
 					</view>
-					<view class="rr red text-right">本局积分：{{item.score}}</view>
+					<view class="avoidOverflow text-center" style="font-weight: 700;">学术等级：{{item.levelName&&item.levelName.title?item.levelName.title:''}}</view>
 				</view>
+				
 				
 			</view>
 			
@@ -86,7 +92,26 @@
 							status:1
 						},
 						condition:'='
-					}
+					},
+					userInfo:{
+						tableName:'UserInfo',
+						middleKey:'user_no',
+						key:'user_no',
+						searchItem:{
+							status:1
+						},
+						condition:'='
+					},
+					levelName: {
+						tableName: 'Level',
+						middleKey: ['userInfo',0,'level'],
+						key: 'id',
+						searchItem: {
+							status: 1
+						},
+						condition: '=',
+						info:['title']
+					},
 				};
 				var callback = function(res) {
 					if (res.info.data.length > 0 && res.info.data[0]) {

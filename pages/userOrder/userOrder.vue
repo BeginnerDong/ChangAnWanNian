@@ -18,9 +18,9 @@
 					<view class="orderNav bg-white d-flex j-sb a-center shadow color6">
 						<view class="tt" :class="curr==1?'on':''" @click="changeCurr('1')">全部</view>
 						<view class="tt" :class="curr==2?'on':''" @click="changeCurr('2')">待支付</view>
-						<view class="tt" :class="curr==3?'on':''" @click="changeCurr('3')">待配送</view>
-						<view class="tt" :class="curr==4?'on':''" @click="changeCurr('4')">待收货</view>
-						<view class="tt" :class="curr==5?'on':''" @click="changeCurr('5')">已完成</view>
+						<view class="tt" :class="curr==3?'on':''" @click="changeCurr('3')">已下单</view>
+						<!-- <view class="tt" :class="curr==4?'on':''" @click="changeCurr('4')">待收货</view>
+						<view class="tt" :class="curr==5?'on':''" @click="changeCurr('5')">已完成</view> -->
 					</view>
 				</view>
 				<view class="topNavH"></view>
@@ -32,9 +32,10 @@
 								<view class="font-24 d-flex j-sb a-center mb-2">
 									<view class="color9">交易时间：{{item.create_time}}</view>
 									<view class="red" v-if="item.pay_status==0">待支付</view>
-									<view class="red" v-if="item.pay_status==1&&item.transport_status==0">待配送</view>
+									<view class="red" v-if="item.pay_status==1">已下单</view>
+									<!-- <view class="red" v-if="item.pay_status==1&&item.transport_status==0">待配送</view>
 									<view class="red" v-if="item.pay_status==1&&item.transport_status==1">待收货</view>
-									<view class="red" v-if="item.pay_status==1&&item.transport_status==2">已完成</view>
+									<view class="red" v-if="item.pay_status==1&&item.transport_status==2">已完成</view> -->
 								</view>
 								<view class="d-flex a-center j-sb">
 									<view class="pic">
@@ -70,12 +71,12 @@
 									<view class="text">取消订单</view>
 								</view>
 							</view>
-							<view class="underBtn d-flex j-end a-center pb-3" @click="orderUpdate(index)" v-if="item.transport_status==1">
-								<view class="Bbtn position-relative">
-									<view class="position-absoluteXY">
+							<view class="underBtn d-flex j-end a-center pb-3" @click="deleteThis(index)" v-if="item.pay_status==1">
+								<view class="Bbtn position-relative" style="width: 260rpx;height: 70rpx">
+									<view class="position-absoluteXY" >
 										<image src="../../static/images/about-icon.png" mode=""></image>
 									</view>
-									<view class="text">确认收货</view>
+									<view class="text">已收货，删除</view>
 								</view>
 							</view>
 						</view>
@@ -289,21 +290,21 @@
 				if (curr != self.curr) {
 					self.curr = curr
 					if (self.curr == 1) {
-						delete self.searchItem.transport_status
+						//delete self.searchItem.transport_status
 						delete self.searchItem.pay_status
 					} else if (self.curr == 2) {
 						self.searchItem.pay_status = 0
-						self.searchItem.transport_status = 0
+						//self.searchItem.transport_status = 0
 					} else if (self.curr == 3) {
 						self.searchItem.pay_status = 1
-						self.searchItem.transport_status = 0
-					} else if (self.curr == 4) {
+						//self.searchItem.transport_status = 0
+					}/* else if (self.curr == 4) {
 						self.searchItem.pay_status = 1
 						self.searchItem.transport_status = 1
 					} else if (self.curr == 5) {
 						self.searchItem.pay_status = 1
 						self.searchItem.transport_status = 2
-					}
+					} */
 					self.getMainData(true)
 				}
 			}

@@ -166,6 +166,8 @@
 		onLoad(){
 			const self = this;
 			self.mainData = uni.getStorageSync('payPro');
+			uni.removeStorageSync('choosedAddressData');
+			
 			self.$Utils.loadAll(['getUserCouponData'], self);
 			self.countTotalPrice()
 		},
@@ -274,6 +276,8 @@
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.addressData = res.info.data[0];
+					}else{
+						self.addressData = {}
 					}
 				};
 				self.$apis.addressGet(postData, callback);

@@ -16,7 +16,7 @@
 							<view class="font-24 color6">
 								<span class="color2 font-weight mr-1" style="font-size: 50rpx;">{{Utils.numToChinese(currentIndex+1)}}</span>
 								<span v-if="currentSubject.type==1||currentSubject.type==5">单选</span>
-								<span v-if="currentSubject.type==2">多选</span>
+								<span v-if="currentSubject.type==2" style="color: red;">多选</span>
 								<span v-if="currentSubject.type==3">填空</span>
 								<span v-if="currentSubject.type==4">选词</span>
 							</view>
@@ -53,18 +53,26 @@
 					</view>
 				</view>
 				
-				<view class="submitbtn pt-5" v-if="currentSubject.type&&currentSubject.type==1">
-					<button class="btn mb-3"  v-for="(item,index) in currentSubject.Option" :key="index" :data-index="index" 
-					@click="!hasResult?answer($event.currentTarget.dataset.index):''"
-					type="button">
-						<view class="seltIconL errorIcon" v-if="chooseIndex==index&&chooseIndex!=rightIndex">
-							<image src="../../static/images/anti-icon4.png" mode=""></image></view>
-						<view class="btnBj" v-if="chooseIndex==index&&chooseIndex!=rightIndex"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
-						<view class="btnBj" v-if="chooseIndex!=index&&index!=rightIndex"><image src="../../static/images/anti-icon.png" mode=""></image></view>
-						<view class="btnBj" v-if="index==rightIndex"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
-						<view class="btnTit color2" style="z-index: 999;">{{item.option}}</view>
-						<view class="seltIconR rightIcon" v-if="index==rightIndex"><image src="../../static/images/anti-icon3.png" mode=""></image></view>
-					</button>
+				<view  v-if="currentSubject.type&&currentSubject.type==1">
+					<view class="submitbtn pt-5">
+						<button class="btn mb-3"  v-for="(item,index) in currentSubject.Option" :key="index" :data-index="index" 
+						@click="!hasResult?answer($event.currentTarget.dataset.index):''"
+						type="button">
+							<view class="seltIconL errorIcon" v-if="chooseIndex==index&&chooseIndex!=rightIndex">
+								<image src="../../static/images/anti-icon4.png" mode=""></image></view>
+							<view class="btnBj" v-if="chooseIndex==index&&chooseIndex!=rightIndex"><image src="../../static/images/anti-icon1.png" mode=""></image></view>
+							<view class="btnBj" v-if="chooseIndex!=index&&index!=rightIndex"><image src="../../static/images/anti-icon.png" mode=""></image></view>
+							<view class="btnBj" v-if="index==rightIndex"><image src="../../static/images/anti-icon2.png" mode=""></image></view>
+							<view class="btnTit color2" style="z-index: 999;">{{item.option}}</view>
+							<view class="seltIconR rightIcon" v-if="index==rightIndex"><image src="../../static/images/anti-icon3.png" mode=""></image></view>
+						</button>
+					</view>
+					<!-- <view class="submitbtn mt-5 pt-3" v-if="!hasResult">
+						<button class="btn" type="button" @click="answerConfirm">
+							<view class="btnBj"><image src="../../static/images/anti-icon.png" mode=""></image></view>
+							<view class="btnTit" style="z-index: 999;">确定</view>
+						</button>
+					</view> -->
 				</view>
 				
 				<view  v-if="currentSubject.type&&currentSubject.type==2">
@@ -93,7 +101,7 @@
 						<view class="fillInBox position-relative" v-if="!hasResult">
 							<view class="position-absoluteXY"><image src="../../static/images/anti-icon5.png" mode=""></image></view>
 							<view class="infor">
-								<textarea v-model="text" placeholder="填写答案(相连的空格连续填写,不相连的空格用回车分隔)" placeholder-class="placeholder" />
+								<textarea v-model="text" placeholder="填写答案(相连的空连续填写，不相连的空之间用'空格键'分开)" placeholder-class="placeholder" />
 							</view>
 						</view>
 						<view class="fillInBox position-relative" style="height: 300rpx;padding-bottom: 88rpx;" v-if="hasResult">
@@ -278,7 +286,13 @@
 					clearInterval(self.interval)
 				}
 				self.logAdd()
+				
 			},
+			
+			/* answerConfirm(){
+				const self = this;
+				
+			}, */
 			
 		//多选答题逻辑
 			//选择待提交选项

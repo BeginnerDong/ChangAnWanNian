@@ -85,7 +85,7 @@
 						<view class="fillInBox position-relative" v-if="!hasResult">
 							<view class="position-absoluteXY"><image src="../../static/images/anti-icon5.png" mode=""></image></view>
 							<view class="infor">
-								<textarea v-model="text" placeholder="填写答案(相连的空格连续填写,不相连的空格用回车分隔)" placeholder-class="placeholder" />
+								<textarea v-model="text" placeholder="填写答案(相连的空连续填写，不相连的空之间用'空格键'分开)" placeholder-class="placeholder" />
 							</view>
 						</view>
 						<view class="fillInBox position-relative" style="height: 300rpx;padding-bottom: 88rpx;" v-if="hasResult">
