@@ -51,6 +51,20 @@
 				</button>
 			</view>
 		</view>
+		
+		
+		<!-- 弹出框 -->
+		<view class="bg-mask">
+			<view class="bg-white rounded20 text-center d-flex flex-column maskBox">
+				<view class="font-30 py-3 font-weight">提示</view>
+				<view class="flex-1 d-flex j-center a-center py-2 txt">内容内容内容内容内容内容内容</view>
+				<view class="d-flex a-center bto">
+					<view>继续支付</view>
+					<view>充值</view>
+					<view>购买会员</view>
+				</view>
+			</view>
+		</view>
 	
 		</view>
 	</view>
@@ -457,4 +471,9 @@
 <style>
 	@import "../../assets/style/answer.css";
 	.TwoBtn{width: 260rpx;height: 80rpx;line-height: 80rpx;}
+	.bg-mask{position: fixed;top: 0;left: 0;right: 0;bottom: 0;background-color: rgba(0,0,0,0.5);z-index: 1000;}
+	.maskBox{width: 600rpx;position: absolute;top: 30%;left: 0;right: 0;margin: auto;}
+	.maskBox .txt{min-height: 200rpx;border-top: 1px solid #e1e1e1;border-bottom: 1px solid #e1e1e1;}
+	.maskBox .bto view{width:33.33%;line-height: 80rpx;border-right: 1px solid #e1e1e1;}
+	.maskBox .bto view:nth-child(3){border-right: none;}
 </style>
