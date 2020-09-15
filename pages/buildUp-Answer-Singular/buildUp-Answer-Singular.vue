@@ -62,12 +62,13 @@
 
 				<view v-if="currentSubject.type&&currentSubject.type==1">
 					<view class="submitbtn pt-5">
-						<button class="btn mb-3" v-for="(item,index) in currentSubject.Option" :key="index" :data-index="index" @click="!hasResult?answer($event.currentTarget.dataset.index):''"
-						 type="button">
+						<button class="btn mb-3 btn1" v-for="(item,index) in currentSubject.Option" :key="index" :data-index="index" @click="!hasResult?answer($event.currentTarget.dataset.index):''"
+						 type="button"
+						 :class="chooseIndex==index&&chooseIndex!=rightIndex?'no':(index==rightIndex?'yes':'')">
 							<view class="seltIconL errorIcon" v-if="chooseIndex==index&&chooseIndex!=rightIndex">
 								<image src="../../static/images/anti-icon4.png" mode=""></image>
 							</view>
-							<view class="btnBj" v-if="chooseIndex==index&&chooseIndex!=rightIndex">
+							<!-- <view class="btnBj" v-if="chooseIndex==index&&chooseIndex!=rightIndex">
 								<image src="../../static/images/anti-icon1.png" mode=""></image>
 							</view>
 							<view class="btnBj" v-if="chooseIndex!=index&&index!=rightIndex">
@@ -75,8 +76,8 @@
 							</view>
 							<view class="btnBj" v-if="index==rightIndex">
 								<image src="../../static/images/anti-icon2.png" mode=""></image>
-							</view>
-							<view class="btnTit color2" style="z-index: 999;">{{item.option}}</view>
+							</view> -->
+							{{item.option}}
 							<view class="seltIconR rightIcon" v-if="index==rightIndex">
 								<image src="../../static/images/anti-icon3.png" mode=""></image>
 							</view>
@@ -86,12 +87,13 @@
 
 				<view v-if="currentSubject.type&&currentSubject.type==2">
 					<view class="submitbtn pt-5">
-						<view class="btn mb-3" :data-index="index" @click="!hasResult?dxChoose($event.currentTarget.dataset.index):''"
-						 v-for="(item,index) in currentSubject.Option" :key="index" type="button">
+						<view class="btn mb-3 btn1" :data-index="index" @click="!hasResult?dxChoose($event.currentTarget.dataset.index):''"
+						 v-for="(item,index) in currentSubject.Option" :key="index" type="button"
+						 :class="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0?'no':(hasResult&&Utils.inArray(index,rightArray)>=0?'yes':'')">
 							<view class="seltIconL errorIcon" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0">
 								<image src="../../static/images/anti-icon4.png" mode=""></image>
 							</view>
-							<view class="btnBj" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0">
+							<!-- <view class="btnBj" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)<0">
 								<image src="../../static/images/anti-icon1.png" mode=""></image>
 							</view>
 							<view class="btnBj" v-if="!hasResult||(hasResult&&Utils.inArray(index,chooseArray)<0&&Utils.inArray(index,rightArray)<0)">
@@ -99,7 +101,7 @@
 							</view>
 							<view class="btnBj" v-if="hasResult&&Utils.inArray(index,rightArray)>=0">
 								<image src="../../static/images/anti-icon2.png" mode=""></image>
-							</view>
+							</view> -->
 							<view class="btnTit color2" style="z-index: 999;" :class="Utils.inArray(index,chooseArray)>=0?'colorRed':''">{{item.option}}</view>
 							<view class="seltIconR rightIcon" v-if="hasResult&&Utils.inArray(index,chooseArray)>=0&&Utils.inArray(index,rightArray)>=0">
 								<image src="../../static/images/anti-icon3.png" mode=""></image>
@@ -623,5 +625,10 @@
 	.textSplit{width:635rpx;height: 658rpx;margin: 0 auto;padding: 24rpx 8rpx;}
 	.textSplit .cont{position: relative;z-index: 2;}
 	.textSplit .item{width: 25%;height: 156rpx;line-height: 156rpx;}
-
+	
+</style>
+<style scoped>
+.btn1{background-color: #F5E8D6;border: 1px solid #daad6d;border-radius: initial;color: #222;}
+.no{background-color: #FFE5E7;border: 1px solid #ED1E2E;}
+.yes{background-color: #D8FDEA;border: 1px solid #44BA7D;}
 </style>
