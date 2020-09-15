@@ -2,49 +2,49 @@
 	<view style="height: 100%;">
 
 		<pageBj></pageBj>
-		
+
 		<view class="Box">
-		
-		<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
-			<view class="backBtn" @click="Router.back(1)">
-				<image src="../../static/images/back-icon.png" mode=""></image>
-			</view>
-			<view class="headBj">
-				<image src="../../static/images/head-img.png" mode=""></image>
-			</view>
-			<view class="tit">详情</view>
-		</view>
 
-		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
-
-			<view class="banner-box">
-				<image class="slide-image" :src="mainData.bannerImg&&mainData.bannerImg[0]?mainData.bannerImg[0].url:''" />
-			</view>
-
-			<view class="mx-3 py-2">
-				<view class="font-30 font-weight pb-2">{{mainData.title}}</view>
-				<view class="price font-30 font-weight d-flex a-center">
-					<view class="priceIcon">
-						<image src="../../static/images/about-img2.png" mode=""></image>
-					</view>
-					<view>{{mainData.price}}</view>
+			<view class="page-head d-flex a-center j-center" :style="{marginTop:statusBar + 'px'}">
+				<view class="backBtn" @click="Router.back(1)">
+					<image src="../../static/images/back-icon.png" mode=""></image>
 				</view>
+				<view class="headBj">
+					<image src="../../static/images/head-img.png" mode=""></image>
+				</view>
+				<view class="tit">详情</view>
 			</view>
 
-			<view class="f5Bj-H20">
-				<image src="../../static/images/home-icon4.png" mode=""></image>
-			</view>
+			<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
 
-			<view class="px-3">
-				<view class="py-3 xqInfor">
-					<view class="font-30 font-weight pb-3">详情介绍</view>
-					<view class="cont fs14 text-center">
-						<view style="position: relative;">
-							<video style="width: 100%;z-index:0;position: relative;height: 450rpx;" controls="true" :src="item.url" id="myVideo"
-							 v-for="(item,index) in mainData.videoImg"></video>
-							<view v-show="!play" style="position: absolute;width: 100%;z-index: 1;top:0;left:0;height:450rpx;background-color: #000000;opacity: 0.5;"
+				<view class="banner-box">
+					<image class="slide-image" :src="mainData.bannerImg&&mainData.bannerImg[0]?mainData.bannerImg[0].url:''" />
+				</view>
+
+				<view class="mx-3 py-2">
+					<view class="font-30 font-weight pb-2">{{mainData.title}}</view>
+					<view class="price font-30 font-weight d-flex a-center">
+						<view class="priceIcon">
+							<image src="../../static/images/about-img2.png" mode=""></image>
+						</view>
+						<view>{{mainData.price}}</view>
+					</view>
+				</view>
+
+				<view class="f5Bj-H20">
+					<image src="../../static/images/home-icon4.png" mode=""></image>
+				</view>
+
+				<view class="px-3">
+					<view class="py-3 xqInfor">
+						<view class="font-30 font-weight pb-3">详情介绍</view>
+						<view class="cont fs14 text-center">
+							<view style="position: relative;">
+								<video @timeupdate="timeupdate" style="width: 100%;z-index:0;position: relative;height: 450rpx;" controls="true" :src="item.url"
+								 id="myVideo" v-for="(item,index) in mainData.videoImg"></video>
+								<!-- <view v-show="!play" style="position: absolute;width: 100%;z-index: 1;top:0;left:0;height:450rpx;background-color: #000000;opacity: 0.5;"
 							 @click="vedioPlay">
-						
+						 -->
 							</view>
 						</view>
 						<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
@@ -53,7 +53,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="xqbotomBar center px-3">
 			<view class="d-flex fs12">
 				<view class="ite flexColumn" @click="Utils.stopMultiClick(clickGood)">
@@ -66,8 +66,7 @@
 				</view>
 			</view>
 			<view class="bottom-btnCont d-flex rounded50 overflow-h  font-30">
-				<view class="w-50 text-center payBtn d-flex j-center a-center" style="width: 512rpx;" 
-				@click="Router.navigateTo({route:{path:'/pages/user-Vip/user-Vip'}})">
+				<view class="w-50 text-center payBtn d-flex j-center a-center" style="width: 512rpx;" @click="Router.navigateTo({route:{path:'/pages/user-Vip/user-Vip'}})">
 					<view class="payBtnBj">
 						<image src="../../static/images/electricityl-icon1.png" mode=""></image>
 					</view>
@@ -76,7 +75,7 @@
 			</view>
 		</view>
 
-		</view>
+	</view>
 
 	</view>
 </template>
@@ -102,9 +101,14 @@
 		onLoad(options) {
 			const self = this;
 			self.id = options.id;
-
+			const callback = (res) => {
+				self.$Utils.loadAll(['getMainData'], self);
+			};
+			self.$Token.getProjectToken(callback, {
+				refreshToken: true
+			})
 			console.log('options', options)
-			self.$Utils.loadAll(['getMainData'], self);
+			
 		},
 
 		onShow() {
@@ -116,11 +120,44 @@
 
 		methods: {
 
-			
+			timeupdate(e) {
+				console.log(e)
+				const self = this;
+				var videoContextPrev = wx.createVideoContext('myVideo')
+				let duration = e.detail.duration
+				let currentTime = e.detail.currentTime
+				console.log(duration)
+				console.log(currentTime)
+				if(!self.isMember){
+					if (currentTime > self.mainData.play_limit) {
+						// 停止视频
+						videoContextPrev.pause()
+						// 暂停视频
+						// wx.createVideoContext(this.data.indexCurrent, this).pause()
+						uni.showModal({
+							title: '提示',
+							content: '开通会员即可观看完整版，是否立即购买会员？',
+							showCancel: true,
+							confirmText: '确定',
+							success(res) {
+								if (res.confirm) {
+									self.Router.navigateTo({
+										route: {
+											path: '/pages/user-Vip/user-Vip'
+										}
+									})
+								} else {
+									console.log('取消')
+								}
+							}
+						});
+					}
+				}
+			},
 
 			vedioPlay() {
 				const self = this;
-				var videoContextPrev = wx.createVideoContext('myVideo')
+				
 				if (self.play) {
 					videoContextPrev.pause();
 					self.play = false
@@ -324,7 +361,10 @@
 <style>
 	@import "../../assets/style/detail.css";
 
-	.pageBox{margin-bottom: 110rpx;}
+	.pageBox {
+		margin-bottom: 110rpx;
+	}
+
 	.banner-box {
 		width: 100%;
 		height: 400rpx;

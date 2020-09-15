@@ -14,7 +14,18 @@
 			</view>
 			<view class="tit">电商文创</view>
 		</view>
-		<scroll-view scroll-y="true" class="pageBox pb-4"  @scrolltolower="Bottom"   :style="{marginTop:statusBar+44 + 'px'}">
+		<view class="f5bj  flexX topNavFix" :style="{marginTop:statusBar+44 + 'px'}">
+			<view class="orderNav flexX bg-white  shadow color6">
+				<view class="tt flex-shrink" @click="change(-1)"
+				:class="curr==-1?'on':''">全部</view>
+				<view class="tt flex-shrink" @click="change(index)"
+				:class="curr==index?'on':''" 
+				v-for="(item,index) in labelData" :key="index">{{item.title}}</view>
+			</view>
+		</view>
+		<scroll-view scroll-y="true" class="pageBox pb-4"  @scrolltolower="Bottom"   
+		:style="{marginTop:statusBar+84 + 'px'}">
+			<view class="topNavH"></view>
 			<view class="productList d-flex j-sb flex-wrap mx-3">
 				<view class="item rounded10 mb-3" v-for="(item,index) in mainData" :key="index" :data-id="item.id" @click="Router.navigateTo({route:{path:'/pages/Online-ProListDetail/Online-ProListDetail?id='+$event.currentTarget.dataset.id}})">
 					<view class="pic">
@@ -53,19 +64,83 @@
 			return {
 				Router: this.$Router,
 				mainData: [],
-				statusBar: app.globalData.statusBar
+				statusBar: app.globalData.statusBar,
+				labelData:[],
+				curr:-1,
+				width:'',
+				searchItem:{
+					thirdapp_id:2
+				},
+				idArray:[]
 			}
 		},
 
-		onLoad() {
+		onLoad(options) {
 			const self = this;
+			if(options.num){
+				self.num = options.num
+			};
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
-			self.$Utils.loadAll(['getMainData'], self);
+			self.$Utils.loadAll(['getLabelData'], self);
 		},
 
 		
 
 		methods: {
+			
+			change(num){
+				const self = this;
+				if(num!=self.curr){
+					self.curr = num;
+					if(self.curr==-1){
+						self.searchItem.category_id = ['in',self.idArray]
+					}else{
+						self.searchItem.category_id = self.labelData[self.curr].id
+					};
+					self.getMainData(true)
+				}
+			},
+				
+			getLabelData() {
+				const self = this;
+				const postData = {};
+				postData.searchItem = {
+					thirdapp_id: 2,
+				};
+				postData.order = {
+					listorder: 'desc'
+				};
+				postData.getBefore= {
+					child:{
+						tableName:'Label',
+						middleKey:'parentid',
+						key:'id',
+						searchItem:{
+							status:['in',1],
+							title:['in','电商文创']
+						},
+						condition:'in'
+					}
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.labelData.push.apply(self.labelData, res.info.data);
+						for (var i = 0; i < self.labelData.length; i++) {
+							self.idArray.push(self.labelData[i].id)
+						};
+						if(self.num){
+							self.curr = self.num;
+							self.searchItem.category_id = self.labelData[self.curr].id
+						}else{
+							self.searchItem.category_id = ['in',self.idArray]
+						}
+						self.getMainData()
+						self.width = 100/(self.labelData.length+1)+'%'
+					}
+					self.$Utils.finishFunc('getLabelData');
+				};
+				self.$apis.labelGet(postData, callback);
+			},
 			
 			Bottom() {
 				console.log('onReachBottom')
@@ -93,20 +168,20 @@
 				};
 				const postData = {};
 				postData.paginate = self.$Utils.cloneForm(self.paginate);
-				postData.searchItem = {
-					thirdapp_id: 2,
-				}
-				postData.getBefore = {
-					article: {
-						tableName: 'Label',
-						middleKey: 'category_id',
-						key: 'id',
-						searchItem: {
-							title: ['in', ['电商文创']],
-						},
-						condition: 'in'
-					}
-				};
+				postData.searchItem = self.$Utils.cloneForm(self.searchItem);
+				/* if(!self.searchItem.category_id){
+					postData.getBefore = {
+						article: {
+							tableName: 'Label',
+							middleKey: 'category_id',
+							key: 'id',
+							searchItem: {
+								title: ['in', ['电商文创']],
+							},
+							condition: 'in'
+						}
+					};
+				}; */
 				postData.order = {
 					listorder:'desc'
 				};
@@ -129,4 +204,20 @@
 	page {
 		background-color: #F5F5F5;
 	}
+	
+	.topNavFix {
+		width: 100%;
+		height: 80rpx;
+		position: fixed;
+		right: 0;
+		left: 0;
+		box-sizing: border-box;
+		z-index: 22;
+	}
+	
+	.topNavH {
+		height: 50rpx;
+	}
+	.orderNav{width: 100%;}
+	.orderNav .tt{width: 22%}
 </style>

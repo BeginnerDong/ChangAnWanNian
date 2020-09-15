@@ -52,6 +52,14 @@
 					<view class="mt-1">返回</view>
 				</view>
 			</view>
+			<button class="d-flex fs12" open-type="contact" >
+				<view class="ite flexColumn" @click="Router.back(1)">
+					<view class="icon">
+						<image src="../../static/images/kefu.png" mode=""></image>
+					</view>
+					<view class="mt-1">客服</view>
+				</view>
+			</button>
 			<view class="bottom-btnCont d-flex rounded50 overflow-h text-white font-30">
 				<view class="w-50 text-center payBtn d-flex j-center a-center" style="width: 512rpx;" @click="Utils.stopMultiClick(goBuy)">
 					<view class="payBtnBj">
@@ -165,7 +173,8 @@
 
 <style>
 	@import "../../assets/style/detail.css";
-
+	button{border: 0;padding: 0;margin: 0;background: none;line-height: 1.5;}
+	button:after{border: 0;}
 	.pageBox{margin-bottom: 110rpx;}
 
 	.banner-box {

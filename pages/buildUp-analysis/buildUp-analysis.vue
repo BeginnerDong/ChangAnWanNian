@@ -11,7 +11,7 @@
 				</view>
 				<view class="tit">题目解析</view>
 			</view>
-			<scroll-view @scrolltolower="Bottom" scroll-y="true" class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
+			<scroll-view  @scrolltolower="Bottom"  scroll-y="true" class="pageBox" :style="{marginTop:statusBar+44 + 'px'}">
 				<view class="answerList" v-for="(item,index) in mainData" :key="index">
 					<view class="mx-3">
 						<view>{{index+1}}:
@@ -63,6 +63,7 @@
 				answerData: 3,
 				mainData: [],
 				statusBar: app.globalData.statusBar,
+				type:''
 			}
 		},
 
@@ -70,7 +71,12 @@
 			const self = this;
 			self.type = options.type;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
-			self.$Utils.loadAll(['getMainData'], self)
+			if(options.orderId){
+				self.orderId = options.orderId;
+				self.$Utils.loadAll(['getOrderData'], self)
+			}else{
+				self.$Utils.loadAll(['getMainData'], self)
+			}
 			/* if(options.type==1){
 				self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
 				self.$Utils.loadAll(['getMainData'], self)
@@ -102,9 +108,63 @@
 				const self = this;
 				if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
 					self.paginate.currentPage++;
-					self.getMainData()
+					if(self.orderId){
+						self.getLogData(self.idArray)
+					}else{
+						self.getMainData()
+					}
+					
 				};
 			},
+			
+			getOrderData() {
+				var self = this;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					id:self.orderId
+				};
+				var callback = function(res) {
+					if (res.info.data.length > 0 ) {
+						self.idArray = res.info.data[0].passage_array
+						self.getLogData(self.idArray);
+					}else{
+						self.$Utils.finishFunc('getOrderData');
+					}
+				};
+				self.$apis.orderGet(postData, callback);
+			},
+			
+			getLogData(idArray) {
+				var self = this;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = {
+					id:['in',idArray]
+				};
+				postData.getAfter = {
+					subject: {
+						tableName: 'Subject',
+						middleKey: 'relation_id',
+						key: 'id',
+						searchItem: {
+							status: 1
+						},
+						condition: '='
+					},
+				};
+				var callback = function(res) {
+					if (res.info.data.length > 0 && res.info.data[0]) {
+						for (var i = 0; i < res.info.data.length; i++) {
+							self.mainData.push(res.info.data[i].subject[0])
+						}
+					}
+					self.$Utils.finishFunc('getOrderData');
+				};
+				self.$apis.logGet(postData, callback);
+			},
+			
 
 			getMainData() {
 				var self = this;
@@ -115,9 +175,7 @@
 					type: 1,
 					relation_table: 'Subject',
 					behavior: 1,
-				};
-				if (self.type == 3) {
-					postData.searchItem.sheet_id = uni.getStorageSync('sheetId')
+					sheet_id:uni.getStorageSync('sheetId')
 				};
 				postData.getAfter = {
 					subject: {
@@ -146,6 +204,8 @@
 </script>
 
 <style>
+	button{border: 0;padding: 0;margin: 0;background: none;line-height: 1.5;}
+	button:after{border: 0;}
 	.answerList:last-child .f5Bj-H20 {
 		display: none;
 	}

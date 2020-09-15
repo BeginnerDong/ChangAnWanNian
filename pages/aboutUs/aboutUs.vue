@@ -18,8 +18,17 @@
 							</view>
 						</view>
 					</view>
+					<view class="submitbtn mt-4">
+						<button class="btn" type="button" 
+						@click="Router.navigateTo({route:{path:'/pages/Online-ProListDetail/Online-ProListDetail?id=25'}})">
+							<view class="btnBj">
+								<image src="../../static/images/anti-icon.png" mode=""></image>
+							</view>
+							<view class="btnTit">赞赏本文</view>
+						</button>
+					</view>
 				</view>
-
+				
 				<!--底部tab键-->
 				<view class="navbar">
 					<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/index/index'}})">
@@ -41,7 +50,7 @@
 						<view class="text">我的</view>
 					</view>
 				</view>
-				<view style="height: 260rpx;width: 100%;"></view>
+				<view style="height: 100rpx;width: 100%;"></view>
 				<!--底部tab键 end-->
 			</view>
 

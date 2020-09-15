@@ -74,13 +74,13 @@
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=升道'}})">升道</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=昭国'}})">昭国</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=修行'}})">修行</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=立政'}})">广德</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=广德'}})">广德</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=晋昌'}})">晋昌</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=修政'}})">修政</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=敦化'}})">立政</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=立政'}})">立政</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=通善'}})">通善</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=青龙'}})">青龙</view>
-						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=青龙'}})">敦化</view>
+						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=敦化'}})">敦化</view>
 						<view class="child" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=通济'}})">通济</view>
 						<view class="child" style="width: 120rpx;" @click="Router.navigateTo({route:{path:'/pages/ArticleDetail/ArticleDetail?name=曲池'}})">曲池</view>
 					</view>

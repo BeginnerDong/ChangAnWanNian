@@ -15,7 +15,7 @@
 				<view class="myExtendTop text-center d-flex a-center flex-column  px-3">
 					<view class="money font-weight">{{userInfoData.score}}</view>
 					<view class="fs13 pdt10 d-flex j-center a-center mt-3">
-						<image class="mr-1" style="width: 34rpx;height: 34rpx;" src="../../static/images/racel-icon1.png" mode=""></image>积分(个)
+						<image class="mr-1" style="width: 34rpx;height: 34rpx;" src="../../static/images/racel-icon1.png" mode=""></image>消费积分
 					</view>
 				</view>
 

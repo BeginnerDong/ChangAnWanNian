@@ -54,14 +54,14 @@
 		
 		
 		<!-- 弹出框 -->
-		<view class="bg-mask">
+		<view class="bg-mask" v-if="showToast">
 			<view class="bg-white rounded20 text-center d-flex flex-column maskBox">
 				<view class="font-30 py-3 font-weight">提示</view>
-				<view class="flex-1 d-flex j-center a-center py-2 txt">内容内容内容内容内容内容内容</view>
+				<view class="flex-1 d-flex  py-2 txt" style="padding-left: 20rpx;padding-right: 20rpx;">您可以有更好的选择，余额充值（8折优惠）或购买会员月卡（畅享平台功能），请选择。</view>
 				<view class="d-flex a-center bto">
-					<view>继续支付</view>
-					<view>充值</view>
-					<view>购买会员</view>
+					<view @click="addOrder">继续支付</view>
+					<view @click="Router.navigateTo({route:{path:'/pages/uesr-Recharge/uesr-Recharge'}})">充值</view>
+					<view @click="Router.navigateTo({route:{path:'/pages/user-Vip/user-Vip'}})">购买会员</view>
 				</view>
 			</view>
 		</view>
@@ -90,7 +90,8 @@
 				isFree:false,
 				payType:1,
 				idArray:[],
-				statusBar:app.globalData.statusBar
+				statusBar:app.globalData.statusBar,
+				showToast:false
 			}
 		},
 		
@@ -111,7 +112,25 @@
 			}
 		},
 		
+		onShow() {
+			const self = this;
+			self.getUserInfoData()
+		},
+		
 		methods: {
+			
+			getUserInfoData() {
+				var self = this;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				var callback = function(res) {
+					if (res.info.data.length > 0 && res.info.data[0]) {
+						self.userInfoData = res.info.data[0];
+					};
+					self.$Utils.finishFunc('getUserInfoData');
+				};
+				self.$apis.userInfoGet(postData, callback);
+			},
 			
 			getSubjectData1() {
 				var self = this;
@@ -164,13 +183,21 @@
 					if(self.isMember||self.canTodayFree){
 						self.getSubjectData()
 					}else{
-						self.addOrder()
+						if(!self.isMember&&self.payType==1){
+							self.showToast = true
+						}else{
+							self.addOrder()
+						}
 					}
 				}else if(self.type==3){
 					if(self.isFree||self.isMember){
-						self.$Router.redirectTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=3'}})
+						self.$Router.navigateTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=3'}})
 					}else{
-						self.addOrder()
+						if(!self.isMember&&self.payType==1){
+							self.showToast = true
+						}else{
+							self.addOrder()
+						}
 					}
 				}
 			},
@@ -256,11 +283,11 @@
 					price:parseFloat(self.price).toFixed(2),
 					level:1,
 				};
-				if(self.type==1||self.type==3){
-					postData.type==5
+				if(self.type==1){
+					postData.type=5
 				}else{
-					postData.type==4
-				}
+					postData.type=4
+				};
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
 						self.orderId = res.info.id;
@@ -291,8 +318,9 @@
 				postData.searchItem = {
 					id: self.orderId
 				};
+				postData.payAfter = [];
 				if(self.payType==1){
-					if(self.pay.wxPay&&self.pay.wxPay.price>0){
+					if(postData.wxPay&&postData.wxPay.price>0){
 						postData.payAfter.push(
 							{
 								tableName: 'FlowLog',
@@ -302,7 +330,7 @@
 									thirdapp_id:2,
 									user_no:uni.getStorageSync('user_info').user_no,
 									account:1,
-									count:self.pay.wxPay.price,
+									count:parseFloat(postData.wxPay.price),
 									trade_info:'消费返积分'
 								},
 							},
@@ -342,7 +370,7 @@
 			payAfter(){
 				const self = this;
 				if(self.type==1){
-					self.$Router.redirectTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=1'}})
+					self.$Router.navigateTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=1&orderId='+self.orderId}})
 				}else if(self.type==2){
 					if(self.subjectData){
 						self.getSubjectData()
@@ -350,7 +378,7 @@
 						self.$Utils.showToast('恭喜您已通关现有题目，题库会不定期更新，推荐您前往"风云际会"，使用单人模式（直接选择"进入对战"，不要选择对手）继续您的答题', 'none');
 					};
 				}else if(self.type==3){
-					self.$Router.redirectTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=3'}})
+					self.$Router.navigateTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=3'}})
 				}
 			},
 			
@@ -362,6 +390,7 @@
 				var nowTime = (new Date()).getTime() / 1000;
 				//如果是会员，打断
 				if(uni.getStorageSync('user_info').info.member_time>nowTime){
+					self.$Utils.finishFunc('getSheetData');
 					self.num = uni.getStorageSync('user_info').thirdApp.answer_num;
 					self.isMember = true;
 					return

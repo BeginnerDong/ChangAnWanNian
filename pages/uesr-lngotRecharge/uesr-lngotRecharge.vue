@@ -183,6 +183,25 @@
 						user_no: uni.getStorageSync('user_info').user_no
 					},
 				}, ];
+				postData.payAfter = [];
+				if(self.payCurr==2){
+					if(postData.wxPay&&postData.wxPay.price>0){
+						postData.payAfter.push(
+							{
+								tableName: 'FlowLog',
+								FuncName: 'add',
+								data: {
+									type:3,
+									thirdapp_id:2,
+									user_no:uni.getStorageSync('user_info').user_no,
+									account:1,
+									count:parseFloat(postData.wxPay.price),
+									trade_info:'消费返积分'
+								},
+							},
+						) 
+					};
+				}
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
 						if (res.info) {

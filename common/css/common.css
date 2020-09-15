@@ -90,7 +90,7 @@ body{
 .line-h-big{ line-height: 3!important; }
 
 .line-through{ text-decoration: line-through; }
-
+.flexX{display: flex;flex-wrap: nowrap;overflow-x: auto;}     /*水平滚动，内部子元素设置flex-shrink为1*/
 .text-center{ text-align: center; }
 .text-left{ text-align: left; }
 .text-right{ text-align: right; }

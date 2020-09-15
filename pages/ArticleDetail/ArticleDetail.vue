@@ -31,9 +31,18 @@
 						</view>
 						<view style="position: relative;">
 							<video style="width: 100%;z-index:0;position: relative;height: 450rpx;" controls="true" :src="item.url" id="myVideo"
-							 v-for="(item,index) in mainData.videoImg"></video>
+							 v-for="(item,index) in mainData.videoImg" :key="index"></video>
 						</view>
 					</view>
+				</view>
+				<view class="submitbtn mt-4" v-if="mainData.menu_id==1">
+					<button class="btn" type="button" 
+					@click="Router.navigateTo({route:{path:'/pages/Online-ProListDetail/Online-ProListDetail?id=25'}})">
+						<view class="btnBj">
+							<image src="../../static/images/anti-icon.png" mode=""></image>
+						</view>
+						<view class="btnTit">赞赏本文</view>
+					</button>
 				</view>
 			</view>
 			<view v-if="show&&!mainData.title" style="text-align: center;line-height: 100px;font-weight: 700;font-size: 18px;">暂 无 数 据！</view>

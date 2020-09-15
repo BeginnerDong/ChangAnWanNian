@@ -63,10 +63,13 @@
 				</button>
 			</view>
 			
-			<view class="" @click="Router.reLaunch({route:{path:'/pages/index/index'}})" style="color: #d0b487;width: 100%;
-			text-align: center;text-decoration: underline;margin-top: 50rpx;">
-				 进入崇德含光文化平台
-			</view>
+			
+			
+			<view class="d-flex j-center" @click="Router.reLaunch({route:{path:'/pages/index/index'}})" style="color: #d0b487;width: 100%;
+			text-align: center;text-decoration: underline;margin-top: 50rpx;font-weight: 700;">
+					<image src="../../static/images/home.png" style="width: 40rpx;height: 40rpx;margin-right: 20rpx;"></image>
+					进入崇德含光文化平台
+				</view>
 		</view>
 		
 		</view>

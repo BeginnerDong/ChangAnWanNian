@@ -50,8 +50,20 @@
 				</view>
 
 			</view>
-
-			<view class="submitbtn pdtb15" style="margin-top:180rpx;">
+			
+			
+			<view class="" @click="UpperContentShow" style="color: #d0b487;width: 100%;text-align: center;text-decoration: underline;margin-top: 80rpx;">
+				 用户积分等级规则介绍
+			</view>
+			
+			<view class="" @click="UpperContentShow1" style="color: #d0b487;width: 100%;text-align: center;text-decoration: underline;margin-top: 50rpx;">
+				"日积月累"攻略
+			</view>
+			<view class="" @click="viewAnalysis" style="color: #d0b487;width: 100%;text-align: center;text-decoration: underline;margin-top: 50rpx;">
+				查看历史解析
+			</view>
+			
+			<view class="submitbtn pdtb15" style="margin-top:120rpx;">
 				<button class="btn" type="button" open-type="getUserInfo" @getuserinfo="submit">
 					<view class="btnBj">
 						<image src="../../static/images/anti-icon.png" mode=""></image>
@@ -59,12 +71,6 @@
 					<view class="btnTit">开始答题</view>
 				</button>
 			</view>
-			
-			<view class="" @click="UpperContentShow" style="color: #d0b487;width: 100%;text-align: center;text-decoration: underline;margin-top: 50rpx;">
-				 用户积分等级规则介绍
-			</view>
-			
-			
 		</view>
 		
 		</view>
@@ -73,7 +79,7 @@
 		<view class="black-bj" v-show="is_show"></view>
 		<view class="exchangeShow rounded20 bg-white" v-show="is_UpperLimit">
 			<view class="closebtn" @click="UpperLimitShow">×</view>
-			<view class="text-center px-3 font-30" style="line-height: 50rpx;height: 280rpx;">
+			<view class="text-center px-3 font-30" style="line-height: 50rpx;height: 340rpx;">
 				今日您的答题次数已达上限，请休息休息眼睛~~    
 				之后欢迎您继续探索平台的其他版块，亦可在"风云际会"版块中继续您的个人答题（直接选择"进入对战"，无需选择对手，不过所答题目不计入学术积分）</view>
 
@@ -94,6 +100,16 @@
 				用户积分等级规则：崇德含光文化平台鼓励用户点滴、持续地积累传统文化知识，在日积月累版块中答题正确即可获得题目相应积分，且此积分会持续累加，当积分达到一定分值时即可获得更高用户等级（等级设定为唐代九品官职，比如九品分为从九品下、从九品上、正九品下、正九品上等四个级别，以此类推）。日积月累积分和用户等级只与用户的答题状况以及传统文化知识积累水准有关，与用户的消费情况等无关，因此可以看作是用户的学术积分。
 			</view>
 		</view>
+		
+		
+		<view class="exchangeShow1 rounded20 bg-white" v-show="is_showContent1">
+			<view class="closebtn" @click="UpperContentShow1">×</view>
+			<view class="font-30" style="line-height: 50rpx;height: 100%;overflow: auto;">
+				<view class="text-center" >欢迎来到日积月累~</view>
+				 对于日积月累中的题目，"第一遍就做对"其实完全不需要是您的目标。我们更希望这些题目是一个窗口，能带您发现传统文化之美，对于其中您感兴趣的点，我们鼓励您通过仔细查看解析，甚至通过查阅书籍和网络资料，去进一步的了解和学习。在完成每一轮的答题之后，您可以通过查看本轮解析（会员免费）来深入探索，您也可以通过查看历史解析（最近的50道题目）来系统盘点您的收获，以期温故而知新。您购买的历史解析可以反复观看，直到您购买新一次的历史解析。
+			</view>
+		</view>
+		
 	</view>
 </template>
 
@@ -115,7 +131,9 @@
 				is_UpperLimit: false,
 				is_show: false,
 				statusBar: app.globalData.statusBar,
-				is_showContent:false
+				is_showContent:false,
+				is_showContent1:false,
+				orderData:{}
 			}
 		},
 
@@ -138,14 +156,49 @@
 		onShow() {
 			const self = this;
 			self.getSheetData()
+			self.getOrderData()
 		},
 
 		methods: {
+			
+			getOrderData() {
+				var self = this;
+				var postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					type:5,
+					pay_status:1
+				};
+				postData.order = {
+					create_time:'desc'
+				};
+				var callback = function(res) {
+					if (res.info.data.length > 0 ) {
+						self.orderData = res.info.data[0]
+					}
+				};
+				self.$apis.orderGet(postData, callback);
+			},
+			
+			viewAnalysis(){
+				const self = this;
+				if(self.orderData.id){
+					self.$Router.navigateTo({route:{path:'/pages/buildUp-analysis/buildUp-analysis?type=1&orderId='+self.orderData.id}})
+				}else{
+					self.$Utils.showToast('您暂未购买过历史解析','none');
+				}
+			},
 			
 			UpperContentShow(){
 				const self = this;
 				self.is_show = !self.is_show;
 				self.is_showContent = !self.is_showContent
+			},
+			
+			UpperContentShow1(){
+				const self = this;
+				self.is_show = !self.is_show;
+				self.is_showContent1 = !self.is_showContent1
 			},
 
 			getUserInfoData() {
@@ -455,7 +508,7 @@
 	/* 弹框 */
 	.exchangeShow {
 		width: 80%;
-		height: 550rpx;
+		height: 590rpx;
 		padding: 100rpx 50rpx 50rpx 50rpx;
 		position: fixed;
 		left: 50%;
@@ -474,6 +527,8 @@
 		transform: translate(-50%, -50%);
 		z-index: 50;
 	}
+	
+	
 
 	.alertBox {
 		position: absolute;

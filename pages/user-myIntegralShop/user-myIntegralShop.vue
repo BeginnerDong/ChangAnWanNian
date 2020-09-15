@@ -20,7 +20,7 @@
 					<view class="infor d-flex a-center j-sb main-text-color">
 						<view class="ll">
 							<view class="font-40 font-weight">抵扣券{{item.value}}元</view>
-							<view class="font-30 mt-4">积分：{{item.price}}可兑换</view>
+							<view class="font-30 mt-4">消费积分：{{item.price}}可兑换</view>
 						</view>
 						<view class="rr font-30 text-center color2 font-weight" @click="exchangeShow(index)">点击兑换</view>
 					</view>

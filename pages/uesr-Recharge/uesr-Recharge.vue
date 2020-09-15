@@ -22,7 +22,7 @@
 			</view>
 
 			<view class="px-3 ">
-				<view class="font-weight pt-3">充值金额<text>({{rate}}折)</text></view>
+				<view class="font-weight pt-3">充值金额<text>({{rate}}折优惠)</text></view>
 				<!-- <view class="input-money py-2" ><input type="number" value="100" placeholder="请输入金额" /></view>
 				 -->
 				<view class="specsList d-flex a-center text-center  pt-3">
@@ -135,7 +135,7 @@
 					FuncName: 'add',
 					data: {
 						type: 2,
-						count: self.price,
+						count: parseFloat(postData.wxPay.price),
 						trade_info: '充值',
 						account: 1,
 						thirdapp_id: 2,

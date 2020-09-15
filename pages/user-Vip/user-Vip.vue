@@ -33,7 +33,7 @@
 					<view class="submitbtn pdtb15" style="margin: 80rpx;">
 						<button class="btn" type="button" open-type="getUserInfo" @getuserinfo="Utils.stopMultiClick(submit)">
 							<view class="btnBj">
-								<image src="../../static/images/buttonl-icon.png" mode=""></image>
+								<image src="../../static/images/electricityl-icon1.png" mode=""></image>
 							</view>
 							<view class="btnTit">购买</view>
 						</button>
@@ -185,6 +185,8 @@
 							const payCallback = (payData) => {
 								console.log('payData', payData)
 								if (payData == 1) {
+									uni.removeStorageSync('user_info');
+									uni.removeStorageSync('user_token');
 									self.$Utils.showToast('支付成功', 'none');
 									setTimeout(function() {
 										uni.navigateBack({
@@ -198,6 +200,8 @@
 							};
 							self.$Utils.realPay(res.info, payCallback);
 						} else {
+							uni.removeStorageSync('user_info');
+							uni.removeStorageSync('user_token');
 							self.$Utils.showToast('支付成功', 'none');
 							setTimeout(function() {
 								uni.navigateBack({

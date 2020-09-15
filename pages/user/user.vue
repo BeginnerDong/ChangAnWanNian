@@ -99,7 +99,7 @@
 					</view>
 
 				</view>
-
+				
 				<!-- 管理工具 -->
 				<view class="userBox2 rounded10 bg-white mt-3 font-24 shadow-sm">
 					<view class="d-flex j-sb a-center py-3  mx-3 border-bottom">
@@ -142,22 +142,29 @@
 							</view>
 							<view>优惠券</view>
 						</view>
-						<view class="item" v-show="isMember" @click="Router.navigateTo({route:{path:'/pages/user-heXiaoLogin/user-heXiaoLogin'}})">
+						<view class="item" v-show="isManner" @click="Router.navigateTo({route:{path:'/pages/user-heXiaoLogin/user-heXiaoLogin'}})">
 							<view class="icon">
 								<image src="../../static/images/about-icon7.png"></image>
 							</view>
 							<view>核销员入口</view>
 						</view>
-						<view class="item"  v-show="isMember" @click="Router.navigateTo({route:{path:'/pages/user-mLogin/user-mLogin'}})">
+						<view class="item"  v-show="isManner" @click="Router.navigateTo({route:{path:'/pages/user-mLogin/user-mLogin'}})">
 							<view class="icon">
 								<image src="../../static/images/about-icon8.png"></image>
 							</view>
 							<view>管理入口</view>
 						</view>
+						<button class="item"  open-type="feedback" style="font-size: 13px;">
+							<view class="icon">
+								<image src="../../static/images/about-icon9.png"></image>
+							</view>
+							<view>意见反馈</view>
+						</button>
+						<!-- <button open-type="feedback">反馈</button> -->
 					</view>
 				</view>
 			</view>
-
+			<view style="height: 50px;"></view>
 			<!--底部tab键-->
 			<view class="navbar">
 				<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/index/index'}})">
@@ -199,7 +206,8 @@
 				userInfoData: {},
 				isMember: false,
 				yb: 0,
-				statusBar: app.globalData.statusBar
+				statusBar: app.globalData.statusBar,
+				isManner:false
 			}
 		},
 
@@ -234,9 +242,12 @@
 				var callback = function(res) {
 					if (res.info.data.length > 0 && res.info.data[0]) {
 						self.userInfoData = res.info.data[0];
+						if (self.userInfoData.behavior == 1) {
+							self.isManner = true
+						};
 						if (self.userInfoData.member_time > nowTime) {
 							self.isMember = true
-						}
+						};
 						self.yb = parseFloat(parseFloat(self.userInfoData.yb_score) + parseFloat(self.userInfoData.yb_today)).toFixed(2)
 					};
 					self.$Utils.finishFunc('getUserInfoData');
@@ -251,7 +262,8 @@
 <style>
 	@import "../../assets/style/detail.css";
 	@import "../../assets/style/navbar.css";
-
+	button{border: 0;padding: 0;margin: 0;background: none;line-height: 1.5;}
+	button:after{border: 0;}
 	page {
 		background: #F5F5F5;
 	}

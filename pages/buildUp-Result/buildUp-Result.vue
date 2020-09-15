@@ -51,11 +51,11 @@
 			</view>
 
 			<view class="mx-5 px-3 d-flex j-sb a-center font-28 main-text-color  text-center pt-2">
-				<view class="TwoBtn position-relative" @click="toPay(1)">
+				<view class="TwoBtn position-relative" @click="toPay(3)">
 					<view class="position-absoluteXY">
 						<image src="../../static/images/the-results-icon10.png" mode=""></image>
 					</view>
-					<view class="position-relative" style="z-index: 2;">查看历史解析</view>
+					<view class="position-relative" style="z-index: 2;">查看本轮解析</view>
 				</view>
 				<view class="TwoBtn position-relative" @click="toPay(2)">
 					<view class="position-absoluteXY">
@@ -66,11 +66,11 @@
 			</view>
 
 			<view class="submitbtn mt-4">
-				<button class="btn" type="button" @click="toPay(3)">
+				<button class="btn" type="button" @click="toPay(1)">
 					<view class="btnBj">
 						<image src="../../static/images/anti-icon.png" mode=""></image>
 					</view>
-					<view class="btnTit">查看本轮解析</view>
+					<view class="btnTit">查看历史解析（最近50题）</view>
 				</button>
 			</view>
 
@@ -79,7 +79,7 @@
 			<view class="black-bj" v-show="is_show"></view>
 			<view class="exchangeShow rounded20 bg-white" v-show="is_UpperLimit">
 				<view class="closebtn" @click="UpperLimitShow">×</view>
-				<view class="text-center px-3 font-30" style="line-height: 50rpx;height: 280rpx;">今日您的答题次数已达上限，请休息休息眼睛~~    
+				<view class="text-center px-3 font-30" style="line-height: 50rpx;height: 340rpx;">今日您的答题次数已达上限，请休息休息眼睛~~    
 				之后欢迎您继续探索平台的其他版块，亦可在"风云际会"版块中继续您的个人答题（直接选择"进入对战"，无需选择对手，不过所答题目不计入学术积分）</view>
 
 
@@ -135,7 +135,7 @@
 					};
 
 				};
-				self.Router.redirectTo({
+				self.Router.navigateTo({
 					route: {
 						path: '/pages/buildUp-Result-Pay/buildUp-Result-Pay?type=' + type
 					}
@@ -250,7 +250,7 @@
 	/* 弹框 */
 	.exchangeShow {
 		width: 80%;
-		height: 550rpx;
+		height: 590rpx;
 		padding: 100rpx 50rpx 50rpx 50rpx;
 		position: fixed;
 		left: 50%;
