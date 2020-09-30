@@ -77,15 +77,15 @@
 
 		<!-- 达到上限弹框 -->
 		<view class="black-bj" v-show="is_show"></view>
-		<view class="exchangeShow rounded20 bg-white" v-show="is_UpperLimit">
+		<view class="exchangeShow rounded20 bg-white" style="height: auto;" v-show="is_UpperLimit">
 			<view class="closebtn" @click="UpperLimitShow">×</view>
-			<view class="text-center px-3 font-30" style="line-height: 50rpx;height: 340rpx;">
+			<view class="text-center px-3 font-30" style="line-height: 50rpx;height: 100%;overflow: auto;">
 				今日您的答题次数已达上限，请休息休息眼睛~~    
 				之后欢迎您继续探索平台的其他版块，亦可在"风云际会"版块中继续您的个人答题（直接选择"进入对战"，无需选择对手，不过所答题目不计入学术积分）</view>
 
 
 			<view class="submitbtn mt-3">
-				<button class="btn" style="width: 100%;" type="button" @click="Router.reLaunch({route:{path:'/pages/index/index'}})">
+				<button class="btn" style="width: 100%;margin-bottom: 0;" type="button" @click="Router.reLaunch({route:{path:'/pages/index/index'}})">
 					<view class="btnBj">
 						<image src="../../static/images/electricityl-icon1.png" mode=""></image>
 					</view>
@@ -233,6 +233,7 @@
 				var callback = function(res) {
 					if (res.info.data.length > 0 && res.info.data[0]) {
 						self.userInfoData = res.info.data[0]
+						uni.setStorageSync('level',self.userInfoData.level)
 					};
 					self.$Utils.finishFunc('getUserInfoData');
 				};

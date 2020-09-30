@@ -35,7 +35,7 @@
 							<view class="btnBj">
 								<image src="../../static/images/electricityl-icon1.png" mode=""></image>
 							</view>
-							<view class="btnTit">购买</view>
+							<view class="btnTit">成为会员</view>
 						</button>
 					</view>
 					
@@ -120,12 +120,11 @@
 				self.price = parseFloat(self.price);
 				const postData = {};
 				postData.tokenFuncName = 'getProjectToken',
-
-					postData.data = {
-						price: self.price.toFixed(2),
-						level: 1,
-						type: 3
-					};
+				postData.type = 3
+				postData.data = {
+					price: self.price.toFixed(2),
+					level: 1,
+				};
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
 						self.orderId = res.info.id;

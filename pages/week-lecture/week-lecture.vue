@@ -81,6 +81,7 @@
 				postData.paginate = self.$Utils.cloneForm(self.paginate);
 				postData.searchItem = {
 					thirdapp_id: 2,
+					on_shelf:1
 				}
 				postData.getBefore = {
 					article: {

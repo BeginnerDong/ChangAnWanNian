@@ -133,12 +133,12 @@
 					return
 				};
 				const postData = {};
-				postData.tokenFuncName = 'getProjectToken',
-					postData.data = {
-						price: parseFloat(self.price).toFixed(2),
-						level: 1,
-						type: 6
-					}
+				postData.tokenFuncName = 'getProjectToken';
+				postData.type = 3;
+				postData.data = {
+					price: parseFloat(self.price).toFixed(2),
+					level: 1,
+				};
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
 						self.orderId = res.info.id;
@@ -183,7 +183,7 @@
 						user_no: uni.getStorageSync('user_info').user_no
 					},
 				}, ];
-				postData.payAfter = [];
+				
 				if(self.payCurr==2){
 					if(postData.wxPay&&postData.wxPay.price>0){
 						postData.payAfter.push(

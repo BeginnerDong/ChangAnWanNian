@@ -10,7 +10,7 @@
 				<view class="tit">确认订单</view>
 			</view>
 		<view class="pageBox pb-4" :style="{marginTop:44+statusBar + 'px'}">
-			<view class="bg-white boxShaow overflow-h mb-3 mx-3 rounded10 overflow-h">
+			<view class="bg-white boxShaow overflow-h mb-3 mx-3 rounded10 overflow-h" v-if="mainData[0]&&mainData[0].product_id!=25">
 				<view style="width: 100%;height: 19rpx;"><image src="../../static/images/zhoumo-img4.png" mode=""></image></view>
 				<view class="px-3 py-3">
 					
@@ -63,7 +63,7 @@
 						</view>
 					</view>
 					
-					<view class="d-flex j-sb a-center py-3 border-top">
+					<view class="d-flex j-sb a-center py-3 border-top"  v-if="mainData[0]&&mainData[0].product_id!=25">
 						<view>优惠券</view>
 						<view class="d-flex j-end a-center color6 font-26" v-if="couponData.length==0" @click="couponShow">
 							暂无优惠券使用<image class="arrowR ml-1" src="../../static/images/the-orderl-icon.png" mode=""></image>
@@ -318,7 +318,7 @@
 			submit(){
 				const self = this;
 				uni.setStorageSync('canClick',false);
-				if(JSON.stringify(self.addressData) == '{}'){
+				if(JSON.stringify(self.addressData) == '{}'&&mainData[0]&&mainData[0].product_id!=25){
 					uni.setStorageSync('canClick',true);
 					self.$Utils.showToast('请选择收货地址','none')
 					return

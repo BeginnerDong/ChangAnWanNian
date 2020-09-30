@@ -191,6 +191,7 @@
 				};
 				postData.searchItem = {
 					thirdapp_id: 2,
+					is_show:1
 				}
 				postData.getBefore = {
 					article: {

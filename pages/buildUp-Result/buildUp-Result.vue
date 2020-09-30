@@ -13,7 +13,14 @@
 		</view>
 
 		<view  class="pageBox pb-4" :style="{marginTop:statusBar+44 + 'px'}">
-			<view class="d-flex j-center a-center" style="margin-top: 150rpx;">
+			
+			<view class="d-flex j-center" @click="Router.reLaunch({route:{path:'/pages/index/index'}})" style="color: #d0b487;width: 100%;
+			text-align: center;text-decoration: underline;margin-top: 50rpx;font-weight: 700;">
+					<image src="../../static/images/home.png" style="width: 40rpx;height: 40rpx;margin-right: 20rpx;"></image>
+					进入崇德含光文化平台
+				</view>
+			
+			<view class="d-flex j-center a-center" style="margin-top: 100rpx;">
 				<view class="Dossier position-relative d-flex j-center a-center">
 					<view class="position-absoluteXY">
 						<image src="../../static/images/the-results-ofl-icon6.png" mode=""></image>
@@ -64,6 +71,9 @@
 					<view class="position-relative" style="z-index: 2;">继续作答</view>
 				</view>
 			</view>
+			
+			
+			
 
 			<view class="submitbtn mt-4">
 				<button class="btn" type="button" @click="toPay(1)">
@@ -74,17 +84,20 @@
 				</button>
 			</view>
 
-
+			<view class="" style="color: #666;width: 100%;text-align: center;margin-top: 80rpx;padding: 0 10%;">
+				 * 查看已购买的历史解析，请前往日积月累首页"查看历史解析"
+			</view>
 			<!-- 达到上限弹框 -->
 			<view class="black-bj" v-show="is_show"></view>
-			<view class="exchangeShow rounded20 bg-white" v-show="is_UpperLimit">
+			<view class="exchangeShow rounded20 bg-white" style="height: auto;" v-show="is_UpperLimit">
 				<view class="closebtn" @click="UpperLimitShow">×</view>
-				<view class="text-center px-3 font-30" style="line-height: 50rpx;height: 340rpx;">今日您的答题次数已达上限，请休息休息眼睛~~    
-				之后欢迎您继续探索平台的其他版块，亦可在"风云际会"版块中继续您的个人答题（直接选择"进入对战"，无需选择对手，不过所答题目不计入学术积分）</view>
-
-
+				<view class="text-center px-3 font-30" style="line-height: 50rpx;height: 100%;overflow: auto;">
+					今日您的答题次数已达上限，请休息休息眼睛~~    
+					之后欢迎您继续探索平台的其他版块，亦可在"风云际会"版块中继续您的个人答题（直接选择"进入对战"，无需选择对手，不过所答题目不计入学术积分）</view>
+			
+			
 				<view class="submitbtn mt-3">
-					<button class="btn" style="width: 100%;" type="button" @click="Router.reLaunch({route:{path:'/pages/index/index'}})">
+					<button class="btn" style="width: 100%;margin-bottom: 0;" type="button" @click="Router.reLaunch({route:{path:'/pages/index/index'}})">
 						<view class="btnBj">
 							<image src="../../static/images/electricityl-icon1.png" mode=""></image>
 						</view>
@@ -173,7 +186,14 @@
 				};
 				var callback = function(res) {
 					if (res.info.data.length > 0 && res.info.data[0]) {
-						self.userInfoData = res.info.data[0]
+						self.userInfoData = res.info.data[0];
+						if(self.userInfoData.level>uni.getStorageSync('level')){
+							uni.showModal({
+								content:'恭喜您成为'+self.userInfoData.levelName[0].title,
+								showCancel:false,
+								confirmText:'我知道了'
+							})
+						}
 					};
 					self.$Utils.finishFunc('getUserInfoData');
 				};

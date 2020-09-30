@@ -25,13 +25,17 @@
 				<view class="item d-flex j-sb a-center">
 					<view class="ll">手机号</view>
 					<view class="rr fs13">
-						<input type="number" v-model="submitData.phone" placeholder="请写手机号" placeholder-class="placeholder">
+						<input type="number" v-model="submitData.phone" maxlength="11" placeholder="请写手机号" placeholder-class="placeholder">
 					</view>
 				</view>
 				<view class="item d-flex j-sb a-center">
-					<view class="ll">所在地区</view>
-					<view class="rr fs13 color9" @click="chooseAddress()">
-						<input type="text" placeholder="选择您的位置" disabled="true" v-model="submitData.city">
+					<view class="ll" style="width: 30%;">所在地区</view>
+					
+					<view class="rr fs13" style="width: 70%;">
+						<picker mode="region" @change="cityChange" :class="submitData.city==''?'color9':'color6'">
+							{{submitData.city!=''?submitData.city:'选择您的地区'}}
+						</picker>
+						<!-- <input type="text" placeholder="选择您的位置" disabled="true" v-model="submitData.city"> -->
 						<image class="arrowR" src="../../static/images/the-orderl-icon.png" mode=""></image>
 					</view>
 				</view>
@@ -115,8 +119,11 @@
 
 		methods: {
 
-
-
+			cityChange(e){
+				const self = this;
+				self.submitData.city = e.detail.value[0]+e.detail.value[1]+e.detail.value[2]
+			},
+				
 			chooseAddress(e) {
 				const self = this;
 				uni.authorize({

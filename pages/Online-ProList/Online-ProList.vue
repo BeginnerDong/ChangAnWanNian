@@ -69,7 +69,8 @@
 				curr:-1,
 				width:'',
 				searchItem:{
-					thirdapp_id:2
+					thirdapp_id:2,
+					on_shelf:1
 				},
 				idArray:[]
 			}
